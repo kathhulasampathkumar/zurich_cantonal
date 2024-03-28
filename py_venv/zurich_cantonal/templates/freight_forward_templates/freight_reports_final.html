@@ -1,0 +1,195 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+<link rel="stylesheet" href="../../static/datatables/jquery.dataTables.min.css">
+<script src="../../static/datatables/jquery-3.5.1.js"></script>
+<script src="../../static/datatables/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+
+{%comment%}<h1> Hello welcome to {%for emp in emp_names%}{%if emp.empcode == user_id%}{{emp.empname}}{%endif%}{%endfor%}</h1> {%endcomment%}
+<div class="row col-12 p-0 m-0 g-0">
+  <form method="POST"  id="form1">{% csrf_token %} 
+
+  <!-- <form method="POST" id="form1" action="getfreight_reports_final">{% csrf_token %}      -->
+    <fieldset class="border p-2">
+      <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Forword Search</legend>  
+             
+        <table id="myTable">                      
+          <tbody>
+            <tr style="width: 100%;">              
+              <td class="px-2 mx-1">Freight ID :                 
+                <input type="text" name="fid" id="fid" class="text-uppercase" placeholder="frieght id " onkeypress="return isNumerickey(event)"></td>
+              <td class="px-2 mx-1">Vehicle NO :                 
+                <input type="text" name="vehicleno" id="vehicleno" class="text-uppercase" placeholder="APXX TRXXXX " ></td>                           
+              <td class="px-1 mx-1">From Date :                 
+                <input type="text" name="fromdate" id="fromdate" class="dateselect" placeholder="DD-MM-YYYY" onkeypress="return isReadonlyField(event)" ></td>
+              <td class="px-1 mx-1">To Date : 
+                <input type="text" name="todate" id="todate" class="dateselect" placeholder=" DD-MM-YYYY" onkeypress="return isReadonlyField(event)" ></td>
+              <td class="px-1 mx-1">DC No : 
+                <input type="text" name="dc_no" id="dc_no" class="text-uppercase" placeholder="DC NO"></td>               
+              <td class="px-1 mx-1">VendorName :                            
+                <select name="vendorname" id="vendorname_1" class="w-80 searchandselect"><option value="">--select vendor--</option>
+                {%for vendor in vendor_list%}<option value="{{vendor.ven_id}}">{{vendor.vendor}}</option>{%endfor%}</select></td>            
+              <td>Goods By :<select name="goods_by" id="goods_by_1" class="width10 px-2 my-2"><option value="">-select-</option><option value="By Hand">By Hand</option><option value="By Courier">By Courier</option><option value="By Vehicle">By Vehicle</option><option value="Dispatch">Dispatch</option></select></td>            
+                                        
+              <td>Freight Name : <select name="freight_name" id="freight_name" class="w-80 searchandselect"><option value="">--select Freight Forwarder--</option>
+                {%for courier in courier_list%}<option value="{{courier.cid}}">{{courier.courier_name}}</option>{%endfor%}</select></td>              
+            <tr>
+            </tr> 
+              <td><input type="submit" value="submit" class="m-2 p-2 btn btn-primary fs-5 bolder" id="result"></td>  
+              <td><a href="{%url 'getfreight_reports'%}">Normal Reports</a></td>
+              {% if current_time >= '12:30' or '12:39' >=  current_time %}
+              <td><input type="submit" value="Send Mail" class="m-2 p-2 btn btn-primary fs-5 bolder" id="mail"></td> 
+              {%endif%}         
+            </tr>
+          </tbody>          
+        </table> 
+                
+    </fieldset>
+  </form>
+
+
+  <fieldset class="border p-2">
+    <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Forword Final Reports :    {{current_time}}</legend>  
+    <form action="" method="post"> 
+      {%if getreport %}
+      <span style="font-size: 15px;padding-left: 10px;">By Hand : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{byhand}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">By Courier : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{bycourier}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">By Vehicle : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{byvehicle}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">By Dispatch : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{bydispatch}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">Total Count : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{total_cnt}}</span></span>
+      <table class="table table-striped" id="datatable2">
+        <thead>
+          <tr>
+            <th>Freight ID</th>
+            <th>Datetime</th>
+            <th>Vehicle NO</th>
+            <th>DC NO</th>
+            <th>DC Date</th>
+            <th>Vendor Name</th>
+            <th>NO Of Items</th>
+            <th>Freight Name</th>
+            <th>Docket NO</th>
+            <th>Docket Date</th>
+            <th>No.Of Packs</th>
+            <th>In-Time</th>
+            <th>Out-Time</th>
+            <th>Security Empcode</th>
+            <th>Remarks</th>
+            <th>Created By</th>
+            <th>Delay</th>
+            <th>Delay Reason</th>
+            <th>Updated By</th>
+          </tr>
+        </thead>
+        <tbody>          
+          {%for rep in getreport%}
+          <tr>
+            <td>{{forloop.counter}} - {{rep.fid}} <br> <a href="{%url 'freight_edit' rep.fid %} ">Edit</a> <input type="hidden" name="fid" id="fid" value="{{rep.fid}}"></td>
+            <td>{{rep.datetime |date:" d - m - Y"}}</td>
+            <td>{{rep.vehicleno}}<br><span class="text-primary p-0 m-0"> NO OF Feets : {{rep.noof_feet}} </span></td>
+            <td>{{rep.dc_no}}</td>
+            <td>{{rep.dc_date |date:" d - m - Y"}}</td>
+            <td>{%for vendor in vendor_list%}{%if rep.vendorname == vendor.ven_id%}{{vendor.vendor}}{%endif%}{%endfor%}</td>
+            <td>{{rep.noof_items}}</td>
+            <td>{%for courier in courier_list%}{%if rep.freight_name == courier.cid%}{{courier.courier_name}}{%endif%}{%endfor%}</td>
+            <td>{{rep.docket_no}}</td>
+            <td>{{rep.docket_date |date:" d - m - Y"}}</td>
+            <td>{{rep.noof_pack}}</td>
+            <td>{{rep.intime}}</td>
+            <td>{{rep.outtime}}</td>
+            <td>{{rep.security_empcode}}</td>
+            <td>{{rep.remarks}}</td>
+            <td>{%for emp in emp_names %}{%if rep.createdby == emp.empcode %}{{emp.empname}} {%endif%}{%endfor%}</td>
+            <td>{%if rep.delay == 1%}YES {%else%}NO{%endif%}</td>
+            <td>{%if rep.delay_reason != '' %}{{rep.delay_reason}} {%endif%}</td>
+            <td>{%for emp in emp_names %}{%if rep.update_by == emp.empcode %}{{emp.empname}} {%endif%}{%endfor%}</td>
+          </tr>
+          {%endfor%}        
+        </tbody>
+      </table>
+      {%endif%}
+    </form>       
+    </fieldset> 
+    
+    
+
+    
+</div>
+
+
+<script>
+  $(document).ready(function (){
+    $('.searchandselect').select2();
+    $('#datatable2').DataTable();
+  $(".dateselect").datetimepicker({
+      format: "d-m-Y",
+      timepicker: false
+  });
+  $("#result").click(function(){ 
+    // alert('result');
+      $("#form1").attr("action","getfreight_reports_final");
+    });
+  $("#mail").click(function(){ 
+    //  alert('Sending mail based on you selected Dates');
+      $("#form1").attr("action","freight_send_mail");
+    });
+
+});
+
+function isReadonlyField(evt)
+{
+    var charCode=(evt.which)?evt.which:event.keyCode;
+    if(charCode==9 ){
+      return true;
+    }
+    return false;
+    
+}
+function isNumerickey(evt)
+{
+    var charCode=(evt.which)?evt.which:event.keyCode;
+    if(charCode!=46 && charCode>31 && (charCode<48 || charCode>57) || charCode== 13){
+        return false;
+    }
+    return true;
+}
+</script>
+
+
+<style>
+  .medha_headings{
+    color: #800080 !important;
+    font-weight: 700;
+  }
+  .widthselect{
+  width: 29%;
+  margin-right:0.5%;
+  }
+  
+  #myTable td {
+    margin:1%;
+    width: 200px !important;
+    white-space: nowrap;
+    padding-left: 10px;
+  }
+  textarea{border-radius: 5px;}
+  input,textarea,select{
+      border-radius: 5px 5px 5px 5px;
+      border: 1px solid gray;
+      padding: 2px;
+      
+  }
+  select{width: 150px;}
+
+</style>
+
+ 
+
+{%endblock%}
+

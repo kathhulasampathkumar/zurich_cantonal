@@ -1,0 +1,198 @@
+{%load static%}
+{% load custom_filters %}
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/x-icon" href="{% static 'images/medhalogo_favicon.png'%}">
+
+<head>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+    }
+
+    ul li:hover>ul,
+    ul li ul:hover {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+      padding: 1px !important;
+      line-height: 12px !important;
+      font-size: 10px !important;
+
+
+    }
+
+    .dropdown-item {
+      --bs-dropdown-link-hover-bg: #40ABA7 !important;
+    }
+
+    .bolder_navigation_menu {
+      font-weight: bolder !important;
+      color: #800080 !important;
+    }
+  </style>
+  
+
+  <script src="{% static 'jquery/ajax_googleapi_jquery.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'jquery/jquery-ui.css' %}">
+  <script src="{% static 'jquery/jquery-ui.js' %}"></script>
+  
+  <link rel="stylesheet" href="{%static 'css/animate.min.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{%static 'jquery/jquery-3.6.0.js'%}"></script>
+
+  <link rel="stylesheet" href="{%static 'css/bootnavbar.css' %}" />
+  <script src="{%static 'js/bootnavbar.js'%}"></script>
+
+
+  <!-- <link rel="stylesheet" href="{%static 'css/bootstrap-grid.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-grid.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-grid.rtl.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-grid.rtl.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-reboot.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-reboot.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-reboot.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-reboot.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-reboot.rtl.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-reboot.rtl.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.rtl.min.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css'%}">
+  <link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+  <script src="{%static 'jquery/jquery-3.6.0.js'%}"></script>
+
+
+  <link rel="stylesheet" href="{%static 'css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/animate.min.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootnavbar.css' %}" />
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{%static 'js/bootnavbar.js'%}"></script> -->
+
+  
+  
+
+
+  
+
+
+  {%if title%}
+  <title>{{title}}-medha</title>
+  {%else%}
+  <title>medha</title>
+  {%endif%}
+  <!-- <script>
+    $(document).ready(function () {
+
+      var dmos_baseURL = window.location.origin;
+      console.log(dmos_baseURL);
+    });
+  </script> -->
+
+
+</head>
+
+<body class="row p-0 m-0 " style="background-color: #eaf7ed;overflow: hidden;">
+  <!-- style="background-color: #edf7e7;" -->
+  <div class="main_page col-sm-12 col-md-12 col-lg-12 p-0 m-0" style="position: sticky;z-index: 2;">
+    <div class="header row p-0 m-0 " style="background-image: url('/static/images/header_backgruond.jpg');">
+      <!-- style="background-image: url('/static/header_backgruond.jpg');" -->
+      <div class="left_header col-sm-6 col-md-1 col-lg-1 p-0 me-4 ms-0 mb-0">
+        <img src="{% static 'images/medha_logo.png' %}" alt="My image">
+        <!-- <small style="color: #CC0000;">Quality Management >></small> -->
+      </div>
+
+      <div class="center_header col-sm-12 col-md-10 col-lg-10 p-0 m-0">
+        <div class="mos_services row p-0 m-0">
+          <div class="mos_name col-sm-12 col-md-4 col-lg-4 p-0 m-0 mt-0" style="margin-top: -8px !important;">
+            <b style="color:#CC0000;font-family: 'Andy MT';font-size: 25px;margin-left: 10px;" size="+2">Medha Online
+              Services</b>
+          </div>
+          <div class="mos_name col-sm-12 col-md-4 col-lg-4 p-0 m-0">
+            <div class="employeName row p-0 m-0">
+              <span class="text_welcome col-sm-12 col-md-9 col-lg-9 p-0 m-0 text-primary fw-normal">Welcome , {{user_id|empcodeNameByFilter|upper}}</span>
+            </div>
+          </div>
+          <div class="mos_name col-sm-12 col-md-4 col-lg-4 p-0 m-0">
+            <div class="employeName row p-0 m-0">
+              <span class="text_welcome col-sm-12 col-md-8 col-lg-8 p-0 m-0">
+                <a href="{%url 'logout'%}" class="btn btn-outline-danger ">Logout {% csrf_token %} </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- <a href="{%url 'homepage'%}" class="btn btn-outline-success">GoHome</a></span> -->
+                <a href="{%url 'homepage'%}" class="btn mx-0 "><img src="{% static 'images/onebit_01.png' %}"
+                    alt="no image" height="20px" width="20px"></a>
+              </span>
+            </div>
+          </div>
+          <div class="mos_name col-sm-12 col-md-12 col-lg-12 p-0 m-0">
+
+            <!-- navbar section start -->        
+
+
+
+
+            
+        
+          {% include "navigationmenu.html" %}
+
+
+            <!-- navbar section end   1.navigationmenu  2.navbar_test-->
+          </div>
+        </div>
+
+
+      </div>
+
+
+      <!-- <div class="top_header col-sm-12 col-md-2 col-lg-2 p-0 m-0">
+        <p></p>
+      </div> -->
+      <small style="color: #CC0000;" class="col-sm-12 col-md-12 col-lg-12 p-0 m-0 bg-light">Quality Management >>
+        {{title}}</small>
+
+    </div>
+
+  </div>
+
+
+  <div class="middle_content row p-0 m-0">
+    <!-- <div class="col-sm-12 col-md-1 col-lg-1 p-0 m-0">
+
+    </div> -->
+    <div class="col-sm-12 col-md-12 col-lg-12 " style="overflow: auto;min-height: 82vh;height: 83.5vh;">
+
+
+      {%block content%}
+      <h2 style="color: blue;"></h2>
+
+      <span class="text-center p-0 m-0 text-danger fs-5 " style="font-weight: 700;font-style: arial;">{{mess}}</span>
+    
+      <!-- {%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.12/msdpl.com/' %} http://192.168.132.27{%endif%} -->
+
+      {%endblock%}
+
+    </div>
+    <!-- <div class="col-sm-12 col-md-1 col-lg-1 p-0 m-0">
+
+    </div> -->
+
+  </div>
+  </div>
+
+  </div>
+
+
+</body>
+
+
+{% include "footer.html" %}
+
+</html>
+

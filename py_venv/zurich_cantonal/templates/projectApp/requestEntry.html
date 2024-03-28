@@ -1,0 +1,884 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" href="D:/env_site/geeks_site/projectApp/static/css/jquery.datetimepicker.css"> -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" />
+    <title>Document</title>
+    <style>
+        .billentryfields{
+            width: 130px;
+            border-radius: 2px;
+            border: 1px solid #cccccc;
+            /* display: block; */
+            padding: .375rem .75rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            background-clip: padding-box;
+        }
+        #elblncecnt{
+            color:blue;
+            font-size:20px;
+        }
+        legend{
+            font-size: 14px;
+            color: #800080;
+            font-weight: bold;
+        }
+        .specialfont{
+            color: blue;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        td{
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-block" style="overflow-x: auto;height: 600px;">
+        {% if empCode != '' %}
+        <form action="reimbursementbillentry" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if messages %}
+            <div class="alert alert-success" role="alert" style="background-color: #d4edda;color:black;">
+                {% for message in messages %}
+                <span{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <fieldset class="border">
+                <legend  class="float-none w-auto p-2" style="color: #800080;font-size: 16px;">Reimbursement Entry</legend>
+                <table class="table" style="width:90%;">
+                 <tr>
+                     <td>Employee Code: </td>
+                     <td><span class="specialfont">{{empCode}}</span></td>
+                     <td>Employee Name: </td>
+                     <td><span class="specialfont">{{user}}</span></td>
+                     <td>Designation: </td>
+                     <td><span class="specialfont">{{designation}}</span></td>
+                     <td>Department: </td>
+                     <td><span class="specialfont">{{department}}</span></td>
+                     <td><input type="hidden" name="rsc_value" id="rsc_value" value="{{rsc}}">
+                        <input type="hidden" name="emp_cat" id="emp_cat" value="{{emp_cat}}"></td>
+                 </tr>
+                 <tr>
+                    <td>Reimbursement Category: </td>
+                    <td>
+                        <select class="form-control billentryfields" id="category" name="category" required onchange="reimburs_activities()">
+                            <option value="0">--SELECT--</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" value="Save" class="btn btn-danger" data-toggle="tooltip"
+                     data-placement="top" title="click to save all data" style="font-size: small;">Save</button>
+                    </td>
+                    <td>
+                        <table id="salaryadvancehis" style="display: none;font-size: 15px;">
+                            <tr>
+                                <td><b><button type="button" class="btn btn-primary" data-bs-toggle="modal" style="height: 25px;" data-bs-target="#exampleModal">History</button></b></td>
+                                <td>&nbsp;&nbsp;</td>
+                                <!-- <td><b>Count: </b><span id="countsalary"></span></td> -->
+                            </tr>
+                        </table>
+                        <span id="advancehis"></span>
+                    </td>
+                 </tr>
+                </table>
+                
+                <table class="table" id="fuelTable" style="width:60%;display: none;">
+                    <tr>
+                        <td>File Upload</td>
+                        <td><input type="file" name="attachments_vehicle" accept=".pdf" id="attachments_vehicle"></td>
+                    </tr>
+                    <tr>
+                        <th>Vechicle No</th>
+                        <th>Bill No</th>
+                        <th>Bill Date</th>
+                        <th>Amount  <span id="fueladdRow"
+                            style="background: transparent; color: blue;cursor:pointer;" data-toggle="tooltip"
+                            data-placement="top" title="Add a new row in table"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg></span>
+                            <!-- <span id="fueladdRow"
+                            style="background: transparent; color: blue;cursor:pointer" data-toggle="tooltip"
+                            data-placement="top" title="add a new row in table"><i class="fa fa-plus-circle"
+                                aria-hidden="true"></i></span> -->
+                                <input type="hidden" id="subass1" name="subass1" value='1'></th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="billentryfields" id="vechicleNo1" name="vechicleNo"></td>
+                        <td><input type="text" id="fuelbillno1" name="fuelbillno" class="billentryfields"></td>
+                        <td><input type="text" class="billentryfields startdate" id="fuelbilldate1" name="fuelbilldate" onkeydown="return false;" placeholder="DD-MM-YY"></td>
+                        <td><input type="text" class="billentryfields totentry" name="fuelindiamount" id="fuelindiamount1" onkeyup="fueltotalamountcal()" autocomplete="off"></td>
+                    </tr>
+                    <tbody id="fuelnewRow"></tbody>
+                    <tr><td></td><td></td><td><b>Total:</b></td><td><input type="text" name="fueltotalamount" class="billentryfields" id="fueltotalamount" value= "0" readonly></td></tr>
+                </table>
+                <table class="table table-bordered" id="booksTable" style="width:60%;display: none;">
+                    <tr>
+                        <td>File Upload</td>
+                        <td><input type="file" name="attachments_book" accept=".pdf" id="attachments_book"></td>
+                    </tr>
+                    <tr>
+                        <th>Bill No</th>
+                        <th>Bill Date</th>
+                        <th>Amount  <span id="bookaddRow"
+                            style="background: transparent; color: blue;cursor:pointer;" data-toggle="tooltip"
+                            data-placement="top" title="Add a new row in table"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg></span>
+                            <!-- <span id="bookaddRow"
+                            style="background: transparent; color: blue;" data-toggle="tooltip"
+                            data-placement="top" title="add a new row in table"><i class="fa fa-plus-circle"
+                                aria-hidden="true"></i></span> -->
+                                <input type="hidden" style="width: 3em;" id="bookscnt" name="bookscnt" value='1'></th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="billentryfields" id="bookbillno1" name="bookbillno"></td>
+                        <td><input type="text" class="billentryfields startdate" id="bookbilldateentry1" name="bookbilldateentry" onkeydown="return false;" placeholder="DD-MM-YY"></td>
+                        <td><input type="text" class="billentryfields bookamountcal" name="bookbillamount" id="bookbillamount1" onkeyup="booktotalamountcal()" autocomplete="off"></td>
+                    </tr>
+                    <tbody id="booknewRow"></tbody>
+                    <tr><td></td><td><b>Total:</b></td><td><input type="text" class="billentryfields" name="bookbilltotalamount" id="bookbilltotalamount" value= "0" readonly></td></tr>
+                </table>
+                <table class="table table-bordered ltc_table" style="display: none;" id="ltc_table1">
+                    <tr>
+                        <td>File Upload</td>
+                        <td><input type="file" name="attachments_ltc" accept=".pdf" id="attachments_ltc"></td>
+                    </tr>
+                    <tr>
+                        <th>Journey Begin Date</th>
+                        <th>Journey End Date</th>
+                        <th>Claiming Amount</th>
+                        <th>Journey Start Point</th>
+                        <th>Journey End Point</th>
+                        <th>Travel Mode</th>
+                        <th>Class Of Travel</th>
+                        <th>Ticket No <span id="ltcaddRow"
+                            style="background: transparent; color: blue;cursor:pointer;" data-toggle="tooltip"
+                            data-placement="top" title="Add a new row in table"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg></span>
+                              <input type="hidden" style="width: 3em;" id="ltcscnt" name="ltcscnt" value='1'></th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="billentryfields startdate" name="jrny_begin" id="jrny_begin1" onkeydown="return false;" placeholder="DD-MM-YY" onchange="getCert(1)"></td>
+                        <td><input type="text" class="billentryfields startdate" name="jrny_end" id="jrny_end1" onkeydown="return false;" placeholder="DD-MM-YY" onchange="getCert(1)"></td>
+                        <td><input type="text" class="billentryfields" name="claming_amount" id="claming_amount1"></td>
+                        <td><input type="text" class="billentryfields" name="jrny_startpoint" id="jrny_startpoint1"></td>
+                        <td><input type="text" class="billentryfields" name="jrny_endpoint" id="jrny_endpoint1"></td>
+                        <td>
+                            <select class="billentryfields" name="travel_mode" id="travel_mode1" onchange="ltctravelmode(1)">
+                                <option value="">--SELECT--</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="billentryfields" name="classoftravel" id="classoftravel1">
+                                <option value="">--SELECT--</option>
+                            </select></td>
+                        <td><input type="text" class="billentryfields" name="ticket_no" id="ticket_no"></td>
+                    </tr>
+                    <tbody id="ltcnewRow"></tbody>
+                </table>
+                <table class="table table-bordered ltc_table" style="width:60%;display: none;">
+                    <tr>
+                        <td colspan="4"><center>Family Declaration</center></td>
+                    </tr>
+                    <tr>
+                        <th>Slno</th>
+                        <th>Name</th>
+                        <th>Relation</th>
+                        <th>Age <span id="ltcfamilyaddRow"
+                            style="background: transparent; color: blue;cursor:pointer;" data-toggle="tooltip"
+                            data-placement="top" title="Add a new row in table"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg></span>
+                            </th>
+                    </tr>
+                    <tr>
+                        <td><input type="hidden" style="width: 3em;" id="ltcfamilycnt" class="billentryfields" name="ltcfamilycnt" value='1'>1</td>
+                        <td><input type="text" name="familymemname" id="familymemname1" class="billentryfields"></td>
+                        <td>
+                            <select name="relationship" id="relationship1" class="billentryfields">
+                                <option value="">--SELECT--</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="age" id="age1" class="billentryfields">
+                        </td>
+                    </tr>
+                    <tbody id="ltcfamilynewRow"></tbody>
+                </table>
+                <input type="hidden" name="elblnce" id="elblnce">
+                <table id="leavencashment" class="table table-bordered" style="width:60%;display: none;"></table>
+                <table id="salaryadvnce" class="table table-bordered" style="width:60%;display: none;">
+                    <tr>
+                        <td>File Upload</td>
+                        <td><input type="file" name="attachments_sal" accept=".pdf" id="attachments_sal"></td>
+                    </tr>
+                    <th>Amount Salary</th>
+                    <th>No.of Installments</th>
+                    <th>Reasons</th>
+                    <tr>
+                        <td>
+                            <select name="noofmonths" id="noofmonths" class="billentryfields" onchange="salaryamount()">
+                                <option value="">--SELECT--</option>
+                            
+                            </select>
+                            <input type="text" id="entyamount" name="entyamount" class="billentryfields" style="display: block;">
+                            <input type="text" id="presalary" name="presalary" class="billentryfields" style="display: none;">
+                        </td>
+                        <td>
+                            <input type="text" name="noofinstall" id="noofinstall" class="billentryfields" value="10" onchange="instalment_cal();">
+                        </td>
+                        <td>
+                            <select name="reasons" id="reasons" class="billentryfields">
+                                <option value="">--SELECT--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><b>Note : Salary Advance is maximum of two months salary, if more than two months please do process manually with appropriate approvals</b></td>
+                    </tr>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body" id="aa"></div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </table>
+            </fieldset>
+        </form>
+    {% endif %}
+    {% if empCode == '' %}
+    <center>
+        <font color="#FF0000">You are not authorised to use this module</font>
+    </center>
+    {% endif %}
+    </div> 
+</body>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="{%  static  'js/jquery.datetimepicker.full.js'  %} "></script> -->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.js" data-modules="effect effect-bounce effect-blind effect-bounce effect-clip effect-drop effect-fold effect-slide"></script>
+<script>
+    $(document).ready(function(){
+        $( ".startdate" ).datepicker({
+            dateFormat: 'dd-mm-yy',//check change
+            changeMonth: true,
+            changeYear: true
+        });
+        $('#fuelindiamount1,#fueltotalamount,#bookbillamount1,#bookbilltotalamount,#claming_amount1,#noofinstall,#entyamount').on("cut copy paste",function(e) {
+            e.preventDefault();
+        });
+        $('#fuelindiamount1,#bookbillamount1,#claming_amount1,#noofinstall,#entyamount').keypress(function (e) {    
+            var charCode = (e.which) ? e.which : event.keyCode    
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+            return false;                        
+        });
+        $.ajax(
+        {
+            type:"GET",
+            dataType : 'json',
+            url: "/reimentry/reim_catlog",
+            success: function (data) {
+                
+                for(var cat=0;cat<(data.length);cat++){
+                    // console.log(data[cat][0])
+                    $("#category").append('\n\
+                    <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                }
+               
+            }
+        })
+        // $('#empcode').blur(function(){
+        //     var catid = $("#empcode").val();
+        //     $.ajax(
+        //     {
+        //         type:"GET",
+        //         dataType : 'json',
+        //         url: "/reimentry/getempName",
+        //         data:{post_id:catid},
+        //         success: function (data) {
+        //             // console.log(data[2])
+        //             $("#empname").val(data[0]);
+        //             $("#department").val(data[1]);
+        //             $("#designation").val(data[2]);
+        //             reimburs_activities();
+        //         }
+        //     })
+        // });
+        $("#fueladdRow").click(function () {
+            var html = '';
+            var subass=$("#subass1").val();
+            var addsub=parseInt(subass)+1;
+            html += '<tr id="fuelinputFormRow"><td><input type="text" class="billentryfields" id="vechicleNo'+addsub+'" name="vechicleNo" required></td>';
+            html += '<td><input type="text" class="billentryfields" id="fuelbillno'+addsub+'" name="fuelbillno"></td>';
+            html += '<td><input type="text" class="billentryfields startdate" name="fuelbilldate" id="fuelbilldate'+addsub+'" onkeydown="return false;" placeholder="DD-MM-YY" required></td>';
+            html += '<td><input type="text" class="billentryfields totentry" name="fuelindiamount" id="fuelindiamount'+addsub+'" onkeyup="fueltotalamountcal()" autocomplete="off" required>\n\
+                    <svg xmlns="http://www.w3.org/2000/svg" id="fuelremoveRow" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">\n\
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>\n\
+                    </svg></td>';
+            html += '</tr>';
+            $('#fuelnewRow').append(html);
+            $("#subass1").val(addsub);
+            $( ".startdate" ).datepicker({
+                dateFormat: 'dd-mm-yy',//check change
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#fuelindiamount'+addsub).on("cut copy paste",function(e) {
+                e.preventDefault();
+            });
+            $('#fuelindiamount'+addsub).keypress(function (e) {    
+                var charCode = (e.which) ? e.which : event.keyCode    
+                if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+                return false;                        
+            });
+        });
+        $("#bookaddRow").click(function () {
+            var html = '';
+            var bookscnt=$("#bookscnt").val();
+            var bookaddsub=parseInt(bookscnt)+1;
+            html += '<tr id="bookinputFormRow">';
+            html += '<td><input type="text" class="billentryfields" id="bookbillno'+bookaddsub+'" name="bookbillno" required></td>';
+            html += '<td><input type="text" class="billentryfields startdate" id="bookbilldateentry'+bookaddsub+'" name="bookbilldateentry" onkeydown="return false;" placeholder="DD-MM-YY" required></td>';
+            html += '<div><td><input type="text" class="billentryfields bookamountcal" id="bookbillamount'+bookaddsub+'" name="bookbillamount" onkeyup="booktotalamountcal()" autocomplete="off" required>\n\
+                    <svg xmlns="http://www.w3.org/2000/svg" id="bookremoveRow" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">\n\
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>\n\
+                    </svg></td></div>';
+            html += '</tr>';
+            $('#booknewRow').append(html);
+            $("#bookscnt").val(bookaddsub);
+            $( ".startdate" ).datepicker({
+                dateFormat: 'dd-mm-yy',//check change
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#bookbillamount'+bookaddsub).on("cut copy paste",function(e) {
+                e.preventDefault();
+            });
+            $('#bookbillamount'+bookaddsub).keypress(function (e) {    
+                var charCode = (e.which) ? e.which : event.keyCode    
+                if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+                return false;                        
+            });
+        });
+        $("#ltcaddRow").click(function () {
+            var html = '';
+            var ltccnt=$("#ltcscnt").val();
+            var ltcaddsub=parseInt(ltccnt)+1;
+            html += '<tr id="ltcinputFormRow">';
+            html += '<td><input type="text" class="billentryfields startdate" name="jrny_begin" id="jrny_begin'+ltcaddsub+'" onkeydown="return false;" placeholder="DD-MM-YY" required></td>';
+            html += '<td><input type="text" class="billentryfields startdate" name="jrny_end" id="jrny_end'+ltcaddsub+'" onkeydown="return false;" placeholder="DD-MM-YY" required></td>';
+            html += '<td><input type="text" class="billentryfields" name="claming_amount" id="claming_amount'+ltcaddsub+'" required></td>>';
+            html += '<td><input type="text" class="billentryfields" name="jrny_startpoint" id="jrny_startpoint'+ltcaddsub+'" required></td>';
+            html += '<td><input type="text" class="billentryfields" name="jrny_endpoint" id="jrny_endpoint'+ltcaddsub+'" required></td>';
+            html += '<td><select class="billentryfields" name="travel_mode" id="travel_mode'+ltcaddsub+'" onchange="ltctravelmode('+ltcaddsub+')" required>\n\
+                            <option value="">--SELECT--</option>\n\
+                        </select>\n\
+                    </td>';
+            html += '<td><select class="billentryfields" name="classoftravel" id="classoftravel'+ltcaddsub+'" required>\n\
+                            <option value="">--SELECT--</option>\n\
+                        </select></td>';
+            html += '<div><td><input type="text" class="billentryfields" name="ticket_no" id="ticket_no'+ltcaddsub+'" required>\n\
+                <svg xmlns="http://www.w3.org/2000/svg" id="ltcremoveRow" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">\n\
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>\n\
+                    </svg></td></div>';
+            html += '</tr>';
+            $('#ltcnewRow').append(html);
+            $("#ltcscnt").val(ltcaddsub);
+            $( ".startdate" ).datepicker({
+                dateFormat: 'dd-mm-yy',//check change
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#claming_amount'+ltcaddsub).on("cut copy paste",function(e) {
+                e.preventDefault();
+            });
+            $('#claming_amount'+ltcaddsub).keypress(function (e) {    
+                var charCode = (e.which) ? e.which : event.keyCode    
+                if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+                return false;                        
+            });
+            $.ajax(
+            {
+                type:"GET",
+                dataType : 'json',
+                url: "/reimentry/catlog_ltc",
+                success: function (data) {
+                    
+                    for(var cat=0;cat<(data.length);cat++){
+                        // console.log(data[cat][0])
+                        $("#travel_mode"+ltcaddsub).append('\n\
+                        <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                    }
+                
+                }
+            });
+        });
+        $("#ltcfamilyaddRow").click(function () {
+            var html = '';
+            var ltcfamily=$("#ltcfamilycnt").val();
+            var ltcfamilyaddsub=parseInt(ltcfamily)+1;
+            html += '<tr id="ltcfamilyinputFormRow">';
+            html += '<td>'+ltcfamilyaddsub+'</td>';
+            html += '<td><input type="text" name="familymemname" id="familymemname'+ltcfamilyaddsub+'" class="billentryfields" ></td>';
+            html += '<td><select name="relationship" id="relationship'+ltcfamilyaddsub+'" class="billentryfields">\n\
+                            <option value="">--SELECT--</option>\n\
+                        </select></td>';
+            html += '<div><td><input type="text" name="age" id="age'+ltcfamilyaddsub+'" class="billentryfields">\n\
+                <svg xmlns="http://www.w3.org/2000/svg" id="ltcfamilyremoveRow" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">\n\
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>\n\
+                    </svg></td></div>';
+            html += '</tr>';
+            $('#ltcfamilynewRow').append(html);
+            $("#ltcfamilycnt").val(ltcfamilyaddsub);
+            $.ajax(
+            {
+                type:"GET",
+                dataType : 'json',
+                url: "/reimentry/catlog_relationship",
+                success: function (data) {
+                    
+                    for(var cat=0;cat<(data.length);cat++){
+                        // console.log(data[cat][0])
+                        $("#relationship"+ltcfamilyaddsub).append('\n\
+                        <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                    }
+                
+                }
+            });
+        });
+        // Fuel remove row
+        $(document).on('click', '#fuelremoveRow', function () {
+            $(this).closest('#fuelinputFormRow').remove();
+            var fueldec=$("#subass1").val()-1;
+            $("#subass1").val(fueldec);
+            fueltotalamountcal();
+        });
+        // Book remove row
+        $(document).on('click', '#bookremoveRow', function () {
+            $(this).closest('#bookinputFormRow').remove();
+            var bookdec=$("#bookscnt").val()-1;
+            $("#bookscnt").val(bookdec);
+            booktotalamountcal();
+        });
+        $(document).on('click', '#ltcremoveRow', function () {
+            $(this).closest('#ltcinputFormRow').remove();
+            var ltcdec=$("#ltcscnt").val()-1;
+            $("#ltcscnt").val(ltcdec);
+        });
+        $(document).on('click', '#ltcfamilyremoveRow', function () {
+            $(this).closest('#ltcfamilyinputFormRow').remove();
+            var ltcfamilydec=$("#ltcfamilycnt").val()-1;
+            $("#ltcfamilycnt").val(ltcfamilydec);
+        });
+    });
+    function fueltotalamountcal(){
+        var sum=0;
+        $(".totentry").each(function(){
+            sum+= Number($(this).val());
+            $("#fueltotalamount").val(sum);
+        });
+    }
+    function booktotalamountcal(){
+        var sum=0;
+        $(".bookamountcal").each(function(){
+            sum+= Number($(this).val());
+            $("#bookbilltotalamount").val(sum);
+        });
+    }
+    function ltctravelmode(trvelId){
+            var classoftravel = $("#travel_mode"+trvelId).val();
+            $.ajax(
+            {
+                type:"GET",
+                dataType : 'json',
+                url: "/reimentry/catlog_classofltc",
+                data:{classoftravelval:classoftravel},
+                success: function (data) {
+                    console.log(data)
+                    $('#classoftravel'+trvelId).empty();
+                    $('#classoftravel'+trvelId).append('<option value="">--SELECT--</option>');
+                    for(var cat=0;cat<(data.length);cat++){
+                        // console.log(data[cat][0])
+                        $("#classoftravel"+trvelId).append('<option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                    }
+                }
+            })
+        }
+        function reimburs_activities(){
+            var cat = $("#category").val();
+            var rsc_value = $("#rsc_value").val();
+            var emp_cat = $("#emp_cat").val();
+            if(cat==1){
+                $("#leavencashment,#booksTable,.ltc_table,#salaryadvnce,#entyamount,#salaryadvancehis,#advancehis").hide();
+                $("#booknewRow,#ltcnewRow,#ltcfamilynewRow").empty();
+                if(rsc_value==1){
+                    // $("#leavencashment,#booksTable,.ltc_table,#salaryadvnce,#entyamount").hide();
+                    $("#vechicleNo1,#fuelbillno1,#fuelbilldate1,#fuelindiamount1,#attachments_vehicle").attr("required",true);
+                    $("#bookbillno1,#bookbilldateentry1,#bookbillamount1,#attachments_book,#attachments_sal").attr("required",false);
+                    $("#jrny_begin1,#jrny_end1,#claming_amount1,#jrny_startpoint1,#jrny_endpoint1,#travel_mode1,#classoftravel1,#ticket_no,#attachments_ltc").attr("required",false);
+                    $("#noofmonths,#noofinstall,#reasons").attr("required",false);
+                    $("#leavetype,#noofench").attr("required",false);
+                    $("#fuelTable").show();
+                }else{
+                    $("#fuelTable").empty().append("<h4 style='color:red;margin-left:30px;'>Your not eligible to claim.</h4>").show();
+                }
+            }else if(cat==2){
+                $("#ltcfamilynewRow,#fuelnewRow,#ltcnewRow").empty();
+                $("#leavencashment,#fuelTable,.ltc_table,#salaryadvnce,#entyamount,#salaryadvancehis,#advancehis").hide();
+                if(rsc_value==1){
+                    $("#vechicleNo1,#fuelbillno1,#fuelbilldate1,#fuelindiamount1,#attachments_vehicle,#attachments_sal").attr("required",false);
+                    $("#bookbillno1,#bookbilldateentry1,#bookbillamount1,#attachments_book").attr("required",true);
+                    $("#jrny_begin1,#jrny_end1,#claming_amount1,#jrny_startpoint1,#jrny_endpoint1,#travel_mode1,#classoftravel1,#ticket_no,#attachments_ltc").attr("required",false);
+                    $("#noofmonths,#noofinstall,#reasons").attr("required",false);
+                    $("#leavetype,#noofench").attr("required",false);
+                    var param1 = 2;
+                    var param2 = 'example';
+                    $.ajax(
+                    {
+                        type:"GET",
+                        dataType : 'json',
+                        url: '/reimentry/your_ajax_endpoint/' + param1 + '/' + param2 + '/',
+                        success: function (data) {
+                            // alert(data)
+                            if(data==null){
+                                var currentDate = new Date(),currentMonth = currentDate.getMonth()+1;
+                                if(currentMonth==11 || currentMonth==12 || currentMonth==1 || currentMonth==2 || currentMonth==3){
+                                    $("#booksTable").show();
+                                }else{
+                                    $("#booksTable").empty();
+                                    $("#booksTable").append("<h4 style='color:red;margin-left:30px;'>Period is closed.</h4>").show();
+                                }
+                            }else{
+                                $("#booksTable").empty();
+                                $("#booksTable").append("<h4 style='color:red;margin-left:30px;'>Already data received.</h4>").show();
+                            }
+                        }
+                    });
+                    
+                }
+                else{
+                    $("#booksTable").empty().append("<h4 style='color:red;margin-left:30px;'>Your not eligible to claim.</h4>").show();
+                }
+                
+                
+            }else if(cat==3){
+                $("#vechicleNo1,#fuelbillno1,#fuelbilldate1,#fuelindiamount1,#attachments_vehicle,#attachments_sal").attr("required",false);
+                $("#bookbillno1,#bookbilldateentry1,#bookbillamount1,#attachments_book").attr("required",false);
+                $("#jrny_begin1,#jrny_end1,#claming_amount1,#jrny_startpoint1,#jrny_endpoint1,#travel_mode1,#classoftravel1,#ticket_no,#attachments_ltc").attr("required",true);
+                $("#noofmonths,#noofinstall,#reasons").attr("required",false);
+                $("#leavetype,#noofench").attr("required",false);
+                $("#fuelnewRow,#booknewRow").empty();
+                $("#leavencashment,#fuelTable,#booksTable,#salaryadvnce,#entyamount,#salaryadvancehis,#advancehis").hide();
+                if(emp_cat=="Confirmed"){
+                    var param1 = 3;
+                    var param2 = 'example';
+                    $.ajax(
+                    {
+                        type:"GET",
+                        dataType : 'json',
+                        url: '/reimentry/your_ajax_endpoint/' + param1 + '/' + param2 + '/',
+                        success: function (data) {
+                            if(data==null){
+                                $(".ltc_table").show();
+                                $.ajax(
+                                {
+                                    type:"GET",
+                                    dataType : 'json',
+                                    url: "/reimentry/catlog_ltc",
+                                    success: function (data) {
+                                        $('#travel_mode1').empty();
+                                        $('#travel_mode1').append('<option value="">--SELECT--</option>');
+                                        for(var cat=0;cat<(data.length);cat++){
+                                            // console.log(data[cat][0])
+                                            $("#travel_mode1").append('\n\
+                                            <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                                        }
+                                    
+                                    }
+                                });
+                                $.ajax(
+                                {
+                                    type:"GET",
+                                    dataType : 'json',
+                                    url: "/reimentry/catlog_relationship",
+                                    success: function (data) {
+                                        $('#relationship1').empty();
+                                        $('#relationship1').append('<option value="">--SELECT--</option>');
+                                        for(var cat=0;cat<(data.length);cat++){
+                                            // console.log(data[cat][0])
+                                            $("#relationship1").append('\n\
+                                            <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                                        }
+                                    
+                                    }
+                                });
+                            }
+                            else{
+                                $("#ltc_table1").empty().append("<h4 style='color:red;margin-left:30px;'>Already data received.</h4>").show();
+                            }
+                        }
+                    });
+                }else{
+                    $("#ltc_table1").empty().append("<h4 style='color:red;margin-left:30px;'>Your not eligible to claim.</h4>").show();
+                }
+            }
+            else if(cat==4){
+                $("#fuelnewRow,#booknewRow").empty();
+                $("#leavencashment,#fuelTable,#booksTable,.ltc_table,#entyamount").hide();
+                if(emp_cat=="Confirmed"){
+                    $("#vechicleNo1,#fuelbillno1,#fuelbilldate1,#fuelindiamount1,#attachments_vehicle").attr("required",false);
+                    $("#bookbillno1,#bookbilldateentry1,#bookbillamount1,#attachments_book").attr("required",false);
+                    $("#jrny_begin1,#jrny_end1,#claming_amount1,#jrny_startpoint1,#jrny_endpoint1,#travel_mode1,#classoftravel1,#ticket_no,#attachments_ltc").attr("required",false);
+                    $("#noofmonths,#noofinstall,#reasons,#attachments_sal").attr("required",true);
+                    $("#leavetype,#noofench").attr("required",false);
+                    // $("#salaryadvnce").show();
+                    $("#salaryadvancehis").show();
+                    historysalary();
+                   
+                }else{
+                    $("#salaryadvnce").empty().append("<h4 style='color:red;margin-left:30px;'>Your not eligible to claim.</h4>").show();
+                }
+            }
+            else if(cat==5){
+                $("#vechicleNo1,#fuelbillno1,#fuelbilldate1,#fuelindiamount1,#attachments_vehicle,#attachments_sal").attr("required",false);
+                $("#bookbillno1,#bookbilldateentry1,#bookbillamount1,#attachments_book").attr("required",false);
+                $("#jrny_begin1,#jrny_end1,#claming_amount1,#jrny_startpoint1,#jrny_endpoint1,#travel_mode1,#classoftravel1,#ticket_no,#attachments_ltc").attr("required",false);
+                $("#noofmonths,#noofinstall,#reasons").attr("required",false);
+                $("#fuelnewRow,#booknewRow").empty();
+                $("#fuelTable,#booksTable,#salaryadvnce,.ltc_table,#entyamount,#salaryadvancehis,#advancehis").hide();
+                // $("#leavencashment").show();
+                // var empcode1=$("#empcode").val();
+                $.ajax(
+                {
+                    type:"GET",
+                    dataType : 'json',
+                    url: "/reimentry/elavaliablity",
+                    success: function (data) {
+                        $("#elblncecnt").empty();
+                    
+                        // $("#elblncecnt").hide();
+                        $("#elblnce").val(data.masterdataa);
+                        
+                        // alert(data.elleavetype)
+                        if(data.masterdataa<=30){
+                            $("#leavencashment").empty();
+                            $("#leavencashment").append("<h4 style='color:red;margin-left:30px;'>Your not eligible to claim.</h4>");
+                            $("#leavencashment").show();
+                        }else if(data.masterdataa>=30 && emp_cat=="Confirmed"){
+                            $("#leavencashment").empty();
+                            $("#leavencashment").show();
+                            $("#leavencashment").append('<tr>\n\
+                                <td>Leave Type:\n\
+                                </td>\n\
+                                <td>No of Leave for Encasement: \n\
+                                <td>Balance: </td>\n\
+                            </tr>\n\
+                            <tr>\n\
+                                <td><select name="leavetype" id="leavetype" class="billentryfields" onchange="noofels()">\n\
+                                        <option value="">--SELECT--</option>\n\
+                                    </select><span id="elblncecnt"></span></td>\n\
+                                    <td><input type="text" name="noofench" id="noofench" class="billentryfields" onblur="calculateel()"></td></td>\n\
+                                    <td><input type="text" name="blnce" id="blnce" class="billentryfields" readonly required></td>\n\
+                            </tr>');
+                            for(var lt=0;lt<((data.elleavetype).length);lt++){
+                                $("#leavetype").append('\n\
+                                <option value="'+data.elleavetype[lt][0]+'">'+data.elleavetype[lt][1]+'</option>');
+                            }
+                            $('#noofench').on("cut copy paste",function(e) {
+                                e.preventDefault();
+                            });
+                            $('#noofench').keypress(function (e) {    
+                                var charCode = (e.which) ? e.which : event.keyCode    
+                                if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+                                return false;                        
+                            });
+                            $("#elblncecnt").append(data.masterdataa);
+                            $("#elblncecnt").hide();
+                            $("#leavetype,#noofench,#blnce").attr("required",true);
+                        }
+                    }
+                });
+            }
+            else{
+                $("#booksTable,#fuelTable,.ltc_table,#salaryadvancehis,#advancehis").hide();
+                $("#ltcnewRow,#booknewRow,#fuelnewRow,#ltcfamilynewRow").empty();
+            }
+        }
+        function calculateel(){
+            var noelenter=$("#noofench").val();
+            var elcountbln=$("#elblnce").val();
+            var subcnt=parseFloat(elcountbln)-parseFloat(noelenter);
+            $.ajax(
+            {
+                type:"GET",
+                dataType : 'json',
+                url: "/reimentry/elvalidation",
+                success: function (data) {
+                    // alert(data[1])
+                    if(noelenter<data[0]){
+                        alert("Please enter above 10 ELs.");
+                        $("#noofench").val("");
+                    }else if(noelenter>=data[0]){
+                        $("#blnce").val(subcnt);
+                        var blnce=$("#blnce").val();
+                        if(blnce<data[1]){
+                            alert("Please maintain 30 ELs.");
+                            $("#noofench").val("");
+                            $("#blnce").val("");
+                        }else if(blnce>=data[1]){
+                            $("#blnce").val(subcnt);
+                        }
+                    }
+                }
+            });
+
+        }
+        function salaryamount(){
+            var amntEntry=$("#noofmonths").val();
+            var presalary=$("#presalary").val();
+            if(amntEntry=='42'){
+                $("#entyamount").show();
+                $("#entyamount").val("20000");
+            }else{
+                $("#entyamount").val(presalary);
+                $("#entyamount").hide();
+            }
+            instalment_cal();
+        }
+        function instalment_cal(){
+            var amntEntry=$("#noofmonths").val();
+            var noofinstall=$("#noofinstall").val();
+            // alert("noofinstall")
+            if(amntEntry=="40" && noofinstall>10){
+                alert("Up to 10 installment will accept");
+                $("#noofinstall").val(10);
+            }
+            if(amntEntry=="41" && noofinstall>20){
+                alert("Up to 20 installment will accept");
+                $("#noofinstall").val(20);
+            }
+        }
+        function noofels(){
+            var leavetype=$("#leavetype").val();
+            if(leavetype=='23'){
+                $("#elblncecnt").show();
+            }else{
+                $("#elblncecnt").hide();
+            }
+        }
+        function getCert(val){
+            var today = $("#jrny_end"+val).val();
+            var dd = today.slice(0, 2);
+            var mm = today.slice(3,5);
+            var yyyy = today.slice(6,10);
+            var selected= $("#jrny_begin"+val).val();
+            var res1 = selected.slice(0, 2);
+            var res2 = selected.slice(3, 5);
+            var res3 = selected.slice(6, 10);
+
+            if(res3<yyyy){
+            }
+            else
+            if(res3==yyyy){
+            if(res2<mm){
+
+            }
+            if(res2>mm){
+                alert("Journey Begin Date should be less than Journey End Date");
+                $('#jrny_begin'+val).val('');
+            }
+            if(res2==mm){
+            if(res1<dd||res1==dd){
+
+            }
+
+            else{
+                alert("Journey Begin Date should be less than Journey End Date");
+                $('#jrny_end'+val).val('');
+            }
+            }
+            }
+        }
+        function historysalary(){
+            $.ajax(
+            {
+                type:"GET",
+                dataType : 'json',
+                url: "/reimentry/send_data_to_abap",
+                success: function (data) {
+                    var myArray = data.split('$');
+                    console.log(myArray[3])
+                    if(myArray[1]=="0" && myArray[4]=="0"){
+                        $.ajax(
+                        {
+                            type:"GET",
+                            dataType : 'json',
+                            url: "/reimentry/reasons_salary",
+                            success: function (data) {
+                                $('#reasons').empty();
+                                $('#reasons').append('<option value="">--SELECT--</option>');
+                                for(var cat=0;cat<(data.length);cat++){
+                                    // console.log(data[cat][0])
+                                    $("#reasons").append('\n\
+                                    <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                                }
+                            
+                            }
+                        });
+                        $.ajax(
+                        {
+                            type:"GET",
+                            dataType : 'json',
+                            url: "/reimentry/no_of_months",
+                            success: function (data) {
+                                $('#noofmonths').empty();
+                                $('#noofmonths').append('<option value="">--SELECT--</option>');
+                                for(var cat=0;cat<(data.length);cat++){
+                                    // console.log(data[cat][0])
+                                    $("#noofmonths").append('\n\
+                                    <option value="'+data[cat][0]+'">'+data[cat][1]+'</option>');
+                                }
+                            
+                            }
+                        });
+                        $("#salaryadvnce").show();
+                    }else if(myArray[4]=="1"){
+                        $("#salaryadvnce").empty().append("<h4 style='color:red;margin-left:30px;'>Your request is pending for approval.</h4>").show();
+                    }
+                    else{
+                        $("#salaryadvnce").empty().append("<h4 style='color:red;margin-left:30px;'>The current advance is active, hence not eligible.</h4>").show();
+                    }
+                    $("#entyamount,#presalary").empty().val(myArray[3]);
+                    // $("#countsalary").empty().text(myArray[2]);
+                    $('.modal-body').html('').append(myArray[0]);
+                    // $('#exampleModal').empty().append(myArray[0]);
+                    
+                }
+            });
+        }
+        // function hidehis(){
+        //     $('#advancehis').empty().append(data).fadeOut();
+        // }
+         
+    </script>
+</html>
+{% endblock content %}

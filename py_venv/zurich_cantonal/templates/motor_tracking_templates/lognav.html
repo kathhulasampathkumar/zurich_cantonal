@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <style>
+    .cnav {
+      height: 8vh;
+    }
+
+    .dropdown:hover .mn {
+      display: block;
+    }
+
+    .mn {
+      margin-top: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light cnav" style="background:url('/static/images/hbg.JPG') " ;>
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'images/logo.png' %}" width="120" height="60" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active " style="text-align:centre;">
+          <a class="nav-link" href="#">
+            <h5 style="color: red;">Medha Online Services</h5> <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown" style=" visibility: hidden;">
+          <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Quality management
+          </a>
+          <div class="dropdown-menu mn" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="http://192.168.132.27/msdpl.com/index.php/reworkreport">Rework Reports</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_Policy.pdf">Kaizen</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/ISO_CERTIFICATE.pdf">Qcc/Riw</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">Material
+              Master</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">PRS</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">Testing
+              Pdfs</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">MPLM
+              DOCUMENTS</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">MPLM CFT</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown"style=" visibility: hidden;">
+          <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Adminstration
+          </a>
+          <div class="dropdown-menu mn" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Unnati(Appraisal System)</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_Policy.pdf">IMS Policy</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/ISO_CERTIFICATE.pdf">IRIS
+              certificate</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">IMS
+              certificate</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown"style=" visibility: hidden;">
+          <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Reports
+          </a>
+          <div class="dropdown-menu mn" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Unnati(Appraisal System)</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_Policy.pdf">IMS Policy</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/ISO_CERTIFICATE.pdf">IRIS
+              certificate</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">IMS
+              certificate</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown"style=" visibility: hidden;">
+          <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Samayam
+          </a>
+          <div class="dropdown-menu mn" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Unnati(Appraisal System)</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_Policy.pdf">IMS Policy</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/ISO_CERTIFICATE.pdf">IRIS
+              certificate</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">IMS
+              certificate</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown"style=" visibility: hidden;">
+          <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Dept Modules
+          </a>
+          <div class="dropdown-menu mn" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Unnati(Appraisal System)</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_Policy.pdf">IMS Policy</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/ISO_CERTIFICATE.pdf">IRIS
+              certificate</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">IMS
+              certificate</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown"style=" visibility: hidden;">
+          <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Old Modules
+          </a>
+          <div class="dropdown-menu mn" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Unnati(Appraisal System)</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_Policy.pdf">IMS Policy</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/ISO_CERTIFICATE.pdf">IRIS
+              certificate</a>
+            <a class="dropdown-item" href="http://192.168.132.12/rewamp/public/images/IMS_CERTIFICATES.jpg">IMS
+              certificate</a>
+          </div>
+        </li>
+
+      </ul>
+      
+        <h6 style="margin-right: 8px ;">{{nm}}</h6>
+        <a href="http://192.168.132.12/rewamp/"><button class="btn btn-danger btn-sm"
+            >LOGOUT</button></a>
+      
+    </div>
+  </nav>
+  <script>
+
+
+    $(document).ready(function () {
+      $(".dropdown").hover(function () {
+        var dropdownMenu = $(this).children(".dropdown-menu mn");
+        if (dropdownMenu.is(":visible")) {
+          dropdownMenu.parent().toggleClass("open");
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
+{%endblock%}

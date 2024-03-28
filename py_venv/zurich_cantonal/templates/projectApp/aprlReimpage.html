@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load custom_filters %}
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" />
+      <title>Document</title>
+      <style>
+        .table td {
+          padding: 0.155rem 1.175rem !important;
+        }
+        .billentryfields {
+          width: 130px;
+          border-radius: 2px;
+          border: 1px solid #cccccc;
+          /* display: block; */
+          padding: 0.375rem 0.75rem;
+          line-height: 1.5;
+          color: #495057;
+          background-color: #fff;
+          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+          background-clip: padding-box;
+        }
+        legend {
+          font-size: 14px;
+          color: #800080;
+          font-weight: bold;
+        }
+        /* table, tr,td, th {
+                border: 1px solid;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            } */
+      </style>
+    </head>
+    <body>
+      <fieldset class="border">
+        <legend class="float-none w-auto p-2">Approval Pending Reports For Reimbursement</legend>
+        <div class="card-block" style="overflow-x: auto;height: 600px;">
+          <form action="approvereim" method="post" id="form1">
+            {% csrf_token %}
+            <button><a href="http://192.168.132.12/rewamp/index.php/kaizen/generateExcelBtn/" id="generateExcelBtn" style="float:right;">Today Approval list</a></button>
+            <!-- <input type="button" value="Today Approval list" class="btn btn-primary" id="generateExcelBtn" style="float:right;" /> -->
+            <div class="container">
+              <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Ack No</th>
+                    <th>Category</th>
+                    <th>Total Amount/Leave Encasement</th>
+                    <th>No.of Months</th>
+                    <th>No.of Installments</th>
+                    <th>Reasons</th>
+                    <th>Attachment</th>
+                    <th>Raised By</th>
+                    <th>Raised Date</th>
+                    <th>
+                      <input type="submit" value="Submit" class="btn btn-success" />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for stud in students %}
+                    <tr>
+                      <td>
+                        {{ stud.0 }}
+                        {% if stud.2 == 1 or stud.2 == 2 %}
+                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="border-radius: 50%;height: 25px;" data-bs-target="#exampleModal" onclick="getsubreports({{ stud.0 }})">!</button>
+                        {% endif %}
+                        {% if stud.2 == 3 %}
+                          <!-- <table>
+                            <tr>
+                              <td> -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="border-radius: 50%;height: 25px;" data-bs-target="#exampleModal" onclick="getsubreports({{ stud.0 }})">!</button>
+                              <!-- </td>
+                              <td> -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" style="border-radius: 50%;height: 25px;" data-bs-target="#exampleModal_ltc" onclick="getsubreports({{ stud.0 }})">!</button>
+                              <!-- </td>
+                            </tr>
+                          </table> -->
+                        {% endif %}
+                        <input type="hidden" value="{{ stud.0 }}" id="ack" name="ack" />
+                        <input type="hidden" value="{{ stud.2 }}" id="catname" name="catname" />
+                        <input type="hidden" value="{{ stud.3 }}" id="totalamountclaim" name="totalamountclaim" />
+                      </td>
+                      {% if stud.2 == 1 %}
+                        <td>VEHICLE REIMBURSEMENT</td>
+                        {% elif stud.2 == 2 %}
+                        <td>BOOKS AND PERIODICALS REIMBURSEMENT</td>
+                        {% elif stud.2 == 3 %}
+                        <td>LTC</td>
+                        {% elif stud.2 == 4 %}
+                        <td>SALARY ADVANCE</td>
+                        {% elif stud.2 == 5 %}
+                        <td>LEAVE ENCASEMENT</td>
+                      {% endif %}
+                      <td>{{ stud.3 }}</td>
+                      {% if stud.10 == 40 %}
+                        <td>1MONTH</td>
+                        {% elif stud.10 == 41 %}
+                        <td>2MONTHS</td>
+                        {% elif stud.10 == 42 %}
+                        <td>AMOUNT</td>
+                        {% elif stud.10 == 0 %}
+                        <td></td>
+                      {% endif %}
+                      <td>{{ stud.9 }}</td>
+                      <td>{{ stud.11 |reimcategory}}</td>
+                      <td><a href="http://192.168.132.12/rewamp/index.php/kaizen/downloadfile_reim/{{stud.0}}/" class="downloadLink">Download</a></td>
+                      <td>{{ stud.1 |empcodeNameByFilter}}</td>
+                      <td>{{ stud.4|date:'d-m-Y' }}</td>
+                      <td>
+                        <select name="aprl_sts" id="aprl_sts{{stud.0}}" class="billentryfields" onchange="getremarks({{stud.0}})">
+                          <option value="">--select--</option>
+                          <option value="1">Approve</option>
+                          <option value="2">Reject</option>
+                        </select><br>
+                        <textarea name="remarks" id="remarks{{stud.0}}" style="display: none;"></textarea></textarea>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body" id="aa"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="exampleModal_ltc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-body_ltc"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </fieldset>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+
+    <script>
+      $(document).ready(function () {
+        
+      });
+      function getremarks(id){
+        var aprl_sts=$("#aprl_sts"+id).val();
+        // alert(aprl_sts)
+        if(aprl_sts==2){
+          $("#remarks"+id).show();
+          $("#remarks"+id).attr("required",true);
+        }else{
+          $("#remarks"+id).empty().hide();
+          $("#remarks"+id).attr("required",false);
+        }
+      }
+      function getsubreports(catid) {
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          async: false,
+          data: { post_id: catid },
+          url: '/reimentry/gwtsubreportsdata',
+          success: function (data) {
+            if (data.categorydata == 1) {
+              $('.modal-body').html('')
+              $('.modal-body').append(`<table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                  <th scope="col">Ack No</th>
+                                  <th scope="col">Vechicle No</th>
+                                  <th scope="col">Bill No</th>
+                                  <th scope="col">Bill Date</th>
+                                  <th scope="col">Bill Amount</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="subdata">
+                          `)
+              for (var cat = 0; cat < data.masterdataa.length; cat++) {
+                // console.log(data[cat][0])
+                $('#subdata').append('\n\
+                              <tr><td>' + data.masterdataa[cat][1] + '</td><td>' + data.masterdataa[cat][2] + '</td><td>' + data.masterdataa[cat][3] + '</td>\n\
+                                  <td>' + data.masterdataa[cat][4] + '</td><td>' + data.masterdataa[cat][5] + '</td></tr>')
+              }
+              $('.modal-body').append(`</tbody></table>`)
+            } else if (data.categorydata == 2) {
+              $('.modal-body').html('')
+              $('.modal-body').append(`<table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                  <th scope="col">Ack No</th>
+                                  <th scope="col">Bill No</th>
+                                  <th scope="col">Bill Date</th>
+                                  <th scope="col">Bill Amount</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="subdata">
+                          `)
+              for (var cat = 0; cat < data.masterdataa.length; cat++) {
+                // console.log(data[cat][0])
+                $('#subdata').append('\n\
+                              <tr><td>' + data.masterdataa[cat][1] + '</td><td>' + data.masterdataa[cat][3] + '</td><td>' + data.masterdataa[cat][4] + '</td>\n\
+                                  <td>' + data.masterdataa[cat][5] + '</td></tr>')
+              }
+              $('.modal-body').append(`</tbody></table>`)
+            } else if (data.categorydata == 3) {
+              $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                data: { post_id: catid },
+                url: '/reimentry/getltcsubreportsdata',
+                success: function (data) {
+                  $('.modal-body_ltc').html('')
+                  $('.modal-body_ltc').append(`<table class="table table-bordered">
+                                      <thead>
+                                          <tr>
+                                              <th scope="col">Ack No</th>
+                                              <th scope="col">Journey Begin</th>
+                                              <th scope="col">Journey End</th>
+                                              <th scope="col">Claming Amount</th>
+                                              <th scope="col">Journey StartPoint</th>
+                                              <th scope="col">Journey EndPoint</th>
+                                              <th scope="col">Travel Mode</th>
+                                              <th scope="col">Class Of Travel</th>
+                                              <th scope="col">Ticket No</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="subdataltc">
+                              `)
+                  for (var cat = 0; cat < data.length; cat++) {
+                    var trvelmode = ''
+                    if (data[cat][7] == 6) {
+                      trvelmode = 'TRAIN'
+                    } else if (data[cat][7] == 7) {
+                      trvelmode = 'BUS'
+                    } else if (data[cat][7] == 8) {
+                      trvelmode = 'AIR'
+                    }
+                    var classoftravel = ''
+                    if (data[cat][8] == 9) {
+                      classoftravel = 'IST AC'
+                    } else if (data[cat][8] == 10) {
+                      classoftravel = '2ND AC'
+                    } else if (data[cat][8] == 11) {
+                      classoftravel = '3RD AC'
+                    } else if (data[cat][8] == 12) {
+                      classoftravel = 'GENERAL'
+                    } else if (data[cat][8] == 13 || data[cat][8] == 14) {
+                      classoftravel = 'SLEEPER'
+                    } else if (data[cat][8] == 15) {
+                      classoftravel = 'SEMI-SLEEPER'
+                    } else if (data[cat][8] == 16) {
+                      classoftravel = 'SUPER LUXURY'
+                    } else if (data[cat][8] == 17) {
+                      classoftravel = 'ECONOMY'
+                    }
+                    $('#subdataltc').append('\n\
+                              <tr><td>' + data[cat][1] + '</td><td>' + data[cat][2] + '</td><td>' + data[cat][3] + '</td>\n\
+                                  <td>' + data[cat][4] + '</td><td>' + data[cat][5] + '</td><td>' + data[cat][6] + '</td>\n\
+                                  <td>' + trvelmode + '</td><td>' + classoftravel + '</td><td>' + data[cat][9] + '</td></tr>')
+                  }
+                  $('.modal-body_ltc').append(`</tbody></table>`)
+                }
+              })
+              $('.modal-body').html('')
+              $('.modal-body').append(`<table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Ack No</th>
+                                      <th scope="col">Name</th>
+                                      <th scope="col">Relation</th>
+                                      <th scope="col">Age</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="subdata">
+                          `)
+              for (var cat = 0; cat < data.masterdataa.length; cat++) {
+                // console.log(data[cat][0])
+                var relationship = ''
+                if (data.masterdataa[cat][3] == 18) {
+                  relationship = 'SPOUSE'
+                } else if (data.masterdataa[cat][3] == 19) {
+                  relationship = 'FATHER'
+                } else if (data.masterdataa[cat][3] == 20) {
+                  relationship = 'MOTHER'
+                } else if (data.masterdataa[cat][3] == 21) {
+                  relationship = 'DAUGHTER'
+                } else if (data.masterdataa[cat][3] == 22) {
+                  relationship = 'SON'
+                }
+                $('#subdata').append('\n\
+                              <tr><td>' + data.masterdataa[cat][1] + '</td><td>' + data.masterdataa[cat][2] + '</td><td>' + relationship + '</td>\n\
+                                  <td>' + data.masterdataa[cat][5] + '</td></tr>')
+              }
+              $('.modal-body').append(`</tbody></table>`)
+            } else {
+              $('.modal-body').html('')
+              $('.modal-body').append('<h5>No Data available</h5>')
+            }
+          }
+        })
+      }
+      
+      function pdfdownload(param1){
+        // e.preventDefault();
+        var param1 = param1;  // Replace with your actual value
+        var param2 = 'example';  // Replace with your actual value
+        fetch('/reimentry/your_ajax_endpoint/' + param1 + '/' + param2 + '/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/octet-stream',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `attachment_${param1}.dat`;  // Change the download file name if needed
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            alert("There is no attachment updated..");
+        });
+    }
+    
+    </script>
+  </html>
+{% endblock %}

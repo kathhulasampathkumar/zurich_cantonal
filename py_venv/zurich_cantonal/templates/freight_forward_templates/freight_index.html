@@ -1,0 +1,229 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+
+
+
+<link href="http://192.168.132.12/rewamp/public/Date/styles/kendo.common.min.css" rel="stylesheet" />
+<link href="http://192.168.132.12/rewamp/public/Date/styles/kendo.default.min.css" rel="stylesheet" />
+<link rel="icon" href="http://192.168.132.12/rewamp/public/Date/styles/medhalogo1.PNG" type="image/gif" sizes="64x64">
+
+<script type="text/javascript" src="http://192.168.132.12/rewamp/assets/lib/jquery-1.10.1.min.js"></script>
+<script src="http://192.168.132.12/rewamp/public/Date/js/kendo.all.min.js"></script>
+<script src="http://192.168.132.12/rewamp/public/scripts/form_fields_validadtion.js"></script>
+
+<!-- <script src="http://192.168.132.12/rewamp/public/scripts/session_validate.js"></script> -->
+
+
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'js/jquery.datetimepicker.css'%}">
+<script src="{% static 'js/jquery.datetimepicker.full.js' %}"></script>
+
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/clocklet/css/clocklet.min.css">
+<script src="https://cdn.jsdelivr.net/npm/clocklet"></script>
+
+
+
+<script>
+  $(document).ready(function(){ 
+    // $("#dc_date_1,#docket_date_1").kendoDatePicker({format: "dd-MM-yyyy"});
+    $("#dc_date_1,#docket_date_1,#datetime_1").datetimepicker({
+      format: "d-m-Y",
+      timepicker: false
+    });
+
+    // $("#intime_1_hh").kendoTimePicker({format: "HH",interval:"60",value:"HH"});
+    // $("#intime_1_mm").kendoTimePicker({format: "mm",interval:"1",value:"m"});
+
+    $("#intime1").kendoTimePicker({format: "HH:mm",interval:"5",value:"HH:mm"});
+    $('.js-example-basic-single').select2();
+    $('#freight_name_1').select2();
+    $("#goods_by_1").change(function(){
+       $goodsby=$(this).val();
+       if($goodsby=='By Vehicle' && $goodsby!=''){
+        $("#vehicleno_1").addClass("text-uppercase border border-2  border-danger");
+          // alert($goodsby);
+       }
+       else if($goodsby!='By Vehicle' || $goodsby==''){
+        $("#vehicleno_1").removeClass("border border-2  border-danger");        
+       }       
+    });
+
+    $("#intime_1_hh").change(function(){
+      var h_val=$("#intime_1_hh").val();         
+      var m_val=$("#intime_1_mm").val(); 
+      if(h_val != '' && m_val != ''){
+        if(h_val <=23 && m_val <=59){
+        $("#intime_1").val(h_val+':'+m_val); return true;
+        }
+        else{ alert('Please select Hours : 0 to 23 and minutes 0 to 59..');$("#intime_1").val(''); return false; }
+      }
+      else{  $("#intime_1").val(''); }      
+    });
+
+    $("#intime_1_mm").change(function(){
+      var h_val=$("#intime_1_hh").val();         
+      var m_val=$("#intime_1_mm").val(); 
+      if(h_val != '' && m_val != ''){
+        if(h_val <=23 && m_val <=59){
+        $("#intime_1").val(h_val+':'+m_val); return true;
+        }
+        else{ alert('Please select Hours : 0 to 23 and minutes 0 to 59..'); $("#intime_1").val(''); return false; }
+      }
+      else{  $("#intime_1").val(''); }      
+    });
+
+    
+  
+  });
+
+  function isReadonlyField(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode==9 ){
+        return true;
+      }
+      return false;
+      
+  }
+  function isNumerickey(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode!=46 && charCode>31 && (charCode<48 || charCode>57) || charCode== 13){
+          return false;
+      }
+      return true;
+  }
+  function isNumerickey0_9(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode>47 && charCode<58 ){
+          return true;
+      }
+      return false;
+  }
+
+  
+  function numerictoTimeEvaluate(id)
+  {
+    var otval= document.getElementById('intime'+id).value;
+    var otval2=otval.length;
+    if (otval2 == 3 ){
+      let ot_min=otval.slice(1,3);
+      let ot_h=otval.slice(0,1);
+     if(ot_h <= 23 && ot_min <=59){     document.getElementById('intime'+id).value=ot_h+':'+ot_min;      }
+     else{  alert('Please enter Hours 0 to 23 and minutes 0 to 59 '); }
+    }
+    if (otval2 == 4 ){
+      let ot_min=otval.slice(2,4);
+      let ot_h=otval.slice(0,2);
+     if(ot_h <= 23 && ot_min <=59){     document.getElementById('intime'+id).value=ot_h+':'+ot_min;      }
+     else{  alert('Please enter Hours 0 to 23 and minutes 0 to 59 '); }
+    }
+  }
+  
+  
+
+  
+  
+</script>
+
+<style>
+  .medha_headings{ color: #800080 !important;  font-weight: 700;}
+  td,th{ border: 1px solid gray; }  
+  tr{ width: 100%; }
+  .k-animation-container{ position: inherit; display: block;} 
+  .k-icon .k-i-calendar { padding: 3px;}
+  input,textarea,select{ border-radius: 5px 5px 5px 5px;  /* border: 1px solid gray;
+  padding: 2px; */   width: 100px; }
+  .k-picker-wrap .k-icon {cursor: pointer; display: block; }
+  input,select,textarea{ width: 100px;}
+  span.k-datepicker, span.k-timepicker,  span.k-colorpicker, span.k-numerictextbox, span.k-combobox, span.k-dropdown {
+    background-image: none;
+    width: 80px;
+    }
+    span.k-datepicker,  span.k-colorpicker, span.k-numerictextbox, span.k-combobox, span.k-dropdown {
+    background-image: none;
+    width: 107px;
+    }
+    .timeselect{ outline: 1px solid red;}
+</style>
+
+<!-- <script src="{% static 'mobile/bootstrap-table-master/bootstrap-table.jquery.js' %}"></script> -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>  -->
+{%comment%}<h1> Hello welcome to {%for emp in emp_names%}{%if emp.empcode == user_id%}{{emp.empname}}{%endif%}{%endfor%}</h1> {%endcomment%}
+<div class="row col-12 p-0 m-0 g-0">
+  <form method="post" id="form1" action="{%url 'save_freight'%}">{% csrf_token %}
+     
+    <fieldset class="border p-2">
+      <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Forword Details Entry</legend>  
+      <input type="submit" id="save" value="submit" class="m-2 p-2 btn btn-primary fs-5 bolder" > 
+      <a href="{%url 'freight_outtime'%}">Out Time Update</a> <h3>Last  Registered Freight Number : {{last_id}}</h3>
+      
+      <div class="table-responsive d-flex justify-content-center"> 
+        <table id="myTable" class="table">          
+          <thead>
+            <tr> 
+              <th>Goods ReceivedBy</th>                           
+              <th>Vehicle No & Width </th> 
+              <th>In - Time(Vehicle)</th> 
+              <th>Vendor DC No & Vendor DC Date</th>
+              <th>Vendor Name </th>
+              <th>No. of Items & No.of Packages</th>
+              <th>Freight Forwarder Name</th>
+              <th>Docket No & Docket Date</th>      
+              <th>DriverDetails</th>
+              <th>Security Employee Code</th>
+              <th>Remarks</th>              
+            </tr>
+          </thead>          
+          <tbody>
+            <tr> 
+              <td>
+                <select name="goods_by" id="goods_by_1" class=" px-2 my-2 fs-5"><option value="">-select-</option><option value="By Hand">By Hand</option><option value="By Courier">By Courier</option><option value="By Vehicle">By Vehicle</option><option value="Dispatch">Dispatch</option></select> <br>
+                <input type="text" name="datetime" id="datetime_1" class="" placeholder="DD-MM-YYYY"  onkeypress="return isReadonlyField(event)">
+              
+              </td>
+              <td><input type="text" name="vehicleno" id="vehicleno_1" class=" my-2 px-2 text-uppercase" placeholder="Vehicle No."><input type="text" name="noof_feet" id="noof_feet_1" class=" p-1 my-2" placeholder="NO OF Feets" onkeypress="return isNumerickey(event)"></td>              
+              <td>
+                <!-- <input data-clocklet name="intime" id="intime_2" class=" " placeholder="HH:MM" onkeypress="return isReadonlyField(event)"> <br> -->
+                <!-- <input type="text" name="intime_1_hh" id="intime_1_hh" class="timeselect " placeholder="HH" onkeypress="return isNumerickey0_9(event)" required> <br>
+                <input type="text" name="intime_1_mm" id="intime_1_mm" class="timeselect" placeholder="MM" onkeypress="return isNumerickey0_9(event)" required> -->
+                <input type="text" name="intime" id="intime1" class="timeselect " placeholder="HH:MM" maxlength="4" onkeypress="return isNumerickey0_9(event)" required  onchange="return numerictoTimeEvaluate(1)">
+              </td>              
+              <td><input type="text" name="dc_no" id="dc_no_1" class=" p-1 my-2 text-uppercase" placeholder="DC No."><br>              
+                <input type="text" name="dc_date" id="dc_date_1" class="" placeholder="DD-MM-YYYY"  onkeypress="return isReadonlyField(event)"></td>
+              <td>
+                <select name="vendorname" id="vendorname_1" class="widthselect p-1 my-2 js-example-basic-single"><option value="">-select vendor-</option>
+                {%for vendor in vendor_list%}<option value="{{vendor.ven_id}}">{{vendor.vendor}}</option>{%endfor%}</select>
+                <textarea type="text" name="disp_vend" id="disp_vend" class="mt-2 p-1 text-uppercase" cols="15" rows="2" placeholder="for new venors"></textarea>
+              </td>
+              <td><input type="text" name="noof_items" id="noof_items_1" class=" p-1 my-2 text-uppercase" placeholder="No.of Items"> <br>
+                <input type="text" name="noof_pack" id="noof_pack_1" class=" p-1 my-2 text-uppercase" placeholder="No.of Packages"></td>
+              <td><select name="freight_name" id="freight_name_1" class=" p-1 my-2"><option>-select courier-</option>
+                {%for courier in courier_list%}<option value="{{courier.cid}}">{{courier.courier_name}}</option>{%endfor%}</select></td>
+              <td><input type="text" name="docket_no" id="docket_no_1" class=" p-1 my-2" placeholder="Docket No."> <br>              
+                <input type="text" name="docket_date" id="docket_date_1" class=" " placeholder="DD-MM-YYYY" onkeypress="return isReadonlyField(event)"></td>             
+              <td>
+                Name :<input type="text" name="driver_name" id="driver_name_1" class="widthselect p-1 my-2 text-uppercase"> <br>
+                Mobile :<input type="text" name="driver_mobile" id="driver_mobile_1" class="widthselect p-1 my-2 text-uppercase"></td>
+              <td><input type="text" name="security_empcode" id="security_empcode_1" class=" p-1 my-2 text-uppercase"></td>
+              <td><textarea name="remarks" id="remarks_1" class="p-1 my-2 text-uppercase"></textarea></td>
+           
+            </tr>
+          </tbody>
+        </table> 
+      </div> 
+      
+    </fieldset>
+  </form> 
+</div>
+{%endblock%}
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        form input,
+        form select {
+            margin: 10px;
+        }
+
+        .ft {
+            font-size: 12px !important;
+
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+            min-height: 73vh;
+            height: 110px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            text-align: justify;
+            width: 99% !important;
+            background-color: #eaf7ed;
+
+        }
+
+        .table {
+            margin-bottom: -2rem !important;
+
+        }
+    </style>
+</head>
+
+<body style=" background-color: #eaf7ed">
+    <div class="total">
+        <div class="navigation">
+            {%include 'lognav.html'%}
+        </div>
+
+        <div class="footer">
+
+            {%include 'logfoot.html'%}
+
+        </div>
+    </div>
+
+    <script>
+     
+    </script>
+</body>
+
+</html>
+{% endblock content %}

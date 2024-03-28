@@ -1,0 +1,1310 @@
+{%extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+{%block content%}
+
+<style>
+    .required{ border: 1px solid red;}
+    
+    .form-floating > .form-control, .form-floating > .form-control-plaintext, .form-floating > .form-select {
+        height: calc(2.5rem + 2px) !important; /* Override the default form-control height */
+        line-height: 1.25;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+
+<div class="row mx-4 p-0 m-0 ">
+    {%comment%}
+    <span>Are you want to apply for a certificate
+        <span class="text-danger fs-4 ">{{mess |upper}}</span>
+
+        <span id="emp_not_exist" class="p-0 m-0 text-danger text-end"></span>
+    </span>
+    {%endcomment%}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}  ms-0 me-4 w-90 mt-1" role="alert" style="margin-left: -10px;">
+
+        <span{% if message.tags %} class="alert-{{message.tags}}   fs-4 p-2" {% endif %}>{{ message }}</span>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <fieldset class="border border-2 px-2">
+        <legend  class="float-none w-auto mb-2 p-2 medha_headings fs-5 " style="color: #800080 !important;
+        font-weight: 700;font-family: 'Andy MT';">Special Process Certificate   :</legend> 
+        
+    <form action="save_certificate" method="post" class="row  p-4 mb-4"
+        enctype="multipart/form-data">  
+        {% csrf_token %}      
+        {%comment%}{% csrf_token %}{%endcomment%}
+        <div class="row p-0 m-0">
+            <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0  ">
+                <select name="cat_id" id="cat_id" class="form-select px-4 p-0 required" aria-label="Default select example"
+                    required autofocus>
+                    <option value="0">--Select Certificate Category--</option>
+                    {%for category in cert_categoty_list%}
+                    <option value="{{category.cat_id}}">{{category.cat_name}} </option>
+                    {%endfor%}
+                </select>
+            </div>
+
+
+            <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 ">
+                <select name="cid" id="cid" class="form-select px-4 p-0 required" aria-label="Default select example" onchange="return expert_valid(this)" required   autofocus>
+                    <option value="0" data-tag="0">--Select Certificate Name--</option>
+                    {%for certificate in certificate_list%}
+                    <option value="{{certificate.cid}}" data-tag="{{certificate.cat}}">{{certificate.cert_name}}
+                    </option>
+                    {%endfor%}
+                </select>
+            </div>
+            <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+                <input type="number" class="form-control required" name="empcode" id="empcode" onkeypress="return isNumerickey(event)">
+                <label for="empcode" style="font-size: 0.875rem;">Employe Code:</label>
+            </div>
+            <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+                <input type="text" class="form-control required" id="effect_dt" name="effect_dt" value="dd-mm-yyyy"  onchange="valid_date(this)"  onkeypress="return isReadonlyField(event)" >
+                <label for="effect_dt">Effect From:</label>
+            </div>        
+
+            <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+                <input type="text" name="tota_exp" id="tota_exp" class="form-control text-uppercase required "  onkeypress="return isNumerickey(event)">
+                <label for="tota_exp">Total Experience: <b class="text-primary m-0 p-0">In Years</b> </label>
+            </div>
+            <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+                <input type="text" name="empname" id="empname" readonly class="form-control">
+                <label for="empname">Employe Name :</label>
+            </div>
+        </div>
+        <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+            <input type="text" name="department" id="department" readonly class="form-control">
+            <label for="department">Department :</label>
+        </div>
+
+
+        <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+            <input type="text" name="jn_date" id="jn_date" class="form-control" placeholder="dd-mm-yyyy" readonly>
+            <label for="jn_date">Joined Date:</label>
+        </div>
+
+        <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+            <input type="text" name="medha_experience" id="medha_experience" readonly class="form-control">
+            <label for="medha_experience">Experience In Medha: <b class="text-primary m-0 p-0">In Years</b> </label>
+        </div>
+        <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+            <input name="qualification" id="qualification" readonly class="form-control">
+            <label for="qualification">Educational Qualification :</label>
+        </div>
+
+
+        <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+            <select name="eop_years" id="eop_years" class="form-select px-4 p-0 required " aria-label="Default select example">
+                <option value="0">--Select Experinence On Process (In Years)--</option>
+                <option value="0"> 0 Years </option>
+                <option value="1"> 1 Year </option>
+                <option value="2"> 2 Years </option>
+                <option value="3"> 3 Years </option>
+                <option value="4"> 4 Years </option>
+                <option value="5"> 5 Years </option>
+                <option value="6"> 6 Years </option>
+                <option value="7"> 7 Years </option>
+                <option value="8"> 8 Years </option>
+                <option value="9"> 9 Years </option>
+                <option value="10"> 10 Years </option>
+                <option value="10"> 11 Years </option>
+                <option value="10"> 12 Years </option>
+                <option value="10"> 13 Years </option>
+            </select>
+        </div>
+        <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0">
+            <select name="eop_months" id="eop_months" class="form-select px-4 p-0 required " aria-label="Default select example">
+                <option value="-1">--Select Experinence On Process (In Months)--</option>
+                <option value="0"> 0 Months </option>
+                <option value="1"> 1 Months </option>
+                <option value="2"> 2 Months </option>
+                <option value="3"> 3 Months </option>
+                <option value="4"> 4 Months </option>
+                <option value="5"> 5 Months </option>
+                <option value="6"> 6 Months </option>
+                <option value="7"> 7 Months </option>
+                <option value="8"> 8 Months </option>
+                <option value="9"> 9 Months </option>
+                <option value="10"> 10 Months </option>
+                <option value="11"> 11 Months </option>
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-6  col-sm-12  p-0 m-0">
+            <label for="support_document" class="form-label p-0 m-0">Upload Supporting Document, If any ? : 
+                <span  class="p-0 m-0 text-primary">* Accepts only PDF format.</span></label>
+            <input class="form-control" type="file" id="support_document" name="support_document"  accept="application/pdf">
+        </div>
+
+        <div class="form-floating mb-3 col-lg-3 col-md-3  col-sm-12 px-2 p-0" hidden>
+            <input name="manager" id="manager" readonly class="form-control">
+            <label for="manager">Manager :</label>
+        </div>
+        <fieldset class="border border-1 p-2 pb-0 m-1">
+            <div class="row col-lg-12 col-md-12 col-sm-12 px-1 p-0 m-0">
+                <div class="form-floating mb-3 col-lg-12 col-md-12 col-sm-12 py-2 p-0 m-0 border bg-light "
+                    style="width: 100%;">
+                    <span>
+                        <label for="Competency" class="px-1 fs-5" style="width: 40%;">Competency :&nbsp;&nbsp; YES / NO
+                        </label>
+
+                        <label for="Competency" class="px-1 fs-5" style="width: 50%;text-align: center;">Remarks:</label>
+
+                    </span>
+
+
+                </div>
+
+            </div>
+
+            <div class="row col-lg-12 col-md-12 col-sm-12 px-1 p-0 m-0">
+                <div class="form-check mb-3 col-lg-2 col-md-2 col-sm-12 p-0 m-0 ">
+                    <div class="form-check border py-3 m-0">
+                        <input class="form-check-input skill_checked_clicked" type="checkbox" name="skill" id="skill"
+                            value="YES" style="margin-left: -5px;">
+                        <label class="form-check-label" for="skill" style="margin-left:5px;"> Skill </label>
+                    </div>
+
+                </div>
+                <div class=" form-floating mb-3 col-lg-10 col-md-10  col-sm-12 px-2 p-0 show_me_skillfields ">
+                    <div class="skill_field_dynamic row col-lg-12 col-md-12 col-sm-12 p-0 m-0">
+
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div class="row col-lg-12 col-md-12 col-sm-12 px-1 p-0 m-0">
+                <div class="form-floating mb-3 col-lg-2 col-md-2 col-sm-12  p-0 m-0 border">
+                    <div class="form-check  py-3 m-0">
+                        <input class="form-check-input quality_checked_clicked" type="checkbox" name="qua_work"
+                            id="qua_work" value="YES" style="margin-left: -5px;">
+                        <label class="form-check-label" for="qua_work" style="margin-left:5px;"> Quality Of Work
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 show_me_qua_work_fields">
+                    <input type="number" name="qty_eval" id="qty_eval" class="form-control ms-2 required " min="1" max="10">
+                    <label for="qty_eval" class="ms-2">Quantity Evaluated :</label>
+                </div>
+
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 show_me_qua_work_fields">
+                    <input type="text" name="prod_eval" id="prod_eval" class="form-control ms-2 required ">
+                    <label for="prod_eval" class="ms-2">Product :</label>
+                </div>
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 show_me_qua_work_fields ">
+                    <!-- <input type="text" name="tool_id" id="tool_id" class="form-control ms-2">
+                    <label for="tool_id" class="ms-2">Tool Id :</label> -->
+                    <select name="tool_id" id="tool_id" class="form-select px-4 p-0 expert_empcode js-search-select2 required" onchange="checkToolId(this)"
+                    aria-label="Default select example" autofocus>
+                    <option value="0">--Select Tool-ID --</option>
+                    {%for toolid  in toolidlist %}  
+                     
+                    <option value="{{toolid}}" data-tag="{{toolid}}"
+                        data-capacity="{{toolid}}">
+                          {{toolid}}</option>   
+                          {%endfor %} 
+                          <option value="others">Others</option>              
+                </select>
+                </div>
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 " id="otherstoolid" style="display: none;">
+                    <input type="text" name="tool_id2" id="tool_id2" class="form-control ms-2 required">
+                    <label for="prod_eval" class="ms-2">Other Tool ID :</label>
+                </div>
+
+            </div>
+            <div class="row col-lg-12 col-md-12 col-sm-12 px-1 p-0 m-0">
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12  p-0 m-0 border">
+                    <div class="form-check  py-3 m-0">
+                        <input class="form-check-input period_checked_clicked  " type="checkbox" name="period" id="period"
+                            value="YES" style="margin-left: -5px;">
+                        <label class="form-check-label" for="period" style="margin-left:5px;"> Period </label>
+                    </div>
+
+                </div>
+
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 show_me_period_fields">
+                    <input type="text" name="period_from" id="period_from" class="form-control ms-2 custom_datePicker required"
+                        value="dd-mm-yyyy" onchange="valid_date(this)" >
+                    <label for="period_from" class="ms-2">From Date </label>
+                </div>
+
+                <div class="form-floating mb-3 col-lg-2 col-md-2  col-sm-12 px-2 p-0 show_me_period_fields">
+                    <input type="text" name="period_to" id="period_to" class="form-control ms-2 custom_datePicker required"
+                        value="dd-mm-yyyy" onchange="valid_date(this)">
+                    <label for="period_to" class="ms-2">To Date </label>
+                </div>
+                <div class="form-floating mb-3 col-lg-4 col-md-4  col-sm-12 px-2 p-0" hidden>
+                    <input name="hod_id" id="hod_id" readonly class="form-control">
+                    <label for="hod_id">Manager :</label>
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="col-lg-3 col-md-3  col-sm-12 m-0 p-0">
+            <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">
+                <input type="text" name="operator_name" id="operator_name" readonly class="form-control">
+                <label for="operator_name">Operator Name :</label>
+            </div>
+            <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">
+                <input type="text" name="operator_designation" id="operator_designation" readonly class="form-control">
+                <label for="operator_designation">Operator Designation :</label>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-3  col-sm-12 m-0 p-0">
+            <!-- <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">
+                
+                <select name="expert_empcode" id="expert_empcode" class="form-select px-4 p-0 expert_empcode"
+                    aria-label="Default select example" autofocus>
+                    <option value="0">- - Select Your Expert Trainer - - </option>
+                    {%for expert in expert_emp_list %}  {%for name in expert_empdata%}
+                     {%if expert.expert_empcode == name.empcode %}
+                    <option value="{{expert.expert_empcode}}" data-tag="{{expert.cid}}"
+                        data-capacity="{{name.designation}}">
+                          {{name.empname}}</option> {%endif%}  
+                          {%endfor %} {%endfor%}                 
+                </select>
+                
+            </div> -->
+            <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">
+                
+                <select name="expert_empcode" id="expert_empcode" class="form-select px-4 p-0 expert_empcode required"
+                    aria-label="Default select example" autofocus>
+                    <option value="0">- - Select Your Expert Trainer - - </option>
+                    {%for expertid , subcat in expert_empdata2 %}  
+                     
+                    <option value="{{expertid}}" data-tag="{{subcat}}"
+                        data-capacity="{{name.designation}}">
+                          {{expertid|empcodeNameByFilter}}</option>   
+                          {%endfor %}               
+                </select>
+                
+            </div>
+            
+            
+            <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">                 
+                <input type="text" name="expert_designation" id="expert_designation" readonly class="form-control expert_empcode_designation" value="{%for name in expert_empdata%}{%for desi in expert_desig%}{% if name.designation == desi.designation_code %}{{desi.designation_name}}{% endif %}{% endfor %}  {% endfor %} "> 
+                <label for="expert_designation">Expert Designation :</label>
+            </div>
+            
+            
+            
+        </div>
+        
+        
+
+        
+        <div class="col-lg-3 col-md-3  col-sm-12 m-0 p-0">
+            <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">
+                <input type="text" name="hod" id="hod" readonly class="form-control">
+                <label for="hod">HOD Name :</label>
+            </div>
+            <div class="form-floating mb-3 col-lg-12 col-md-12  col-sm-12 px-2 p-0">
+                <input type="text" name="hod_designation" id="hod_designation" readonly class="form-control">
+                <label for="hod_designation">HOD Designation :</label>
+            </div>
+        </div>
+
+        <div class="form-floating mb-3 col-lg-3 col-md-3 col-sm-12 px-1 p-0 m-0 ">
+            <input type="submit" value="Save Certificate"  class="btn btn-success col-lg-12 col-md-12 col-sm-12 fs-5 mb-2 mt-2 p-2 " id="save_certificate_now">
+            <input type="reset" value="Clear All"              class="btn btn-outline-danger col-lg-12 col-md-12 col-sm-12 fs-5 p-2 mt-0">
+        </div>     
+        
+        
+
+    </form>
+    </fieldset>
+
+
+</div>
+
+
+
+
+<script>
+    
+    function DMYtoYMDdate(dmyDate){
+        let date= dmyDate.split('-');
+        let D =parseInt(date[0]);        let M = parseInt(date[1]);        let Y = parseInt(date[2]);     
+        const DMYdate =Y+'-'+M+'-'+D;
+        return DMYdate;
+    }
+    function YMDtoDMYdate(YMDdate){
+        let date= YMDdate.split('-');
+        let Y =parseInt(date[0]);        let M = parseInt(date[1]);        let D = parseInt(date[2]);     
+        const dmyDate =D+'-'+M+'-'+Y;
+        return dmyDate;
+    }
+    function convertDateFormat(dateString) {
+        console.log(dateString);
+        var parts = dateString.split('-');
+        if (parts.length !== 3) {
+            return null; // Invalid date format
+        }
+
+        var day = parts[0];
+        var month = parts[1];
+        var year = parts[2];
+
+        // Create a new date string in "yyyy-mm-dd" format
+        var newDateString = year + '-' + month + '-' + day;
+
+        return newDateString;
+    }
+
+    function futureDateNotallowed(id){
+
+        var period_to = $("#period_to").val();
+        // console.log(period_to);
+        let chngedate= period_to.split('-');
+        
+        let D =parseInt(chngedate[0]);
+        let M = parseInt(chngedate[1]);
+        let Y = parseInt(chngedate[2]); 
+          
+        const cd = new Date();
+        const cy =cd.getFullYear();
+        const cm =cd.getMonth()+1;
+        const cday =cd.getDate();
+        const pr_date=cy+'-'+cm+'-'+cday
+        const ch_date=Y+'-'+M+'-'+D
+        var days = calculate_days(pr_date,ch_date); 
+        if( days <= 0){
+            return true;
+        }else{ 
+            
+            $("#period_to").css({"color": "red","border-color": "red","border-style": "soid","border-size": "1px"});
+            return false;
+        }
+
+    }
+    
+    function valid_date(evnt){
+        var joindate = $("#jn_date").val();
+        let join_date= joindate.split('-');
+        let jD =parseInt(join_date[0]);        let jM = parseInt(join_date[1]);        let jY = parseInt(join_date[2]);     
+        const jn_date=jY+'-'+jM+'-'+jD;
+
+        const cd = new Date(); const cy =cd.getFullYear();const cm =cd.getMonth()+1;const cday =cd.getDate(); 
+        const pr_date=cy+'-'+cm+'-'+cday;
+        const redirectCDate=cday+'-'+cm+'-'+cy;
+
+        if( evnt.id == 'period_to'){ 
+            var period_date = $("#period_to").val();
+            var period_datefrom = $("#period_from").val();
+            var effectDate = $("#effect_dt").val();
+            effectDate = DMYtoYMDdate(effectDate);
+            let chngedate= period_date.split('-');
+            let D =parseInt(chngedate[0]);        let M = parseInt(chngedate[1]);        let Y = parseInt(chngedate[2]);     
+            const ch_date=Y+'-'+M+'-'+D;
+            let fromdt= period_datefrom.split('-');
+            let fD =parseInt(fromdt[0]);        let fM = parseInt(fromdt[1]);        let fY = parseInt(fromdt[2]);     
+            const fch_date =fY+'-'+fM+'-'+fD;
+            var days = calculate_days(pr_date,ch_date);
+            var fromtodiff = calculate_days(fch_date,ch_date); 
+            var jndiff = calculate_days(jn_date,ch_date); //console.log('to change : '+jndiff);
+            var effTodiff = calculate_days(effectDate,ch_date); console.log(effTodiff); 
+            // console.log(days);     console.log(fromtodiff);
+            if(days > 0){alert('Period To date should not allow Future date.!'); $("#"+evnt.id).val(''); return false; }
+            else if( fromtodiff <= 0 ){ alert('Period To date should not less than Period From Date.!'); $("#"+evnt.id).val(''); return false; }
+            else if( jndiff <= 0 ){ alert('Period To date should not less than Join Date.!'); $("#"+evnt.id).val(''); return false; }
+            else if( effTodiff > 0 ){ alert('Period To date should not Greater than Effect Date.!'); $("#"+evnt.id).val(''); return false; }
+            else{ return true;}         
+        }else if ( evnt.id == 'period_from' ){ //console.log('period from');
+            var period_date = $("#period_from").val();
+            var period_dateto = $("#period_to").val();
+            var effectDate = $("#effect_dt").val();
+            effectDate = DMYtoYMDdate(effectDate); //console.log('effect date : '+effectDate);
+            
+            let chngedate= period_date.split('-');
+            let D =parseInt(chngedate[0]);        let M = parseInt(chngedate[1]);        let Y = parseInt(chngedate[2]);     
+            const ch_date=Y+'-'+M+'-'+D;
+            let todate= period_dateto.split('-');
+            let tD =parseInt(todate[0]);        let tM = parseInt(todate[1]);        let tY = parseInt(todate[2]);     
+            const tch_date=tY+'-'+tM+'-'+tD;
+            var days = calculate_days(pr_date,ch_date);
+            var tofromdiff = calculate_days(ch_date,tch_date);
+            var jndiff = calculate_days(jn_date,ch_date); 
+            var effFromdiff = calculate_days(effectDate,ch_date);  //console.log('effFromdiff : '+effFromdiff);
+            // console.log(days);    console.log(tofromdiff);
+            if(days >= 0){ alert('Period From date allow only  Past date.!');  $("#"+evnt.id).val(''); return false;       }
+            else if( tofromdiff <= 0 ){ alert('Period From date should not Greater than Period To Date.!'); $("#"+evnt.id).val(''); return false; }
+            else if( jndiff <= 0 ){ alert('Period From date should not Less than Join Date.!'); $("#"+evnt.id).val(''); return false; }
+            else if( effFromdiff > 0 ){ alert('Period From date should not Greater than Effect Date.!'); $("#"+evnt.id).val(''); return false; }
+            else{  return true;} 
+        }else if( evnt.id == 'effect_dt'){
+            // console.log('testing for effect date');
+            var effectDate = $("#effect_dt").val();  
+            var period_from = $("#period_from").val();
+            period_from=DMYtoYMDdate(period_from);
+                      
+            let effect_dt= effectDate.split('-');
+            let eD =parseInt(effect_dt[0]);        let eM = parseInt(effect_dt[1]);        let eY = parseInt(effect_dt[2]);     
+            const eff_date =eY+'-'+eM+'-'+eD;
+            var days = calculate_days(pr_date,eff_date); //console.log('effect change : '+days);
+            var jndiff = calculate_days(jn_date,eff_date); // console.log('effect change jndttt: '+jndiff);
+            var efd_frmdtDiff = calculate_days(period_from,eff_date);  //console.log('efd_frmdtDiff: '+efd_frmdtDiff);
+                       
+            if(days > 0){alert('Effect date should not allow Future date.!'); $("#"+evnt.id).val(redirectCDate); return false; }
+            else if( jndiff <= 0 ){ alert('Effect From date should not Less than Join Date.!'); $("#"+evnt.id).val(redirectCDate); return false; }
+            else if( efd_frmdtDiff <= 0 ){ alert('Effect From date should not Less than Period From Date.!'); $("#"+evnt.id).val(redirectCDate); return false; }
+            // else if( jndiff == NaN ){ alert('Please enter empcode and check join Date should not empty.'); $("#"+evnt.id).val(redirectCDate); return false; }
+            else { $("#medha_experience").val(getMedhaExperience(jn_date,eff_date));  return true;  } 
+
+        }       
+
+    }
+
+    function expert_valid(evnt){
+        var certiType = $("#"+evnt.id).val();
+        var expertid = $("#expert_empcode").val();
+        var qua_work = $("#qua_work").val();
+        if( expertid != ''){
+            $("#expert_empcode").val('');
+            $("#expert_designation").val('');
+        }  
+         
+        $.ajax({
+            url: "/certificate/getTcodelist",            
+            type: "post",
+            dataType: "JSON",
+            data: { 'certiType': certiType},
+            success: function (data) {
+                
+                var dropdownOptions = data.dropdown_options; // Assuming yourObject is the object containing the array
+                var optlen = dropdownOptions.length;
+                
+                
+                var html='';
+                html+='<option value="">-Select ToolID-</option>';
+                for(var i=0; i<optlen; i++){
+                    html+='<option value="'+dropdownOptions[i]+'"> '+dropdownOptions[i]+'</option>';
+                }
+                html+='<option value="others">Others</option>';
+                $("#tool_id").empty();
+                $("#tool_id").append(html);
+
+                                
+            }, error: (error) => {                        
+                console.log(error);
+            }
+        });      
+    }
+
+
+    function calculate_days(date_1,date2){
+        var date1 = date_1;
+        var date2 = date2;
+        // First we split the values to arrays date1[0] is the year, [1] the month and [2] the day
+        date1 = date1.split('-');
+        date2 = date2.split('-');
+        // Now we convert the array to a Date object, which has several helpful methods
+        date1 = new Date(date1[0], date1[1], date1[2]);
+        date2 = new Date(date2[0], date2[1], date2[2]);
+        // We use the getTime() method and get the unixtime (in milliseconds, but we want seconds, therefore we divide it through 1000)
+        date1_unixtime = parseInt(date1.getTime() / 1000);
+        date2_unixtime = parseInt(date2.getTime() / 1000);
+        // This is the calculated difference in seconds
+        var timeDifference = date2_unixtime - date1_unixtime;
+        // in Hours
+        var timeDifferenceInHours = timeDifference / 60 / 60;
+        // and finaly, in days :)
+        var timeDifferenceInDays = timeDifferenceInHours  / 24;    
+        return  timeDifferenceInDays;       
+    // alert(timeDifferenceInDays);
+    }
+
+    function checkToolId(event){
+        var Toolid = $("#"+event.id).val(); 
+        if(Toolid == 'others'){
+            $("#otherstoolid").show();
+            $("#tool_id2").attr('required','required');
+            $("#tool_id2").css('border','1px solid red')
+
+
+        }else{
+            $("#otherstoolid").hide();
+            $("#tool_id2").removeAttr('required');
+        }
+    }
+
+    function isReadonlyField(evt)
+    {
+        var charCode=(evt.which)?evt.which:event.keyCode;
+        if(charCode==9 ){
+            return true;
+        }
+        return false;
+        
+    }
+  function isNumerickey(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode!=46 && charCode>31 && (charCode<48 || charCode>57) || charCode== 13){
+          return false;
+      }
+      return true;
+  }
+  function ExperienceCount(d1, d2) {
+        var months;
+        months = (d2.getFullYear() - d1.getFullYear()) * 12;
+        months -= d1.getMonth();
+        months += d2.getMonth();
+        
+        // return months <= 0 ? 0 : months;
+        if (months <= 12) {
+            var month = months / 12;
+            return month;
+        }
+        else if (months > 12) {
+            var years_exp = months / 12;
+            return years_exp;
+        }
+    }
+    function getMedhaExperience(fromDate,toDate){
+        const fromYear = fromDate.split('-');
+        const fromMonth = fromYear[1];
+        const toYear = toDate.split('-');
+        const toMonth = toYear[1];
+
+        let ageYears = toYear[0] - fromYear[0];
+        let ageMonths = toMonth - fromMonth;
+
+        if (ageMonths < 0) {
+            ageYears--;
+            ageMonths += 12;
+        }
+        // console.log(ageYears+'.'+ageMonths);
+        return ageYears+'.'+ageMonths;
+    }
+
+    // date pattern gets by this function
+
+
+    function datepatternv1(dateval) {
+        var yearVal = dateval.getFullYear();
+        var monthVal = String(dateval.getMonth() + 1).padStart(2, '0');
+        var dayval = String(dateval.getDate()).padStart(2, '0');
+        return dayval + '-' + monthVal + '-' + yearVal;
+    }
+    // counts the experience in medha joined date and todaydate
+    
+
+
+    //torque observed values check purpose
+    function torque_observations(min_p, max_p, torqueval) {
+        var minval = torqueval * min_p / 100;
+        var maxval = torqueval * max_p / 100;
+        var minnum = torqueval - minval;
+        var maxnum = Math.abs(-torqueval - maxval);
+        return values = { minnum, maxnum };
+    }
+
+    function TorqueChange(event){
+        var curID = event.id;
+        var curVal = $("#"+event.id).val();
+        var Units = $("#Units").val();
+        var formula1 = $("#LooseningTorqueSpec").val();
+        var TorqueSpec = $("#TorqueSpec").val();
+        if(Units == '' || Units == '0' || formula1 == '' || formula1 == '0' || TorqueSpec == ''){
+            $("#TorqueResult").val('');            
+        }else { 
+            if(Units == 'NM' || Units == 'KGF/CM'){
+                if(formula1 == 'from -30% to +5%'){
+                    let min_p = 30; let max_p = 5;
+                    var values = torque_observations(min_p, max_p, TorqueSpec);
+                    let formula_observed = " from " + values.minnum + " to " + values.maxnum;
+                    $("#TorqueResult").val(formula_observed);
+                }else if(formula1 == 'from -45% to +5%' ){
+                    let min_p = 45; let max_p = 5;
+                    var values = torque_observations(min_p, max_p, TorqueSpec);
+                    let formula_observed = " from " + values.minnum + " to " + values.maxnum;
+                    $("#TorqueResult").val(formula_observed);
+                }
+            }         
+        } 
+    }
+    
+
+    // to load the employee details to apply certificate module
+    $(document).ready(function () {
+        
+        
+        // let hostname = location.host;
+        // console.log(hostname);
+        // datepickerLoads from js function
+        $("#entry_dt,#effect_dt, .custom_datePicker").datetimepicker({
+            format: "d-m-Y",
+            timepicker: false
+        });
+        $('.js-search-select2').select2();
+
+        
+
+        $("#empcode").change(function () {
+            $(this).css("background-color", "lightblue");
+            var empcode = $("#empcode").val();
+            // console.log(empcode);
+            if (empcode.length == 6) {
+                $.ajax({
+                    url: "/certificate/employee_json_responce", 
+                    //url: "http://"+hostname+"/certificate/employee_json_responce",
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { empcode: empcode},
+                    success: function (data) {
+                        var date = new Date();
+                        const joindate = new Date(data.jn_date);
+                        var effect_date = DMYtoYMDdate($("#effect_dt").val()); // console.log(effect_date);
+
+                        var minJoindate = DMYtoYMDdate(datepatternv1(joindate));
+                        var minCurdate = DMYtoYMDdate(datepatternv1(date));
+                        // console.log(minJoindate);
+                        // console.log(minCurdate);
+                        var minDays =  calculate_days(minJoindate,minCurdate); //console.log(minDays);
+                        // alert(data);
+                        // alert(data.empdata);                        
+                        // console.log(data);
+
+                        if(minDays > 90  ){
+                            var minexperi = minDays / (30*12); //console.log(minexperi.toFixed(1));
+                            var med_exp = getMedhaExperience(minJoindate,minCurdate); //console.log(med_exp);
+                            var currentDate = date.toISOString().slice(0, 10);  
+                            $("#entry_dt").val(datepatternv1(date));
+                            $("#empname").val(data.name);
+                            $("#department").val(data.department);
+                            const joindate = new Date(data.jn_date);
+                            // let joinyear = joindate.getFullYear();
+                            const presentYear = new Date();
+                            // let presentYearNo = presentYear.getFullYear(); 
+                            // var find = presentYearNo - joinyear;
+                            // var medha_experience = presentYearNo - joinyear; //+ "   Year's."
+
+                            let Ex = ExperienceCount(joindate, presentYear);
+
+                            $("#medha_experience").val(med_exp);
+                            $("#jn_date").val(datepatternv1(joindate));
+                            // $("#jn_date").val(emp.jn_date);
+                            // $("#to_dt").val(date);
+                            $("#to_dt").val(datepatternv1(date));
+                            $("#qualification").val(data.qualification);
+                            // $("#teamleader").val(emp.tl);
+                            // $("#groupleader").val(emp.gl);
+                            $("#operator_name").val(data.name);
+                            $("#operator_designation").val(data.desi);
+
+                            // $("#expert_empcode").val(emp.mgr);
+
+                            $("#hod").val(data.reportto[0]);                            
+                            $("#hod_designation").val(data.reportto[1]);
+                            $("#hod_id").val(data.reportto[2]);
+
+                            $("#emp_not_exist").text('');
+                            var period_from = $("#period_from").val();
+                            // console.log(period_from);
+                            $("#period_from").val(datepatternv1(period_from));
+                            // $("#period_to").val(date);
+                            // $("#period_to").val(datepatternv1(date));
+
+                        }else{
+                            alert("Minimum 3 months needed from Joined Date to apply the Certificate.") ;
+                            $("#entry_dt").val('');
+                            $("#empname").val('');
+                            $("#department").val('');                     
+                            $("#medha_experience").val('');
+                            $("#jn_date").val('');
+                            $("#to_dt").val('');
+                            $("#period_to").val('');
+                            $("#qualification").val('');                        
+                            $("#operator_name").val('');
+                            $("#operator_designation").val('');
+                            $("#hod").val('');                            
+                            $("#hod_designation").val('');
+                            $("#hod_id").val('');
+                        }
+                                              
+                                               
+                    },
+                    error: (error) => {
+                        alert("Please check empcode if Left associate...!") ;
+                        $("#entry_dt").val('');
+                        $("#empname").val('');
+                        $("#department").val('');                     
+                        $("#medha_experience").val('');
+                        $("#jn_date").val('');
+                        $("#to_dt").val('');
+                        $("#period_to").val('');
+                        $("#qualification").val('');                        
+                        $("#operator_name").val('');
+                        $("#operator_designation").val('');
+                        $("#hod").val('');                            
+                        $("#hod_designation").val('');
+                        $("#hod_id").val('');
+                        // console.log(error);
+                    }
+                });
+            }
+            else{
+                alert('empcode should be 6 digit');
+                $("#entry_dt").val('');
+                $("#empname").val('');
+                $("#department").val('');                     
+                $("#medha_experience").val('');
+                $("#jn_date").val('');
+                $("#to_dt").val('');
+                $("#period_to").val('');
+                $("#qualification").val('');                        
+                $("#operator_name").val('');
+                $("#operator_designation").val('');
+                $("#hod").val('');                            
+                $("#hod_designation").val('');
+                $("#hod_id").val('');
+            }
+        });
+
+
+        $("#expert_empcode").change(function () {            
+            var expert_empcode = $("#expert_empcode").val();
+            //console.log(expert_empcode);            
+                $.ajax({
+                    url: "/certificate/employee_json_responce2",
+                    //url: "http://"+hostname+"/certificate/employee_json_responce",
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { expert_empcode: expert_empcode},
+                    success: function (data) {
+                        // alert(data);
+                        console.log(data);
+                        $("#expert_designation").val(data.expert_designation);
+
+                        // $("#expert_empcode").text(data.Expert_Emp.exp_empname);
+                        // $("#expert_empcode").val(data.Expert_Emp.exp_empname);
+                                               
+                    },
+                    error: (error) => {
+                        alert("error getting  designation   \n               "+error) ;
+                        console.log(error);
+                    }
+                });            
+        });
+
+        
+            
+        
+        
+
+        //while saving the applying the certificate validate the form values 
+        $("#save_certificate_now").click(function () {
+            var Currdate = new Date();
+            var minCurdate = DMYtoYMDdate(datepatternv1(Currdate));
+
+            var empcode = $("#empcode").val();
+            var cat_id = $("#cat_id").val();
+            var cid = $("#cid").val();
+            var entry_dt = $("#effect_dt").val();
+            var tota_exp = $("#tota_exp").val();
+            var medha_experience = $("#medha_experience").val();
+
+            var jn_date = $("#jn_date").val();
+            var to_dt = $("#to_dt").val();
+            var eop_years = $("#eop_years").val();
+            var eop_months = $("#eop_months").val();
+            var skill = $("#skill").val();
+            var qua_work = $("#qua_work").val();
+            var period = $("#period").val();
+
+
+            var qty_eval = $("#qty_eval").val();
+
+            var prod_eval = $("#prod_eval").val();
+            
+            var tool_id = $("#tool_id").val();
+            var period_from = $("#period_from").val();
+            var period_to = $("#period_to").val();
+            var expert_empcode = $("#expert_empcode").val();
+
+            var Torque_applied_location = $("#Torque_applied_location").val();
+            var TorqueSpec = $("#TorqueSpec").val();
+            var LooseningTorqueSpec = $("#LooseningTorqueSpec").val();
+
+
+            var observe_val1 = $("#OLTS_Value1").val(); //console.log(observe_val1);
+            var observe_val2 = $("#OLTS_Value2").val(); //console.log(observe_val2);
+            var observe_val3 = $("#OLTS_Value3").val(); //console.log(observe_val3);
+            var effect_date_future= calculate_days(DMYtoYMDdate(entry_dt),minCurdate); console.log(effect_date_future);
+
+            // var days = calculate_days(entry_dt,ch_date);
+            // var fromtodiff = calculate_days(fch_date,ch_date); 
+            // var jndiff = calculate_days(jn_date,ch_date);
+
+
+
+
+
+
+            if (cat_id == '' || cat_id == 0) { alert("Certificate Category  Should not Empty"); return false; }
+            else if (cid == '' || cid <= 0) { alert("Certificate Name Should not Empty"); return false; }
+            else if (empcode == '' || empcode == null) { alert("Employee Code Should not Empty"); return false; }
+
+            else if (entry_dt == '' || entry_dt == 0) { alert("Entry Date  Should not Empty"); return false; }
+            // else if (tota_exp == '' || tota_exp < medha_experience) { alert("Total Experience >= to Medha Experience"); return false; }
+            else if (tota_exp == '' || tota_exp > 58) { alert("Total Experience should be below 58 Years"); return false; }
+
+            else if (to_dt == '' || to_dt == 0) { alert("To Date  Should not Empty"); return false; }
+            else if (eop_years == '' || eop_years < 0 &&  eop_months < 3) { alert("Minimum 3 months  Experience On Process Required ...!"); return false; }
+            // else if (eop_months == '' || eop_months == -1) { alert("Experience on Process in Months  Should not Empty"); return false; }
+            else if (eop_months == 0 && eop_years == 0) { alert("Minimum 3 months  Experience On Process Required ..!"); return false; }
+            else if (eop_years <= 0 && eop_months <= 2) { alert("Experience on Process Minimum 3 Months  Required.!"); return false; }
+            else if (expert_empcode == '' || expert_empcode == 0 || expert_empcode == null) { alert("Expert Trainer To   Should not Empty"); return false; }
+            else if ($("#skill").not(":checked").length || $("#qua_work").not(":checked").length || $("#period").not(":checked").length) { alert("Your are not allowed with out checked Skill,Quality of work and Period "); return false; }
+            else if (qty_eval == '' || qty_eval <= 1 || qty_eval > 10) { alert("Quality Evaluation must be >=2 to  <= 10 OR Should not Empty"); return false; }
+            else if (prod_eval == '' || prod_eval == null) { alert("Product Evaluation  Should not Empty"); return false; }
+            else if (tool_id == '' || tool_id == 0) { alert("Tool Id   Should not Empty"); return false; }
+            else if (period_from == 'dd-mm-yyyy' || period_from == '' || period_from == 0) { alert("Period From date  Should not Empty"); return false; }
+            else if (period_to == '' || period_to == 0) { alert("Period To date Should not Empty"); return false; }
+
+            else if (LooseningTorqueSpec == 'from -30% to +5%') {
+                let TorqueSpec = $("#TorqueSpec").val();
+                let min_p = 30;
+                let max_p = 5;
+                var values = torque_observations(min_p, max_p, TorqueSpec);
+                if (observe_val1 < values.minnum || observe_val1 > values.maxnum) {
+                    alert("Observed value1 must be with in the range of from " + values.minnum + " to " + values.maxnum + "");
+                    return false;
+                }
+                else if (observe_val2 < values.minnum || observe_val2 > values.maxnum) {
+                    alert("Observed value2 must be with in the range of from " + values.minnum + " to " + values.maxnum + "");
+                    return false;
+                }
+                // else if (observe_val3 < values.minnum || observe_val3 > values.maxnum) {
+                //     alert("Observed value3 must be with in the range of from " + values.minnum + " to " + values.maxnum + "");
+                //     return false;
+                // }
+                else if (Torque_applied_location == '' || Torque_applied_location == null) { alert("Torque Applied Location 1 & 2 Should not Empty"); return false; }
+                else {   return true;  }
+
+
+                return true;
+            }
+            else if (LooseningTorqueSpec == 'from -45% to +5%') {
+                let TorqueSpec = $("#TorqueSpec").val();
+                let min_p = 45;
+                let max_p = 5;
+                var values = torque_observations(min_p, max_p, TorqueSpec);
+
+                if (observe_val1 < values.minnum || observe_val1 > values.maxnum) {
+                    alert("Observed value1 must be with in the range of from " + values.minnum + " to " + values.maxnum + "");
+                    return false;
+                }
+                else if (observe_val2 < values.minnum || observe_val2 > values.maxnum) {
+                    alert("Observed value2 must be with in the range of from " + values.minnum + " to " + values.maxnum + "");
+                    return false;
+                }
+                // else if (observe_val3 < values.minnum || observe_val3 > values.maxnum) {
+                //     alert("Observed value3 must be with in the range of from " + values.minnum + " to " + values.maxnum + "");
+                //     return false;
+                // }
+                else if (Torque_applied_location == '' || Torque_applied_location == null) { alert("Torque Applied Location 1 & 2 Should not Empty"); return false; }
+                else { return true;  }
+            }
+
+
+        });
+
+
+
+        $('#cat_id').on('change', function () {
+            var selected = $(this).val();
+
+            if (selected != '0') {
+                $("#cid option").each(function (item) {
+                    var element = $(this);
+
+                    if (element.data("tag") != selected) {
+                        element.hide();
+                    } else {
+                        element.show();
+                        $('#cid').on('change', function () {
+                            var selected2 = $(this).val();
+                            // console.log(selected2);
+                            if (selected2 != 0) {
+                                $("#expert_empcode option").each(function (item2) {
+                                    var element2 = $(this);
+                                    
+                                    if (element2.data("tag") != selected2) {
+                                        
+                                        element2.hide();
+                                    }
+                                    else {
+                                        element2.show();
+                                        // $('select.expert_empcode').change(function () {
+                                        //     var expert_empcodeValue = $('select.expert_empcode').find(':selected').data('capacity');                                            
+                                        //     console.log(expert_empcodeValue);                             
+                                        //     $('.expert_empcode_designation').val(expert_empcodeValue);
+                                        // });                                        
+                                    }
+                                });
+                            }
+                            else {
+                                $("#expert_empcode option").each(function (item2) {
+                                    var element2 = $(this);
+                                    element2.hide();
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                $("#cid option").each(function (item) {
+                    var element = $(this);
+                    element.show();
+
+                });
+            }
+            $("#cid").val($("#cid option:visible:first").val());
+        });
+
+
+        //skill fields show and hide base on certificate 
+        $(".show_me_skillfields").hide();
+        // if ($('.skill_checked_clicked').click(function () {
+        //     if ($(this).is(":checked")) {
+        //         $(".show_me_skillfields").show('slow');
+
+        //         var cat_id = $("#cat_id").val();
+        //         var cid = $("#cid").val();
+
+        //         if (cid != 0 && cat_id != '0') {
+        //             $.ajax({
+        //                 url: "/certificate/get_skill_field_master_fields",
+        //                 // url: "http://"+hostname+"/certificate/get_skill_field_master_fields",
+        //                 type: "GET",
+        //                 dataType: "JSON",
+        //                 data: { cid: cid },
+        //                 success: function (data) {
+        //                     // console.log(data);
+        //                     var somedata = data.skill_master_fields;
+        //                     var json = JSON.stringify(eval("(" + somedata + ")"));
+        //                     var JSONObj = JSON.parse(json);
+        //                     // console.log(JSONObj);
+        //                     $(".skill_field_dynamic").html('');
+        //                     for (var i = 0; i < JSONObj.length; i++) {
+        //                         var skill_field_master = JSONObj[i].fields;
+        //                         if (skill_field_master.field_value == 'Torque_applied_location' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-2 col-md-2  col-sm-12 px-2 p-0 show_me_skillfields">';
+        //                             ele += '<input type = "text" name ="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  class="form-control required" >';
+        //                             ele += '<label>' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+        //                         }
+        //                         else if (skill_field_master.field_value == 'TorqueSpec' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-1 col-md-1  col-sm-12 px-2 p-0 show_me_skillfields ">';
+        //                             ele += '<input type = "text" name ="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '" onchange="TorqueChange(this)" class="form-control required" >';
+        //                             ele += '<label>' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+
+        //                             $("#TorqueSpec,#LooseningTorqueSpec").blur(function () {
+        //                                 $(this).css("background-color", "lightyellow");
+        //                                 $("#LooseningTorqueSpec,#TorqueSpec").on('change', function () {
+        //                                     var Units = $("#Units").val();
+        //                                     var formula1 = $("#LooseningTorqueSpec").val();
+        //                                     var TorqueSpec = $("#TorqueSpec").val();
+        //                                     if(Units == 'NM' || Units == 'KGF/CM'){
+        //                                         if(formula1 == 'from -30% to +5%'){
+        //                                             let min_p = 30; let max_p = 5;
+        //                                             var values = torque_observations(min_p, max_p, TorqueSpec);
+        //                                                 // console.log(valuess);
+        //                                             let formula_observed = " from " + values.minnum + " to " + values.maxnum;
+        //                                             // console.log(formula_observed);
+        //                                             $("#TorqueResult").val(formula_observed);
+
+        //                                         }else if(formula1 == 'from -45% to +5%' ){
+        //                                             let min_p = 45; let max_p = 5;
+        //                                             var values = torque_observations(min_p, max_p, TorqueSpec);
+        //                                             let formula_observed = " from " + values.minnum + " to " + values.maxnum;
+        //                                             // console.log(formula_observed);
+        //                                             $("#TorqueResult").val(formula_observed);
+        //                                         }
+        //                                     }                                          
+        //                                 });
+        //                             });
+
+        //                             $("#TorqueSpec").change(function () {
+        //                                 var Units = $("#Units").val();
+        //                                 var formula1 = $("#LooseningTorqueSpec").val();
+        //                                 if (formula1 == 'from -30% to +5%' && Units == 'NM' || Units == 'KGF/CM') {
+        //                                     // console.log(formula1);
+        //                                     let TorqueSpec = $("#TorqueSpec").val();
+        //                                     let min_p = 30;
+        //                                     let max_p = 5;
+        //                                     let tp_min = TorqueSpec * min_p / 100;
+        //                                     let tp_max = TorqueSpec * max_p / 100;
+        //                                     let tp_min_val = TorqueSpec - tp_min;
+        //                                     let tp_max_val = -TorqueSpec - tp_max;
+        //                                     let tp_max_val2 = Math.abs(tp_max_val);
+
+        //                                     // console.log(tp_min_val);
+        //                                     // console.log(tp_max_val2);
+        //                                     let formula_observed = " from " + tp_min_val + " to " + tp_max_val2;
+        //                                     // console.log(formula_observed);
+        //                                     let TorqueResult = $("#TorqueResult").val(formula_observed);
+        //                                     // console.log(TorqueResult);
+        //                                     return TorqueResult;
+
+        //                                 }
+        //                                 else if (formula1 == 'from -45% to +5%' && Units == 'NM' || Units == 'KGF/CM') {
+        //                                     // console.log(formula1);
+        //                                     let TorqueSpec = $("#TorqueSpec").val();
+        //                                     let min_p = 45;
+        //                                     let max_p = 5;
+        //                                     let tp_min = TorqueSpec * min_p / 100;
+        //                                     let tp_max = TorqueSpec * max_p / 100;
+        //                                     let tp_min_val = TorqueSpec - tp_min;
+        //                                     let tp_max_val = -TorqueSpec - tp_max;
+        //                                     let tp_max_val2 = Math.abs(tp_max_val);
+
+        //                                     // console.log(tp_min_val);
+        //                                     // console.log(tp_max_val2);
+        //                                     let formula_observed = " from " + tp_min_val + " to " + tp_max_val2;
+        //                                     // console.log(formula_observed);
+        //                                     let TorqueResult = $("#TorqueResult").val(formula_observed);
+        //                                     // console.log(TorqueResult);
+        //                                     return TorqueResult;
+        //                                     // 1 Nm 	= 10.197162129779 kilogram force centimeters (kgf cm)
+
+        //                                 }
+
+
+        //                             });
+
+        //                         }
+        //                         else if (skill_field_master.field_value == 'Units' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-1 col-md-1  col-sm-12 px-1 p-0  show_me_skillfields">';
+        //                             ele += '<select name="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  onchange="TorqueChange(this)" class="form-select  px-2 p-0 required " aria-label="Default select example">';
+        //                             ele += '<option value="0" >-' + skill_field_master.field_value + '-</option>';
+        //                             ele += '<option value="NM"> NM </option>';
+        //                             ele += '<option value="KGF/CM"> KGF/CM </option>';
+        //                             ele += ' </select>';
+        //                             // ele += '<input type = "text" name ="value' + (i + 1) + '"  class="form-control" required="True">';
+        //                             // ele += '<label>' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+        //                         }
+        //                         else if (skill_field_master.field_value == 'LooseningTorqueSpec' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-2 col-md-2  col-sm-12 px-1 p-0 show_me_skillfields">';
+        //                             ele += '<select name="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  onchange="TorqueChange(this)" class="form-select px-2 p-0 required" aria-label="Default select example">';
+        //                             ele += '<option value="0" >-' + skill_field_master.field_value + '-</option>';
+        //                             ele += '<option value="from -30% to +5%"> from -30% to +5% </option>';
+        //                             ele += '<option value="from -45% to +5%"> from -45% to +5% </option>';
+        //                             ele += ' </select>';
+        //                             // ele += '<input type = "text" name ="value' + (i + 1) + '"  class="form-control" required="True">';
+        //                             // ele += '<label>' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+
+
+        //                         }
+
+        //                         else if (skill_field_master.field_value == 'TorqueResult' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-2 col-md-2  col-sm-12  px-1 p-0 show_me_skillfields">';
+        //                             ele += '<input type = "text" name ="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  class="form-control" readonly >';
+        //                             ele += '<label>' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+        //                         }
+        //                         else if (skill_field_master.field_value == 'OLTS_Value1' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-1 col-md-1  col-sm-12 px-1 p-0 show_me_skillfields" >';
+        //                             ele += '<input type = "text" name ="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  class="form-control observe_values required" title="value1 Observed Loosening Torque">';
+        //                             ele += '<label >' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+        //                         }
+        //                         else if (skill_field_master.field_value == 'OLTS_Value2' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-1 col-md-1  col-sm-12 px-1 p-0 show_me_skillfields" >';
+        //                             ele += '<input type = "text" name ="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  class="form-control observe_values required" title="value2 Observed Loosening Torque">';
+        //                             ele += '<label >' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+        //                         }
+        //                         else if (skill_field_master.field_value == 'OLTS_Value3' && skill_field_master.cert_id == 1) {
+        //                             var ele = '';
+        //                             ele += '<div class="form-floating mb-2 col-lg-1 col-md-1  col-sm-12 px-1 p-0 show_me_skillfields" >';
+        //                             ele += '<input type = "text" name ="' + skill_field_master.field_value + '" id="' + skill_field_master.field_value + '"  class="form-control observe_values" title="value3 Observed Loosening Torque">';
+        //                             ele += '<label >' + skill_field_master.field_value + '</label>';
+        //                             ele += '</div>';
+        //                             $(".skill_field_dynamic").append(ele);
+        //                         }
+        //                     }
+        //                 },
+        //                 error: (error) => {
+        //                     console.log(error);
+
+        //                 }
+        //             });
+        //         }
+        //         else if (cid != 0 && cat_id != 0) {
+        //             var LTSpec = $("#LooseningTorqueSpec").val();
+        //             // console.log(LTSpec);
+        //             // console.log("your are entered into 30- 5 %"); return false;
+        //         }
+        //         else {
+        //             alert("Please select certificate Category and Type"); return false;
+        //         }
+        //     } else {
+        //         $(".show_me_skillfields").hide("slow");
+        //     }
+        // }));
+
+        if ($('.skill_checked_clicked').click(function () {
+            if ($(this).is(":checked")) {
+                $(".show_me_skillfields").show('slow');
+                $(".skill_field_dynamic").empty();
+                var cat_id = $("#cat_id").val();
+                var cid = $("#cid").val();
+                var csrf_token = $("input[name='csrfmiddlewaretoken']").val(); // Get the CSRF token
+
+                if (cid != 0 && cat_id != '0') {
+                    $.ajax({
+                        url: "/certificate/get_skill_field_master_fields",
+                        // url: "http://"+hostname+"/certificate/get_skill_field_master_fields",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { cid: cid },
+                        success: function (data) {
+                            // console.log(data);
+                            if(data.input_div != 'None'){
+                                $(".skill_field_dynamic").append(data.input_div);
+                            }else{$(".skill_field_dynamic").empty();}
+                            
+                            
+                        },
+                        error: (error) => {
+                            console.log(error);
+
+                        }
+                    });
+                }
+                else if (cid != 0 && cat_id != 0) {
+                    var LTSpec = $("#LooseningTorqueSpec").val();
+                    // console.log(LTSpec);
+                    // console.log("your are entered into 30- 5 %"); return false;
+                }
+                else {
+                    alert("Please select certificate Category and Type"); return false;
+                }
+            } else {
+                $(".show_me_skillfields").hide("slow");
+            }
+        }));
+
+        //certificate changed then changed the skill fields 
+        $("#cat_id").change(function () {
+            var skill = $("#skill").is(":checked");
+            // console.log(skill);
+            if (cid == 1) {
+                $(".show_me_skillfields").show("slow");
+                return true;
+            }
+            else if (cid == 1 && skill == true) {
+                $(".show_me_skillfields").show("slow");
+
+                return true;
+            }
+            else {
+                var skill_value = $('#skill').val();
+                $('#skill').prop('checked', skill_value == 'NO');
+                $(".show_me_skillfields").hide("slow");
+                return false;
+            }
+            
+
+
+
+        });
+
+
+
+        //quality of work fields show and hide purpose
+        $(".show_me_qua_work_fields").hide();
+        $('.quality_checked_clicked').click(function () {
+            var cert_id = $("#cid").val();
+            if(cert_id != '' && cert_id != '0'){            
+                if ($(this).is(":checked")) {
+                    $(".show_me_qua_work_fields").show('slow');
+
+                    $("#qty_eval").blur(function () {
+                        var qty_evalued = $("#qty_eval").val();
+                        if (qty_evalued > 1 && qty_evalued <= 10) {
+                            return true;
+                        }else {
+                             alert("Qty Evaluated must be >= 2 to <=10."); return false;
+                        }
+                    });                    
+                } else {
+                    $(".show_me_qua_work_fields").hide('slow');
+                }
+            }else { $(".show_me_qua_work_fields").hide('slow'); 
+                $(this).prop("checked", false); // Uncheck the checkbox using .prop()
+                alert('Please Select Certificate Type.');            
+            }
+        });
+
+        //period of duration fields show and hide purpose
+        $(".show_me_period_fields").hide();
+        $('.period_checked_clicked').click(function () {
+            // var checkbox = document.getElementById(this);
+            var empcode = $("#empcode").val();
+            if(empcode != ''){
+                if ($(this).is(":checked")) {
+                    $(".show_me_period_fields").show('slow');
+                    var period_to_date = new Date();
+                    var period_to = period_to_date.toISOString().slice(0, 10);
+                    // $("#period_to").val(datepatternv1(period_to_date));
+                } else { $(".show_me_period_fields").hide('slow'); }
+            } else { $(".show_me_period_fields").hide('slow'); 
+                $(this).prop("checked", false); // Uncheck the checkbox using .prop()
+                alert('Please enter empcode.');            
+            }            
+        });        
+
+
+    });
+
+
+
+</script>
+
+
+
+
+
+
+
+{%endblock%}

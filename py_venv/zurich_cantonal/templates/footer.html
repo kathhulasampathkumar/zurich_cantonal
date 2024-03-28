@@ -1,0 +1,155 @@
+
+{% load static %}
+
+{%block content%}
+
+<!-- <footer> -->
+  
+  <div class="bg-success" style="z-index: 10000;">
+    
+    <a href="{%url 'homepage'%}" class="d-inline-block">Associate information System</a>|
+    <a href="{%url 'homepage'%}" class="d-inline-block">Holidays</a>|
+    <a href="{%url 'homepage'%}" class="d-inline-block">Bus & Canteen committee</a>|
+    <a href="{%url 'homepage'%}" class="d-inline-block">Common Extns/Mail Van</a>|
+    <a href="{{CI_BASE_URL}}index.php/leave/get_transport" class="d-inline-block">Transport</a>|
+    <a href="{%url 'homepage'%}" class="d-inline-block">SAP T-Codes</a>|
+    <a href="{{CI_BASE_URL}}index.php/edptracker/raise" class="d-inline-block">Raise A Request </a>|
+    <a href="#" class="d-inline-block">KHOJ Datasheet</a>|
+    <a href="#" class="d-inline-block">Vendor Directory </a>|
+    {%if  user_id == 903916 or user_id == 900292 or user_id == 901294%} 
+    <a href="#" class="d-inline-block">HR File(s)</a>| 
+    <a href="#" class="d-inline-block">Vision</a>| 
+    {%endif%}
+    {%if menuItem63.module_name is not None%}
+    <a href="#" class="d-inline-block">Drawings</a>|
+    {%endif%}
+    <a href="{{CI_BASE_URL}}index.php/hideandshow/kpidates" class="d-inline-block">KPI Dates</a>|
+    <a href="{%url 'index'%}" class="d-inline-block">{{page_load_time}}</a>|
+    <a href="#" class="d-inline-block">System</a>|
+    <a href="#" class="d-inline-block">{{current_time}}</a>|  <div id="loadingTime"></div>
+
+    
+  </div>
+<!-- </footer> -->
+<style>
+  /* @import url(https://fonts.googleapis.com/css?family=Raleway); */
+/* Colors */
+* {
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: Raleway, sans-serif;
+  background-color: #fff;
+}
+
+footer {
+  position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+  width: 100%;
+  display: inline-block;
+  margin: 3em 0 0 0;
+  height: 20px;
+  background-color: #adb889;
+  padding-bottom: 0%;
+}
+footer a{
+  text-decoration: none;
+  color: purple;
+  font-weight: 500;
+  padding-bottom: 0;
+  padding-right: 5px;
+}
+footer a:hover{
+  text-decoration: none;
+  color: white;
+}
+
+
+footer .copyright {
+  width: 50%;
+  float: left;
+}
+@media (max-width: 600px) {
+  footer .copyright {
+    width: 100%;
+  }
+}
+footer .copyright p {
+  padding-left: 10%;
+  color: white;
+  font-size: 0.7em;
+  line-height: 30px;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+@media (max-width: 600px) {
+  footer .copyright p {
+    text-align: center;
+    padding: 0;
+  }
+}
+footer .social {
+  width: 50%;
+  float: right;
+}
+@media (max-width: 600px) {
+  footer .social {
+    width: 100%;
+  }
+}
+footer .social a {
+  float: left;
+  line-height: 30px;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  -moz-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  -webkit-transition: all, 0.3s;
+  transition: all, 0.3s;
+}
+footer .social a:hover {
+  background-color: #222;
+  -moz-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  -webkit-transition: all, 0.3s;
+  transition: all, 0.3s;
+}
+
+.linked {
+  background-color: #1e83ae;
+  font-size: 1.2em;
+  width: 20%;
+}
+
+.face {
+  background-color: #3d5b94;
+  font-size: 1.2em;
+  width: 20%;
+}
+
+.tweet {
+  background-color: #3dacdd;
+  font-size: 1.2em;
+  width: 20%;
+}
+
+.support {
+  background-color: #6dcd9a;
+  font-size: 0.8em;
+  width: 40%;
+}
+
+</style>
+
+
+{%endblock%}

@@ -1,0 +1,74 @@
+{%extends "base.html"%}
+{% load static %}
+{%block content%}
+
+{% load custom_filters %}
+
+
+
+{%if expert_approvals%}
+<fieldset class="border border-2 px-2">
+  <form action="{% url 'update_multiple' %}" method="post">{% csrf_token %}
+    <legend  class="float-none w-auto mb-2 p-2 medha_headings fs-5 " style="color: #800080 !important;
+    font-weight: 700;font-family: 'Andy MT';">Approval certificate Page :</legend>
+    <input type="submit" value="Approve" class="btn btn-success m-2 update_apr_sts">
+    <table class="table table-striped table-bordered table-hover m-2">
+      <thead>
+        <tr>
+          <th scope="col">S.NO.</th>
+          <th scope="col">EnrtyID</th>
+          <th scope="col">CertificateName</th>
+          <th scope="col">EmployeCode</th>
+          <th scope="col">EmployeeName</th>
+          <th scope="col">ExperienceOnProcess</th>
+          <th scope="col">Skill</th>
+          <th scope="col">QualityWork</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Product</th>
+          <th scope="col">Period</th>
+          <th scope="col">FromDate</th>
+          <th scope="col">ToDate</th>
+          <th scope="col">EffectFrom</th>
+          <th scope="col">Applied_or_ApprovedBy</th>
+          <!-- <th scope="col">Status</th> -->
+          <!-- <th scope="col">Approve / Reject</th> -->
+        </tr>
+      </thead>
+      <tbody>
+
+        {%for apr in expert_approvals%}
+
+        <tr class=" ">
+          <th scope="row" id="#">{{forloop.counter}}</th>      
+          <td>{{apr.main_id}} <input type="checkbox" name="main_id" id="" value="{{apr.main_id}}"  ></td>
+          <td>{{ apr.cert_id |certificateNameByFilter}}</td>
+          <td>{{apr.empcode}}</td>      
+          <td>{{apr.empcode|get_usernameByFilter}}</td>      
+          <td>{{apr.eop_years}} Years ,{{apr.eop_months}} Months</td>
+          <td>{{apr.skill}}</td>
+          <td>{{apr.qua_work}}</td>
+          <td>{{apr.qty_eval}}</td>
+          <td>{{apr.prod_eval}}</td>
+          <td>{{apr.period}}</td>
+          <td>{{apr.period_from |date:" d - m - Y"}}</td>
+          <td>{{apr.period_to |date:" d - m - Y"}}</td>
+          <td>{{apr.effect_dt |date:" d - m - Y"}}</td>
+          <td>{{apr.createdby |get_usernameByFilter }} </td>          
+          <!-- <td class="p-0 m-0 d-inline"> <a href="{%url 'update_cert' apr.main_id  %}" class="btn btn-success m-2 update_apr_sts">Approve</a> </td> -->          
+        </tr>
+
+        {%endfor%}
+
+      </tbody>
+
+    </table>
+  </form>
+</fieldset>
+
+{%else%}
+<p class=" text-success fs-5 px-4"> * * * No Pending Approvals * * * </p>
+
+{%endif%}
+
+
+{%endblock%}

@@ -1,0 +1,923 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <title> Responsive Drop Down Navigation Menu | CodingLab </title>-->
+  <link rel="stylesheet" href="style.css">
+  <!-- Boxicons CDN Link -->
+  <link href="{% static 'css/boxicons.min.css'%}" rel='stylesheet'>
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Googlefont Poppins CDN Link */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      height: 70px;
+      background: #3E8DA8;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      z-index: 99;
+    }
+
+    nav .navbarx {
+      height: 100%;
+      max-width: 100vw;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      /* justify-content: space-between; */
+      /* margin: auto; */
+      /* background: red; */
+      /* padding: 0 50px; */
+    }
+
+    .navbarx .logo a {
+      font-size: 30px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav .navbarx .nav-links {
+      line-height: 70px;
+      height: 100%;
+    }
+
+    nav .navbarx .links {
+      display: flex;
+    }
+
+    nav .navbarx .links li {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      padding: 0 14px;
+    }
+
+    nav .navbarx .links li a {
+      height: 100%;
+      text-decoration: none;
+      white-space: nowrap;
+      color: rgb(29, 17, 17);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .links li:hover .htmlcss-arrow,
+    .links li:hover .js-arrow {
+      transform: rotate(180deg);
+    }
+
+    nav .navbarx .links li .arrow {
+      /* background: red; */
+      height: 100%;
+      width: 22px;
+      line-height: 70px;
+      text-align: center;
+      display: inline-block;
+      color: rgb(197, 20, 20);
+      transition: all 0.3s ease;
+    }
+
+    nav .navbarx .links li .sub-menu {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      line-height: 30px;
+      background: #3E8DA8;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      border-radius: 0 0 4px 4px;
+      display: none;
+      z-index: 2;
+    }
+
+    nav .navbarx .links li:hover .htmlCss-sub-menu,
+    nav .navbarx .links li:hover .js-sub-menu {
+      display: block;
+    }
+
+    .navbarx .links li .sub-menu li {
+      padding: 0 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbarx .links li .sub-menu a {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .navbarx .links li .sub-menu .more-arrow {
+      line-height: 40px;
+    }
+
+    .navbarx .links li .htmlCss-more-sub-menu {
+      /* line-height: 40px; */
+    }
+
+    .navbarx .links li .sub-menu .more-sub-menu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      border-radius: 0 4px 4px 4px;
+      z-index: 1;
+      display: none;
+      background-color: rgb(58, 58, 110);
+    }
+
+    .links li .sub-menu .more:hover .more-sub-menu {
+      display: block;
+    }
+
+    .navbarx .search-box {
+      position: relative;
+      height: 40px;
+      width: 40px;
+    }
+
+    .navbarx .search-box i {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      line-height: 40px;
+      text-align: center;
+      font-size: 22px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .navbarx .search-box .input-box {
+      position: absolute;
+      right: calc(100% - 40px);
+      top: 80px;
+      height: 60px;
+      width: 300px;
+      background: #3E8DA8;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+
+    .navbarx.showInput .search-box .input-box {
+      top: 65px;
+      opacity: 1;
+      pointer-events: auto;
+      background: #3E8DA8;
+    }
+
+    .search-box .input-box::before {
+      content: '';
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      background: #3E8DA8;
+      right: 10px;
+      top: -6px;
+      transform: rotate(45deg);
+    }
+
+    .search-box .input-box input {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 4px;
+      transform: translate(-50%, -50%);
+      height: 35px;
+      width: 280px;
+      outline: none;
+      padding: 0 15px;
+      font-size: 16px;
+      border: none;
+    }
+
+    .navbarx .nav-links .sidebar-logo {
+      display: none;
+    }
+
+    .navbarx .bx-menu {
+      display: none;
+    }
+
+    @media (max-width:920px) {
+      nav .navbarx {
+        max-width: 100%;
+        padding: 0 25px;
+      }
+
+      nav .navbarx .logo a {
+        font-size: 27px;
+      }
+
+      nav .navbarx .links li {
+        padding: 0 10px;
+        white-space: nowrap;
+      }
+
+      nav .navbarx .links li a {
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width:800px) {
+      nav {
+        /* position: relative; */
+      }
+
+      .navbarx .bx-menu {
+        display: block;
+      }
+
+      nav .navbarx .nav-links {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        display: block;
+        max-width: 270px;
+        width: 100%;
+        background: #3E8DA8;
+        line-height: 40px;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.5s ease;
+        z-index: 1000;
+      }
+
+      .navbarx .nav-links .sidebar-logo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .sidebar-logo .logo-name {
+        font-size: 25px;
+        color: #fff;
+      }
+
+      .sidebar-logo i,
+      .navbarx .bx-menu {
+        font-size: 25px;
+        color: #fff;
+      }
+
+      nav .navbarx .links {
+        display: block;
+        margin-top: 20px;
+      }
+
+      nav .navbarx .links li .arrow {
+        line-height: 40px;
+      }
+
+      nav .navbarx .links li {
+        display: block;
+      }
+
+      nav .navbarx .links li .sub-menu {
+        position: relative;
+        top: 0;
+        box-shadow: none;
+        display: none;
+      }
+
+      nav .navbarx .links li .sub-menu li {
+        border-bottom: none;
+
+      }
+
+      .navbarx .links li .sub-menu .more-sub-menu {
+        display: none;
+        position: relative;
+        left: 0;
+      }
+
+      .navbarx .links li .sub-menu .more-sub-menu li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .links li:hover .htmlcss-arrow,
+      .links li:hover .js-arrow {
+        transform: rotate(0deg);
+      }
+
+      .navbarx .links li .sub-menu .more-sub-menu {
+        display: none;
+      }
+
+      .navbarx .links li .sub-menu .more span {
+        /* background: red; */
+        display: flex;
+        align-items: center;
+        /* justify-content: space-between; */
+      }
+
+      .links li .sub-menu .more:hover .more-sub-menu {
+        display: none;
+      }
+
+      nav .navbarx .links li:hover .htmlCss-sub-menu,
+      nav .navbarx .links li:hover .js-sub-menu {
+        display: none;
+      }
+
+      .navbarx .nav-links.show1 .links .htmlCss-sub-menu,
+      .navbarx .nav-links.show3 .links .js-sub-menu,
+      .navbarx .nav-links.show2 .links .more .more-sub-menu {
+        display: block;
+      }
+
+      .navbarx .nav-links.show1 .links .htmlcss-arrow,
+      .navbarx .nav-links.show3 .links .js-arrow {
+        transform: rotate(180deg);
+      }
+
+      .navbarx .nav-links.show2 .links .more-arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    @media (max-width:370px) {
+      nav .navbarx .nav-links {
+        max-width: 100%;
+      }
+    }
+  </style>
+
+
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body>
+  <nav style="background:url('../static/images/hbg.JPG');">
+    <div class="navbarx">
+      <i class='bx bx-menu'></i>
+      <div class="logo"><a href="#"><img src="../static/images/logo.png" alt=""></a></div>
+      <div class="nav-links">
+        <div class="sidebar-logo">
+          <span class="logo-name">CodingLab</span>
+          <i class='bx bx-x'></i>
+        </div>
+        <ul class="links">
+          <li><a href="#">
+              <p style="color: red; font-size: large;">MEDHA ONLINE SERVICES</p>
+            </a></li>
+          <li>
+            <a href="#">Quality management</a>
+            <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
+            <ul class="htmlCss-sub-menu sub-menu">
+              <li><a href="http://192.168.132.27/msdpl.com/index.php/reworkreport">Rework report</a></li>
+              <li class="more">
+                <span><a href="#">Kaizen</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="http://192.168.132.27/msdpl.com/index.php/kaizen">Kaizen Entry</a></li>
+                  <li><a href="192.168.132.27/msdpl.com/index.php/kaizen/gllist">Gl/FR list</a></li>
+                  <li><a href="http://192.168.132.27/msdpl.com/index.php/kaizen/hodlist">HOD list</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">QCC/RIW</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">QCC/RIW Entry</a></li>
+                  <li><a href="http://192.168.132.27/msdpl.com/index.php/qcc/hodlist/">HOD list</a></li>
+                  <li><a href="http://192.168.132.27/msdpl.com/index.php/qcc/qccpdflist/">Pdf Presentation</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">Material Master</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">New code request</a></li>
+                  <li><a href="#">New code for PCB</a></li>
+                  <li><a href="#">New code for A-series</a></li>
+                  <li><a href="#">PCM request</a></li>
+                  <li><a href="#">MM designer Pending list</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">PRS</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">PRS Edit</a></li>
+                  <li><a href="#">PRS Creation</a></li>
+                  <li><a href="#">MRP Updation</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">Testing PDFs</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Testing PDFs sensors</a></li>
+                  <li><a href="#">Testing PDFs</a></li>
+        
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">MPLM Documents</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Documents Final Release</a></li>
+                  <li><a href="#">Documents DCD</a></li>
+                  <li><a href="#">Documents Entry</a></li>
+                  <li><a href="#">Tdrive Doc Entry</a></li>
+                  <li><a href="#">ECM Doc Entry</a></li>
+                  <li><a href="#">Doc Issue/ Return</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">MPLM cft</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">initiation meeting call</a></li>
+                  <li><a href="#"> CFT request</a></li>
+                  <li><a href="#">CFT meeting call</a></li>
+                  <li><a href="#">CFT MoM</a></li>
+                  <li><a href="#">CFT Review</a></li>
+                  <li><a href="#">Master Index</a></li>
+                  <li><a href="#">Group Mail Id</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Adminstration</a>
+            <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
+            <ul class="htmlCss-sub-menu sub-menu">
+
+              <li class="more">
+                <span><a href="#">inspection Report Master</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Inspection Report Entry</a></li>
+                  <li><a href="#">Inspection Report list</a></li>
+                  <li><a href="#">Summary Reports</a></li>
+                  <li><a href="#">Reports</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">User Privileges</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Associate User Privileges</a></li>
+                  <li><a href="#">Dept wise</a></li>
+                  <li><a href="#">Associate DeptWise</a></li>
+                  <li><a href="#">List of modules</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">FAI Reports</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">FAI creation</a></li>
+                  <li><a href="#">HOD approval</a></li>
+                  <li><a href="#">FAI master creation</a></li>
+                  <li><a href="#">FAI vendor creation</a></li>
+                </ul>
+              </li>
+         
+            </ul>
+          </li>
+          <li>
+            <a href="#">Reports</a>
+            <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
+            <ul class="htmlCss-sub-menu sub-menu">
+              <li class="more">
+                <span><a href="#">Rework data retreival (inter)</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="http://192.168.132.27/msdpl.com/index.php/reworkreport/reworkreport_review">review</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="http://192.168.132.27/msdpl.com/index.php/porelease/reports">Po approval</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                {% comment %} <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul> {% endcomment %}
+              </li>
+              <li class="more">
+                <span><a href="http://192.168.132.27/msdpl.com/index.php/prs/prsreportall">PRS report</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                {% comment %} <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul> {% endcomment %}
+              </li>
+              <li class="more">
+                <span><a href="http://192.168.132.27/msdpl.com/index.php/servicereport/reports">Service Report List</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                {% comment %} <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul> {% endcomment %}
+              </li>
+              <li class="more">
+                <span><a href="#">Service Analysis Stage</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Unit sub assembly level</a></li>
+                  <li><a href="#">S/A Rework level</a></li>
+                  <li><a href="#">Failed Component Level</a></li>
+                  <li><a href="#">Root Cause and CA/PA Level</a></li>
+                  <li><a href="#">PSE Comments Level</a></li>
+                  <li><a href="#">FAG Reports</a></li>
+                  <li><a href="#">Add Project</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Samayam</a>
+            <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
+            <ul class="htmlCss-sub-menu sub-menu">
+              <li><a href="#">Web Design</a></li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Department modules</a>
+            <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
+            <ul class="htmlCss-sub-menu sub-menu">
+              <li><a href="#">Web Design</a></li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+              <li class="more">
+                <span><a href="#">More</a>
+                  <i class='bx bxs-chevron-right arrow more-arrow'></i>
+                </span>
+                <ul class="more-sub-menu sub-menu">
+                  <li><a href="#">Neumorphism</a></li>
+                  <li><a href="#">Pre-loader</a></li>
+                  <li><a href="#">Glassmorphism</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" style="color: blue;">{{nm}}</a>
+            <form class="form-inline my-2 my-lg-0">
+              <!-- <h6 style="margin-right: 8px ;">{{nm}}biswajit</h6>  -->
+              <a href="{% url 'logout' %}" style="margin-left: 1rem; margin-bottom: 1rem;"><button
+                  class="btn btn-danger btn-sm " type="submit">LOGOUT</button></a>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    // search-box open close js code
+    let navbarx = document.querySelector(".navbarx");
+    let searchBox = document.querySelector(".search-box .bx-search");
+    // let searchBoxCancel = document.querySelector(".search-box .bx-x");
+
+    searchBox.addEventListener("click", () => {
+      navbarx.classList.toggle("showInput");
+      if (navbarx.classList.contains("showInput")) {
+        searchBox.classList.replace("bx-search", "bx-x");
+      } else {
+        searchBox.classList.replace("bx-x", "bx-search");
+      }
+    });
+
+    // sidebar open close js code
+    let navLinks = document.querySelector(".nav-links");
+    let menuOpenBtn = document.querySelector(".navbarx .bx-menu");
+    let menuCloseBtn = document.querySelector(".nav-links .bx-x");
+    menuOpenBtn.onclick = function () {
+      navLinks.style.left = "0";
+    }
+    menuCloseBtn.onclick = function () {
+      navLinks.style.left = "-100%";
+    }
+
+
+    // sidebar submenu open close js code
+    let htmlcssArrow = document.querySelector(".htmlcss-arrow");
+    htmlcssArrow.onclick = function () {
+      navLinks.classList.toggle("show1");
+    }
+    let moreArrow = document.querySelector(".more-arrow");
+    moreArrow.onclick = function () {
+      navLinks.classList.toggle("show2");
+    }
+    let jsArrow = document.querySelector(".js-arrow");
+    jsArrow.onclick = function () {
+      navLinks.classList.toggle("show3");
+    }
+
+  </script>
+</body>
+
+</html>
+{%endblock%}

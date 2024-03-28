@@ -1,0 +1,276 @@
+
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+
+<style>
+    .ft {
+        font-size: 12px !important;
+
+        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        min-height: 73vh;
+        height: 70px;
+        overflow-x: visible;
+        overflow-y: visible;
+        text-align: justify;
+        width: 98% !important;
+    }
+
+    .show {
+        font-size: 20px;
+        font-style: italic;
+        color: white;
+        font-family: cursive;
+        background: rgb(47, 183, 190);
+        min-height: fit-content;
+        max-height: fit-content;
+    }
+
+    .fixTableHead thead th {
+        position: sticky;
+        top: 0;
+        background-color: #eaf7ed;
+    }
+
+    .fixTableHead {
+        overflow-y: auto;
+        height: 55vh;
+    }
+</style>
+
+<div style=" background-color: #eaf7ed" ;>
+
+    <div class="total">
+        
+        <div class="subhead">
+            <h6 style="margin: 8px;">Preservation of Assembled & Sub Assembly Components available in Production :</h6>
+        </div>
+        <div class="container-fluid py-3  ft tableFixHead">
+            <div class="row">
+                <div class="col-lg-12 ">
+
+
+
+                    <div class="table-responsive fixTableHead">
+                        {%if sel_item%}
+                        <form action="{% url 'overdue_update' sel_item.id %}" method="post">
+                            {% csrf_token %}
+                            <a href="{% url 'overdue_update' sel_item.id %}">
+                                <button type="submit" value="Save" class="btn btn-danger  m-1" data-toggle="tooltip"
+                                data-placement="top" title="click to save all data"
+                                style="font-size: small;">UPDATE</button>
+                            </a>
+                        
+                            <button type="submit" value="Save" class="btn btn-danger  m-1" data-toggle="tooltip"
+                                data-placement="top" title="click to show all data" style="font-size: small;"><a
+                                    href="{% url 'overdue' %}" style="color: white;">MODIFY OVERDUE ITEMS</a></button>
+                            <button class="btn " id="insertRow"
+                                style="font-size: 25px; background: transparent; color: blue;" data-toggle="tooltip"
+                                data-placement="top" title="add a new row in table"><i class="fa fa-plus-circle"
+                                    aria-hidden="true"></i></button>
+                            <div class="show"> {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Srnum</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Project</th>
+                                        <th scope="col">Component</th>
+                                        <th scope="col">Component
+                                            </br>Srnum</th>
+
+                                        <th scope="col">Rust Preventive <br> application for<br> machined parts(Y/N)
+                                        </th>
+                                        <th scope="col">Rotation <br> for Shaft(Y/N</th>
+                                        <th scope="col">Cleaning of<br> Accumulated(Y/N)</th>
+                                        <th scope="col">Covering With <br> Tarpaulin(Y/N)</th>
+                                        <th scope="col">Next Due Date</th>
+                                        <th scope="col">Dispatch ?</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ok">
+                                    <tr>
+                                        <th scope="row" name="srnum">1</th>
+                                        <td><input type="text" name="date" id="inp1" class="inputdate"
+                                                value="{{sel_item.date}}" required></td>
+                                        <script src="../static/js/date.js"></script>
+                                        <td><select name="project" id="" style="width: 60px;" required>
+                                                <option value="{{sel_item.project}}">{{sel_item.project}}</option>
+                                                <option value="6FRA _ 6068">6FRA _ 6068</option>
+                                                <option value="9000 HP">9000 HP</option>
+                                                <option value="ALTERNATORS">ALTERNATORS</option>
+                                                <option value="DEMU">DEMU</option>
+                                                <option value="EMU">EMU</option>
+                                                <option value="EV PROJECT">EV PROJECT</option>
+                                                <option value="HIGH SPEED (Train-18)">HIGH SPEED (Train-18)</option>
+                                                <option value="KOLKATA METRO">KOLKATA METRO</option>
+                                                <option value="MEMU ON BOARD">MEMU ON BOARD</option>
+                                                <option value="MOSCOW">MOSCOW</option>
+                                                <option value="UNDER SLUNG EMU">UNDER SLUNG EMU</option>
+                                                <option value="UNDER SLUNG MEMU">UNDER SLUNG MEMU</option>
+                                                <option value="WDG4">WDG4</option>
+
+
+                                            </select></td>
+
+                                        <td><input type="text" name="compo" id="compo" maxlength="12"
+                                                value="{{sel_item.component}}" required> </td>
+                                        <td><input type="text" name="composr" id="composr" class="compo1" maxlength="12"
+                                                value="{{sel_item.componentSr}}" style="width: 100px;" required></td>
+
+                                        <td><select name="rust" id="" style="width: 60px;" required>
+                                                <option value="">SELECT</option>
+                                                <option value="True">YES</option>
+                                                <option value="False">NO</option>
+                                            </select>
+                                        </td>
+                                        <td><select name="rotation" id="" style="width: 60px;" required>
+                                                <option value="">SELECT</option>
+                                                <option value="True">YES</option>
+                                                <option value="False">NO</option>
+                                            </select>
+                                        </td>
+                                        <td><select name="clean" id="" style="width: 60px;" required>
+                                                <option value="">SELECT</option>
+                                                <option value="True">YES</option>
+                                                <option value="False">NO</option>
+                                            </select>
+                                        </td>
+                                        <td><select name="cover" id="" style="width: 60px;" required>
+                                                <option value="">SELECT</option>
+                                                <option value="True">YES</option>
+                                                <option value="False">NO</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="nextdate" id="due1" class="nextdate"
+                                                value="{{sel_item.nextdate}}" onclick="datechange2(1)" required></td>
+                                        <td><select name="dispatch" id="" style="width: 60px;" required>
+                                                <option value="">SELECT</option>
+                                                <option value=1>YES</option>
+                                                <option value=0>NO</option>
+                                            </select>
+
+
+                                    </tr>
+
+                            </table>
+                        </form>
+
+                        {%else%}
+
+                       <form action="overdue" method="post">
+                        {% csrf_token %}
+                        project <select name="project" id="" style="width: 150px;"class="js-example-basic-single" >
+                            <option value="">SELECT PROJECT</option>
+                            <option value="6FRA _ 6068">6FRA _ 6068</option>
+                            <option value="9000 HP">9000 HP</option>
+                            <option value="ALTERNATORS">ALTERNATORS</option>
+                            <option value="DEMU">DEMU</option>
+                            <option value="EMU">EMU</option>
+                            <option value="EV PROJECT">EV PROJECT</option>
+                            <option value="HIGH SPEED (Train-18)">HIGH SPEED (Train-18)</option>
+                            <option value="KOLKATA METRO">KOLKATA METRO</option>
+                            <option value="MEMU ON BOARD">MEMU ON BOARD</option>
+                            <option value="MOSCOW">MOSCOW</option>
+                            <option value="UNDER SLUNG EMU">UNDER SLUNG EMU</option>
+                            <option value="UNDER SLUNG MEMU">UNDER SLUNG MEMU</option>
+                            <option value="WDG4">WDG4</option>
+                        </select>
+                        Dispatch<select name="dispatch" id="" style="width: 100;">
+                            <option value="">SELECT</option>
+                            <option value=1>dispatched</option>
+                            <option value=0>Not dispatched</option>
+                        </select>
+    
+                      <button type="submit" class="btn-primary">SHOW</button>
+                       </form>
+
+
+                        <table class="table" id="mytable">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Project</th>
+                                    <th scope="col">Component</th>
+                                    <th scope="col">Component
+                                        </br>Srnum</th>
+
+                                    <th scope="col">Rust Preventive <br> application for<br> machined parts(Y/N)
+                                    </th>
+                                    <th scope="col">Rotation <br> for Shaft(Y/N)</th>
+                                    <th scope="col">Cleaning of<br> Accumulated(Y/N)</th>
+                                    <th scope="col">Covering With <br> Tarpaulin(Y/N)</th>
+                                    <th scope="col">Next Due Date</th>
+                                    <th scope="col">Dispatch ?</th>
+                                    <th scope="col">Entrydate</th>
+                                    <th scope="col">Input Person</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ok">
+
+                                {% for student in students %}
+
+                                <tr>
+
+                                    <td>{{student.date}}</td>
+                                    <td>{{student.project}}</td>
+                                    <td>{{student.component}}</td>
+                                    <td>{{student.componentSr}}</td>
+                                    <td>{{student.rust}}</td>
+                                    <td>{{student.rotation}}</td>
+                                    <td>{{student.cleaning}}</td>
+                                    <td>{{student.tarpaulin}}</td>
+                                    <td>{{student.nextdate}}</td>
+                                    <td>
+                                        {%if student.dispatch%}
+                                        dispatched
+                                        {% comment %} <input type="checkbox" checked="checked" value={{student.id}}
+                                            name="boxes" id=""> {% endcomment %}
+                                        {%else%}
+                                        not dispatched
+                                        {%endif%}
+
+
+                                    </td>
+                                    <td>{{student.ntrydate}}</td>
+                                    <td>{{student.empcode}}</td>
+                                    <td>
+                                        <a href="{% url 'overdue_edit' student.id %}"><button
+                                                class="">EDIT</button></a>
+                                    </td>
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {%endif%}
+                    </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    <script src="{% static 'js/crud.js' %}"></script>
+    <script>   $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+    </script>
+
+
+{% endblock content %}

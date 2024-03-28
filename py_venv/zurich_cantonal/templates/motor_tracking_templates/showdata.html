@@ -1,0 +1,200 @@
+
+{% extends "base.html" %}
+{% block content  %}
+{% load static %}
+
+{% comment %} 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> 
+{% endcomment %}
+{% comment %} <script src="{%static 'js/crud.js'%}"></script>
+<script src="{%static 'js/date.js'%}"></script>
+<script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    
+
+    <script src="{% static 'js/jquery-ui.js'%}"></script>
+    <script src="{% static 'js/select2.min.js'%}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js'%}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css'%}"  crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css'%}" integrity="sha512-oM24YOsgj1yCDHwW895ZtK7zoDQgscnwkCLXcPUNsTRwoW1T1nDIuwkZq/O6oLYjpuz4DfEDr02Pguu68r4/3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css'%}" integrity="sha512-9h7XRlUeUwcHUf9bNiWSTO9ovOWFELxTlViP801e5BbwNJ5ir9ua6L20tEroWZdm+HFBAWBLx2qH4l4QHHlRyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> {% endcomment %}
+
+    <script src="{%static 'js/crud.js'%}"></script>
+    <script src="{%static 'js/date.js'%}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js'%}"></script>
+    <script src="{% static 'js/select2.min.js'%}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css'%}"  crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css'%}" integrity="sha512-oM24YOsgj1yCDHwW895ZtK7zoDQgscnwkCLXcPUNsTRwoW1T1nDIuwkZq/O6oLYjpuz4DfEDr02Pguu68r4/3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css'%}" integrity="sha512-9h7XRlUeUwcHUf9bNiWSTO9ovOWFELxTlViP801e5BbwNJ5ir9ua6L20tEroWZdm+HFBAWBLx2qH4l4QHHlRyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-webfont.woff2'%}">
+    <link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+    
+{% comment %} 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> 
+{% endcomment %}
+
+    
+   {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css" integrity="sha512-oM24YOsgj1yCDHwW895ZtK7zoDQgscnwkCLXcPUNsTRwoW1T1nDIuwkZq/O6oLYjpuz4DfEDr02Pguu68r4/3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css" integrity="sha512-9h7XRlUeUwcHUf9bNiWSTO9ovOWFELxTlViP801e5BbwNJ5ir9ua6L20tEroWZdm+HFBAWBLx2qH4l4QHHlRyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    {% endcomment %}
+
+<style>
+form input , form select{
+    margin: 10px;
+}
+.ft {
+        font-size: 12px !important;
+
+        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        min-height: 73vh;
+        height: 110px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        text-align: justify;
+        width: 99%  !important;
+        background-color: #eaf7ed;
+
+    }
+.table{
+    margin-bottom: 1rem !important;
+    
+}
+
+</style>    
+ <div style=" background-color: #eaf7ed">
+    <div class="total">
+        
+        <div class="show">
+            <form action="showdata" class= "form-control" method="post" style="background-color: #eaf7ed;">
+                {% csrf_token %}
+                Date <input type="text" name="inputdate" id="start" >
+                project <select name="project" id="" style="width: 150px;"class="js-example-basic-single" >
+                    <option value="">SELECT PROJECT</option>
+                    <option value="6FRA _ 6068">6FRA _ 6068</option>
+                    <option value="9000 HP">9000 HP</option>
+                    <option value="ALTERNATORS">ALTERNATORS</option>
+                    <option value="DEMU">DEMU</option>
+                    <option value="EMU">EMU</option>
+                    <option value="EV PROJECT">EV PROJECT</option>
+                    <option value="HIGH SPEED (Train-18)">HIGH SPEED (Train-18)</option>
+                    <option value="KOLKATA METRO">KOLKATA METRO</option>
+                    <option value="MEMU ON BOARD">MEMU ON BOARD</option>
+                    <option value="MOSCOW">MOSCOW</option>
+                    <option value="UNDER SLUNG EMU">UNDER SLUNG EMU</option>
+                    <option value="UNDER SLUNG MEMU">UNDER SLUNG MEMU</option>
+                    <option value="WDG4">WDG4</option>
+                </select>    
+                     Due Date <input type="text" name="duedate" id="due" >
+                     Entry Date <input type="text" name="entrydate" id="entryd" >
+                     Dispatch<select name="dispatch" id="" style="width: 100;">
+                        <option value="">SELECT</option>
+                        <option value=1>dispatched</option>
+                        <option value=0>Not dispatched</option>
+                    </select>
+
+                <button type="submit" class="btn-primary">SHOW</button>
+                
+            </form>
+            </div>
+           <form action="dispatcher" method="post">
+            {% csrf_token %}
+            <div class="table ft">
+                <table class="table table-hover table-sm" style="background-color: #eaf7ed; box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;" id="myTable">
+                    <h6 style="margin: 1rem; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; padding: 1rem;"> No. of records found : <span style="color: rgb(51, 28, 156); font-size: 20px;">{{count}}</span>
+                        <button type="submit" class="btn-secondary" style="margin-left: 60em; padding: 5px; border-radius: 10px; cursor: pointer;">update dispatch</button> </h6>
+                    <thead>
+                      <tr>
+                        
+                        <th scope="col">date</th>
+                        <th scope="col">project</th>
+                        <th scope="col">component</th>
+                        <th scope="col">componentSr</th>
+                        <th scope="col">rust</th>
+                        <th scope="col">rotation</th>
+                        <th scope="col">cleaning</th>
+                        <th scope="col">tarpaulin</th>
+                        <th scope="col">nextdate</th>
+                        <th scope="col">dispatch</th>
+                        <th scope="col">entrydate</th>
+                        <th scope="col">empcode</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+
+                      <tr>
+                        
+                        <td>{{student.date}}</td>
+                        <td>{{student.project}}</td>
+                        <td>{{student.component}}</td>
+                        <td>{{student.componentSr}}</td>
+                        <td>{{student.rust}}</td>
+                        <td>{{student.rotation}}</td>
+                        <td>{{student.cleaning}}</td>
+                        <td>{{student.tarpaulin}}</td>
+                        <td>{{student.nextdate}}</td>
+                        <td>
+                            {%if student.dispatch%} 
+                            dispatched
+                            {% comment %} <input type="checkbox" checked="checked" value={{student.id}} name="boxes" id=""> {% endcomment %}
+                            {%else%}
+                            <input type="checkbox"  value={{student.id}} name="boxes" id="">
+                            {%endif%}
+                        </td>
+                        <td>{{student.ntrydate}}</td>
+                        <td>{{student.empcode}}</td>
+                     
+                      
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table> 
+            </div>
+           </form>
+           
+    </div>
+
+   <script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+        
+   });
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+       $("#start").datepicker(({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        }));
+        $("#due").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+        $("#entryd").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+   </script> 
+
+{% endblock content %}

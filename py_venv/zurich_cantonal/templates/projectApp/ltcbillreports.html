@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="card-block">
+        <div class="card-header">
+            <h5>Reimbursement Reports</h5>
+        </div>
+        <!-- <h4 class="sub-title">Reimbursement</h4> -->
+        <form action="ltcshowdata" method="post">
+            {% csrf_token %}
+            <div class="container">
+                <table style="width:100%;">
+                    <tr>
+                        <td>Requesitioner: </td>
+                        <td><input type="text" name="requesitioner" id="requesitioner"></td>
+                        <td>Ack No: </td>
+                        <td><input type="ackno" name="ackno" id="project"></td>
+                    </tr>
+                    <tr>
+                        <td>From Date: : </td>
+                        <td><input type="date" name="fromdate" id="fromdate"></td>
+                        <td>To Date: </td>
+                        <td><input type="date" name="todate" id="todate"></td>
+                        <td><input type="submit" value="Show" class="btn btn-primary"></td>
+                    </tr>
+                </table>
+                <table class="table table-striped">
+                    <thead>
+                        <tr><td>No.of Records: <span>{{count}}</span></td></tr>
+                    <tr>
+                        <th>Ack No</th>
+                        <th>Emp Name</th>
+                        <th>Category</th>
+                        <th>Time Stamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for stud in students %}  
+                    <tr>
+                        <td>{{stud.id}}<br><input type="button" class="mybutton btn btn-primary" onclick="showModal({{stud.id}})" value="Open Model" /> 
+                            <a href="{% url 'overdue_book' stud.id %}" target="_blank">View</button></a></td>
+                        <td>{{stud.empcode}}</td>
+                        <td>LTC</td>
+                        <td>{{stud.timestamp}}</td>
+                    </tr>
+                    {% endfor %} 
+                    </tbody>
+                </table>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="exampleModalLabel">Modal</h4>
+                        </div>
+                        <div class="modal-body">
+                          Modal content
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        function showModal(ltcsubId) {
+            alert(ltcsubId)
+            $.ajax(
+            {
+                type:"GET",
+                dataType : 'json',
+                url: "/overdue_ltc/"+ltcsubId,
+                success: function (data) {
+                    {% for stud in students %}  
+                    <tr>
+                        <td>{{stud.id}}<br><input type="button" class="mybutton btn btn-primary" onclick="showModal({{stud.id}})" value="Open Model" /> 
+                            <a href="{% url 'overdue_book' stud.id %}" target="_blank">View</button></a></td>
+                        <td>{{stud.empcode}}</td>
+                        <td>LTC</td>
+                        <td>{{stud.timestamp}}</td>
+                    </tr>
+                    {% endfor %}
+                }
+            })
+            $('#myModal'+ltcsubId).modal('show');
+        }
+    </script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</html>
+{% endblock content %}

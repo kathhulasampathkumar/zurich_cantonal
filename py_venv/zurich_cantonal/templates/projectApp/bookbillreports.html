@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="card-block">
+        <div class="card-header">
+            <h5>Reimbursement Reports</h5>
+        </div>
+        <!-- <h4 class="sub-title">Reimbursement</h4> -->
+        <form action="bookshowdata" method="post">
+            {% csrf_token %}
+            <div class="container">
+                <table style="width:100%;">
+                    <tr>
+                        <td>Requesitioner: </td>
+                        <td><input type="text" name="requesitioner" id="requesitioner"></td>
+                        <td>Ack No: </td>
+                        <td><input type="ackno" name="ackno" id="project"></td>
+                    </tr>
+                    <tr>
+                        <td>From Date: : </td>
+                        <td><input type="date" name="fromdate" id="fromdate"></td>
+                        <td>To Date: </td>
+                        <td><input type="date" name="todate" id="todate"></td>
+                        <td><input type="submit" value="Show" class="btn btn-primary"></td>
+                    </tr>
+                </table>
+                <table class="table table-striped">
+                    <thead>
+                        <tr><td>No.of Records: <span>{{count}}</span></td></tr>
+                    <tr>
+                        <th>Ack No</th>
+                        <th>Emp Name</th>
+                        <th>Category</th>
+                        <th>Total Amount</th>
+                        <th>Time Stamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for stud in students %}  
+                    <tr>
+                        <td>{{stud.id}}<br><a href="{% url 'overdue_book' stud.id %}" class='fancybox fancybox.ajax' target="_blank">View</button></a></td>
+                        <td>{{stud.empcode}}</td>
+                        {% if stud.category == 2 %}
+                        <td>Books & Periodicals Reimbursement</td>
+                        {% endif %}
+                        <td>{{stud.totalamount}}</td>
+                        <td>{{stud.timestamp}}</td>
+                    </tr>
+                    {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div> 
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</html>
+{% endblock content %}
