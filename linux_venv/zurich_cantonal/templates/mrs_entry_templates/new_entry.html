@@ -1,0 +1,138 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+      
+    <title>mrs entry</title>
+
+<style>
+    .container{
+        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+        min-height: 700px;
+        margin-top: 15px;
+    }
+</style>
+
+
+
+
+    <div class="container">
+     
+        <br>
+        <form action="" method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="mrs_num" id="mrs_num" placeholder="MRS Number"
+                    aria-describedby="button-addon2">
+                
+            </div>
+            <div class="input-group mb-3" id="material_code_div" style="margin-top: 10px; opacity: 0;">
+                <input type="text" class="form-control" name="material_code" id="material_code"
+                    placeholder="Material Code" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+            </div>
+        </form>
+        <table class="table table-success table-striped">
+            <thead>
+                <tr>
+                    <th>Sl num</th>
+                    <th>Material Code</th>
+                    <th>Description</th>
+                    <th>Batch Code</th>
+                </tr>
+            </thead>
+            <tbody id="my_table"></tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var sl_num = 1;
+            $('#material_code').on('input', function () {
+                var input_value = $(this).val().trim();
+                if (input_value != '') {
+                    var input_parts = input_value.split('*');
+                    var material_code = input_parts[0].trim();
+                    var batch_code = input_parts.length > 1 ? input_parts[1].trim() : '';
+                    var mrs_num = $('#mrs_num').val().trim();
+                    var entry_time = new Date().toLocaleTimeString();
+                    alert(entry_time)
+                    $.ajax(
+                        {
+
+                        url: 'get_material_code/',
+                        data: {
+                            'material_code': material_code
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            var checker=data.display;
+                            
+                            if (checker==20) {
+                                var description = data.short_text; // get the short_text value from the response data
+                            var row = '<tr>' +
+                                '<td>' + sl_num + '</td>' +
+                                '<td>' + material_code + '</td>' +
+                                '<td>' + description + '</td>' + // append the description to the table row
+                                '<td>' + batch_code + '</td>' +
+                                '</tr>';
+                            $('#my_table').append(row);
+                            sl_num++;
+                            $('#material_code').val('');
+                            $.ajax({
+                                url: 'save_material_data/',
+                                data: {
+                                    'mrs_num': mrs_num,
+                                    'material_code': material_code,
+                                    'batch_code': batch_code,
+                                    'entry_time':entry_time
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                               
+                                    // / for( var i=0;i<)
+                                    console.log('Material data saved successfully');
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    console.log('Failed to save material data');
+                                }
+                            });
+                            }
+                            else{
+                                alert(data.msg)
+                                $('#material_code').val('');
+                            }
+                            
+                            
+    
+                            // Save data to database
+                          
+                        }
+                        
+                    });
+                }
+            });
+            $('#mrs_num').on('input', function () {
+                if ($(this).val().trim() != '') {
+                    $('#material_code_div').css('opacity', '1');
+                } else {
+                    $('#material_code_div').css('opacity', '0');
+                }
+            });
+        });
+    </script>
+
+
+
+
+{%endblock%}

@@ -1,0 +1,50 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jsbarcode/3.3.7/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qz-tray/2.1.0/qz-tray.js"></script>
+
+  <style id="compiled-css" type="text/css">
+     @media print {
+        .page {
+            width: 10cm;
+            height: 9.7cm;
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+              }
+             .col-print-12 {
+            width: 100%;
+             }
+              }
+    
+  </style>
+
+    <div class="col-12 col-print-12">
+            <p class="barcode tekli">
+                <svg id="barcode"> </svg>
+            </p>
+        </div>
+
+  <script type='text/javascript'>
+            JsBarcode("#barcode", "1554466",{        width:5,        height:200,        fontSize:50,        displayValue: true    });
+      window.print();
+      window.open('', '_parent', '');
+      window.close();
+  </script>
+
+
+
+  
+
+{% endblock %}

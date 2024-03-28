@@ -1,0 +1,1228 @@
+<style>
+        .navbar>nav>ul>li {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            }
+        .navbar>nav>ul>li>.dropdown-item{
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            }
+            #main_navbar li{
+                padding: 0;
+                margin: 0;
+            }
+</style>
+<nav class="navbar navbar-expand-lg p-0 m-0 g-0" id="main_navbar">
+        <div class="container-fluid p-0 m-0 g-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav border border-0 rounded-4" > <!-- style="background-image:linear-gradient(#e5e8da, #bcdce3) ;" -->
+                                <li class="nav-item dropdown">
+<!-- Start QualityManagement menus ######################################### Start QualityManagement menus   ####################################  Start QualityManagement menus -->
+                                        <a class="nav-link dropdown-toggle bolder_navigation_menu" href="#" role="button" data-bs-toggle="dropdown"> Quality Management</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+        <!-- $single1=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='1' and
+`empcode`='".$CI->session->userdata('user_id')."'"); -->
+
+                                                {%if menuItem1.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/pcbrework">PCB  Assembly   Rework(Intra)</a> </li>
+                                                {%endif%}
+                                                {%if menuItem2.module_name is not None%}
+                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/pcbrework">   Testing</a> </li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/reworkreport">Rework  Report</a> </li>
+                                                <!-- $single4=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='4' and`dept`='".$deptcode ."'"); -->
+
+                                                {%if menuItem4.module_name is not None%}
+                                                <li class="nav-item dropdown"> <a class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport">Service Report</a></li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"> <a class="dropdown-item" href="http://192.168.132.12:9000/certificate/testing/test/now/">More Urls testing </a></li>
+
+                                                <li class="nav-item dropdown"><a href="#"  class="dropdown-item dropdown-toggle">Kaizen </a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/kaizen">Kaizen   Entry</a></li>
+                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/kaizen/tllist">TL List</a></li>-->
+                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/kaizen/gllist">GL/FR List</a></li>
+                                                                <li class="nav-item dropdown"><a class="dropdown-item"     href="{{CI_BASE_URL}}index.php/kaizen/hodlist">HoD List</a></li>
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">QCC/RIW
+                                                        </a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/qcc/index/{{empcode_md5}}">QCC/RIW    Entry</a> <!-- need to pass the md5empcode -->  </li>
+                                                                <li class="nav-item dropdown"><a class="dropdown-item"    href="{{CI_BASE_URL}}index.php/qcc/hodlist/">HOD LIST</a>  </li>
+                                                                <li class="nav-item dropdown"><a class="dropdown-item"   href="{{CI_BASE_URL}}index.php/qcc/qccpdflist/">PDF Presentation</a></li>
+                                                        </ul>
+                                                </li>
+                                                <!-- if($locode=='MTPL'){ -->
+                                                {%if user_location == 'MTPL' %}
+                                                <li class="nav-item dropdown"><a href="#"  class="dropdown-item">MTEPL</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a href="#"   class="dropdown-item">NCA-MTEPL </a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mptlmodule/nc_generation_list">NC  Updation</a>   </li>
+                                                                                <li class="nav-item dropdown"><a href="#"   class="dropdown-item">NC  Generation and Approval </a>
+                                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                                <li    class="nav-item dropdown">  <a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mptlmodule">NC  Entry</a>   </li>
+                                                                                                <li  class="nav-item dropdown">  <a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mptlmodule/NC_Request_List">MTEPL  Registration</a></li>
+                                                                                                <li   class="nav-item dropdown"> <a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mptlmodule/hodprocesslist">HOD Approval</a>   </li>
+                                                                                                <li class="nav-item dropdown"> <a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mptlmodule/edp_process_list">EDP   Approval</a> </li>
+                                                                                        </ul>
+                                                                                </li>
+                                                                                <li class="nav-item dropdown"><a     href="#" class="dropdown-item">Meeting Reference Data </a>
+                                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                                <li class="nav-item dropdown"> <a class="dropdown-item"   href="{{CI_BASE_URL}}index.php/mptlmodule/meetingupdate">Meeting  Entry</a> </li>
+                                                                                                <li  class="nav-item dropdown"><a class="dropdown-item"   href="{{CI_BASE_URL}}index.php/mptlmodule/meetinglist">>Meeting  List</a> </li>
+                                                                                        </ul>
+                                                                                </li>
+                                                                                <li class="nav-item dropdown"><a  href="#"  class="dropdown-item">NC Reports </a>
+                                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                                <li  class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mptlmodule/nc_reports">nc  Knowledge</a></li>
+                                                                                                <li  class="nav-item dropdown"><a class="dropdown-item"   href="{{CI_BASE_URL}}index.php/mptlmodule/nc_review">nc   Review</a>  </li>
+                                                                                                <li  class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mptlmodule/nc_statistics">nc Performence  data</a>  </li>
+                                                                                        </ul>
+                                                                                </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/inbox/dashboard">MTEPL FaST Tool </a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtplsupplier/index">Request</a>  </li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtplsupplier/prjstatuslst">Project List</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtplsupplier/reports">Reports</a> </li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtplsupplier/masterdata">Master  Data</a>  </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/inbox/dashboard">MTEPL Internal  Rejection </a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/mtplscrap/index">Request</a>  </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item"   href="{{CI_BASE_URL}}index.php/mtplscrap/approvelst">Approve</a>  </li>
+                                                                                <li class="nav-item dropdown"><a   class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtplscrap/verifilst">Verification</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtplscrap/finallst">Final Approval</a></li>
+                                                                                <li class="nav-item dropdown"><a   class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtplscrap/storelst">Final  Remarks Stores</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtplscrap/reports">Reports</a>  </li>
+                                                                        </ul>
+                                                                </li>
+
+                                                                <li class="nav-item dropdown"><a href="#"  class="dropdown-item">MTEPL Service  Report </a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_servicereport">Entry</a> </li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_servicereport/reqlist">Requested                                                                                                 List</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_servicereport/reports">Reports</a>                                                                                 </li>
+                                                                        </ul>
+                                                                </li>
+
+
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MTEPL- Maintenance tracker</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker">Maintenance request entry</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker/mtpl_request_list">Maintenance   request list</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker/mtpl_updated_list">Maintenance Assign list</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker/hod_list">HOD List</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker/mtpl_report">MTEPL maintinace  reports</a></li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MTEPL- ME tracker</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtpl_tracker_me">ME request entry</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/mtpl_tracker_me/mtpl_request_list">ME request list</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker_me/mtpl_updated_list">ME Assign list</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker_me/hod_list">HOD List</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtpl_tracker_me/mtpl_report">MTEPL ME reports</a></li>
+                                                                        </ul>
+
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Rework Report </a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/mtplrework">Entry</a> </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#"   class="dropdown-item">Voucher Template  </a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/voucher/index">Entry</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/voucher/voucherreports">Voucher No  Generation</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/voucher/voucherreportsfinal">Report</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/voucher/news">New voucher entry</a></li>
+                                                                        </ul>
+                                                                </li>
+
+                                                                <li class="nav-item dropdown"><a href="#"  class="dropdown-item">Motor Tracking  System</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="http://192.168.132.12:8000/mtpl/{{user_id}}/mtplassembly">Add /show Component</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="http://192.168.132.12:8000/mtpl/{{user_id}}/showdata">Dispatch  Component</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="http://192.168.132.12:8000/mtpl/{{user_id}}/overdue">Modify  Overdue Component</a>
+                                                                                </li>
+                                                                        </ul>
+                                                                </li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+
+
+                                                {%if menuItem5.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/rejectionrework">Rejection / Rework  Slip</a></li>
+                                                {%endif%}
+                                                {%if menuItem6.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/torquemeter">Torque Meter</a></li>
+                                                {%endif%}
+                                                {%if menuItem8.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/prodlog">Prod-log</a> </li>
+                                                {%endif%}
+                                                {%if menuItem10.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/pcbmachinemanual">PCB Machine/Manual</a>  </li>
+                                                {%endif%}
+
+                                                
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Material Master</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/index/{{empcode_md5}}">New Code  Request</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/eacdrequest/{{empcode_md5}}">New  Code for PCB</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/aseries/{{empcode_md5}}">New Code for A Series</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_pcn/4">PCN Request</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/altNotDate">MM Designer Pending List</a></li>
+                                                        </ul>
+                                                </li>
+                                                
+
+<!-- // $single15=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='15' and
+                `dept`='".$locode."'");
+                // $locode=="MSDC"
+                        if($locode=="MSDC"){ -->
+                                                {%if menuItem15.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">R&D  Suggestion</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/pointkaizen/index/'.$sesion_id.'">R&D Suggestion</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/pointkaizen/getrmlist/'.$sesion_id.'">RM    List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/pointkaizen/gethodlist/'.$sesion_id.'">HoD  List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/pointkaizen/getlpolist/'.$sesion_id.'">LPO  List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/pointkaizen/reports/'.$sesion_id.'">Reports</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                <!-- }
+$single16=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='16' and
+`dept`='".$deptcode ."'"); -->
+                                                {%if menuItem16.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Sample  Inspection</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/sampleinspection">New Request</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/sampleinspection/sampleinspection_list">HOD Request List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/sampleinspection/igiprocess">IGI Request List</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+
+                                                {%if menuItem17.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Workshop</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/workshop">New Request</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/workshop/hod_process_list">Hod  Process List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/workshop/workshop_request_list">Workshop Update List</a> </li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+
+
+                                                {%if menuItem20.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Kanban Complaint</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/kanban_mat/">Request</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/kanban_mat/adminlist">Admin  List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/kanban_mat/setFiletoupload">Master  Data</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/kanban/reports">Kanban  Reports</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">PRS</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs/prschange">PRS Edit</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs/prsmaterial">PRS Creation</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs/prsmrpreport">MRP Updation</a></li>
+                                                        </ul>
+                                                </li>
+
+                                                {%if menuItem24.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Testing PDFs</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/sensors"  class="dropdown-item">Testing PDFs Sensors</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/newfileindex" class="dropdown-item">Testing PDFs</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%else%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Testing PDFs</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/sensors" class="dropdown-item">Testing PDFs Sensors</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/newfileindex" class="dropdown-item">Testing PDFs</a> </li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%} 
+
+
+                                                {%if user_role != 'TM' %}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{%url 'apply_certificate' %}">Apply Certificate</a></li>
+                                                {%endif%}
+                                                {%if user_id == '909695' %}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{%url 'apply_certificate' %}">Apply Certificate</a></li>
+                                                {%endif%}
+
+                                                {%if menuItem84.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">OEE </a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a href="#"  class="dropdown-item">TST</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/oee">Entry</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/oee/machinemaster">OEE Machine Creation </a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/oee/reports">Reports</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/prodlog/offline">offline</a>  </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/oeepcb"  class="dropdown-item">PCB</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/oeepcb/index">Entry</a>  </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/oeepcb/reports">Reports</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/oeepcb/mastercreation">Master Upload</a>  </li>
+                                                                        </ul>
+                                                                </li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+
+                                                {%if menuItem103.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{%url 'freight_index' %}">Goods Movement Register</a></li>
+                                                {%endif%}
+
+
+
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MPLM DOCUMENTS</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/">Initiation meeting call</a></li>
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/meeting_list">Initiation meeting</a></li>
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/review_meeting_list">Review meeting call</a></li>
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/review_meeting_repeat">Review meeting</a></li>
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/master_index_list">Master Index</a></li>
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/production_list">Production tot meeting</a></li>
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cft_meeting_list">Production CFT meeting call</a></li>    
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cft_meeting_repeat_list">Production CFT meeting</a></li>     
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bom">BOM Creation</a></li>-->
+                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bomverify">BOM ME Process</a></li>-->
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bomfinalreleasenew">Documents  Final  Release</a></li>
+                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bommainverify">BOM Verification</a></li>    
+<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bommainapprove">BOM Approval</a></li>-->
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bommainmeverify/list">Documents   DCD</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bominitioation">Document Entry</a>     </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tdrivetestreport/tdrive_multpl">Tdrive  doc  entry</a>   </li>
+                                                                <li class="nav-item dropdown"><a href="#"   class="dropdown-item">ECM Doc Entry</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/document_ctl_mst/index">Entry</a> </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/document_ctl_mst/masterlist">List</a>   </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#"   class="dropdown-item">Doc issue/return&nbsp;&raquo;</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/issue_copy_request">Request</a>    </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/dcs_issue">DCD       Process</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/issuecopy_reports">Report</a>    </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/other_docissue">Other  Documents</a> </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_foot/drawingintrant">Drawings  upload</a>   </li>
+
+                                                        </ul>
+
+                                                </li>
+
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MPLM  CFT</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/">Initiation    meeting   call</a></li>
+                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/meeting_list">Initiation meeting</a></li>-->
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cft_request">CFT   Request</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cft_meeting_list">CFT   meeting call</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cft_meeting_repeat_list">CFT    MOM</a>  </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cftreview">CFT  Review</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/mbom_creation/master_index_list">Master  Index</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/mbom_creation/index">MBOM</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/drawingtot_groupmail_insert">Group mail  Id</a></li>
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="http://192.168.132.12:9000/reimentry/'.$session_sess_md5.'/requestEntry">Reimbursement Entry</a></li>
+
+                                        </ul>
+                                </li>
+<!-- End QualityManagement menus ######################################### End QualityManagement menus   ####################################  End QualityManagement menus -->
+
+<!-- Start Administration menus ######################################### Start Administration menus   ####################################  Start Administration menus -->
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle bolder_navigation_menu" href="#"   role="button" data-bs-toggle="dropdown">    Administration      </a> 
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                {%if menuItem25.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#"   class="dropdown-item">Inspection Report Master</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspection/inspectionmaster_ntry">Inspection  Report Entry</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspection/inspectionmasterlist">Inspection Report List</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspection/summary_reports">Summary Reports</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspection/inspection_report"> Reports</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                {%if menuItem12.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Material Master</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MM List</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/melist/{{empcode_md5}}">MM  List</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/meAltlist/{{empcode_md5}}">MM Alternate List</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/routing/">HOD List</a>   </li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_pcn_report/">PCN  List</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_pcn_eolreport/">PCN    EOL List</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_mmcr_report/">MM  Change Request</a></li>
+                                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_mmcr_me_report/">MM Change Request Internal</a></li>
+                                                                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_mmcr_igi_report/">Data Sheet KHOJ Updation</a></li>-->
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/lom_mmar_report/">Alternate                                                                                                  Part Request</a></li>
+                                                                                <!-- <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/lom_mmar_me_report/">Alternate Part Request Internal</a></li> -->
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/lom_mmau_report/">Alternate  Part Updation</a></li>
+                                                                                <!-- <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/lom_mmau_me_report/">Alternate Part Updation Internal</a></li> -->
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/get_all_kpi_data/">Alternate  Part Against KPI</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi/igi_list/">IGI Request</a></li>
+                                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi/igi_me_list/">IGI Request Internal</a></li>    -->
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Fields Authorization</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/fieldsAuthorization/{{empcode_md5}}">MM  Fields Authorization</a>                                                                                </li>
+                                                                                <!-- <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/pcn_assigning_list/">PCN Assigning List</a></li>-->
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/fieldsAuthorization/">AP Fields  Authorization</a></li>
+                                                                                
+                                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/lom_mmcr_assigning/">MM Assigning List</a></li>-->
+                                                                                <!-- <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/lom_mmar_assigning/">APR Assigning List</a></li>-->
+                                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/lom_mmau_assigning/">APRU Assigning List</a></li>-->
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi/igi_assign_list/">IGI  Ass List</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/setFiletoupload/">KHOZ   Bulk Upload</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/lom_bulk_upload/">Market Avalibility</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/khozsheetview/">KHOZ New Makes</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/add_desgnr">Designers  Alternate part</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/mm_ucprollback/">MM  ucplist</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/mm_addrootcause">MM change rootcause entry</a></li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Intranet Moving</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/intramoving/index">Material  Master</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/intramoving/projects">Project  Master</a>  </li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Internet Moving</a>
+                                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/intramoving/doctrl">Document Control</a></li>
+                                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/intramoving/khojdata_download2">KHOJ data</a></li>
+                                                                        </ul>
+                                                                </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/disDia">Dialog  Master</a></li>
+                                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/fieldsAuthorization/{{empcode_md5}}">MM Fields Authorization</a></li>-->
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                {%if menuItem27.module_name is not None%}
+                                                <li class="nav-item dropdown"> <a  class="dropdown-item"   href="{{CI_BASE_URL}}index.php/lom/projectcreation">  New Project Entry</a>  </li>
+                                                {%endif%}
+
+                                                {%if menuItem43.module_name  is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">User Privillies</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/userprevileges/user_admin">Associate User  Privillies</a>  </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/userprevileges/dept_admin">Dept  Wise</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/userprevileges/dept_admin_user">Associate Dept Wise</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/userprevileges/add_module">List Of Modules</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">FAI  Reports</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fai">FAI  Creation </a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fai/vender">FAI Vendeor Creation</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fai/hodapplst">HOD  Approval</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fai/form3creation">FAI From3 creation</a></li>
+                                                        </ul>
+                                                </li>
+
+                                                
+                                                {%if menuItem50.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Audit Admin</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_creation">Auditor Creation</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/audit_dept_creation">Audit  Dept Creation</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                <!-- 902270 chennaiah jakka only will have the this module autherization-->
+                                                {%if  user_id == 902270%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Service Mail Administration</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/mail_ntry">Mail Entry</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/mail_config_view">Mail List</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+
+
+
+
+
+                                        </ul>
+                                </li>
+<!-- End Administration menus ######################################### End Administration menus   ####################################  End Administration menus -->
+
+<!-- Start Reports menus ######################################### Start Reports menus   ####################################  Start Reports menus -->
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle bolder_navigation_menu" href="#"    role="button" data-bs-toggle="dropdown"> Reports</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Rework Data Retrival(Inter)</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/reworkreport/reworkreport_review">Review</a></li>
+                                                        </ul>
+                                                </li>
+
+                                                {%if menuItem85.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/porelease/reports">PO ApprovalReports</a></li>
+                                                {%endif%}
+                                                {%if menuItem1.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/pcbrework/reports">PCB Assembly Rework(Intra)</a></li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/prs/prsreportall"  class="dropdown-item">PRS  Report</a></li>
+                                                <li class="nav-item dropdown"> <a href="#" class="dropdown-item">Production Online Rework Data</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/reworkreport/reworkreport_review_production">Online  Rework Data</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/reworkreport/online_reworkreport_slip">Online Rework Slip</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%if menuItem4.module_name is not None%}
+                                                <li class="nav-item dropdown"> 
+                                                        <a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/servicereport/reports">Service  Report List</a>
+                                                        {%if deptcode  == '1108' or user_id == 903916%}
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/process">Material movement for analysis.</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/rework_analysis">For Analysis/Rework</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/disposal">For  PSE Verification </a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/service_hod">For Service Head Authorisation</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/service_edp">For ED-Prodn Authorisation</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/servicereport/rooting">rooting</a> </li>                                                                
+                                                        </ul>
+                                                        {%endif%}
+                                                </li>
+                                                {%endif%}
+
+
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Service   Analysis Stage </a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/service_report_new/reworkview">unit/sub assembly level</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/service_report_new/reworklevel">S/A Rework Level</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/service_report_new/componentlevel">Failed Component  Level</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/service_report_new/rootlevel">Root Cause && CA/PA Level</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/service_report_new/pselevel">PSE  Comments Level</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/service_report_new/FAGReports">FAG   Reports</a></li>
+
+
+                                                        </ul>
+                                                </li>
+
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/kaizen/reports">Kaizen</a> </li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/kaizen/gl_reports">Kaizen GL Approval</a> </li>
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">QCC/RIW  Reports </a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/qcc/qccreport">QCC/RIW Reports </a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/qcc/qcc_dept/">QCC/RIW  Summary Report</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/qcc/qcc_party/">QCC/RIW Emp List</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%if menuItem5.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/rejectionrework/reports">Rejection/Rework Slip</a></li>
+                                                {%endif%}
+                                                {%if menuItem6.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/torquemeter/reports">Torque  Meter</a></li>
+                                                {%endif%}
+                                                {%if menuItem8.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/prodlog/reports">Prod-log</a></li>
+                                                {%endif%}
+                                                {%if menuItem10.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/pcbmachinemanual/reports">PCBA Machine/Manual</a></li>
+                                                {%endif%}
+                                                {%if menuItem25.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/inspection/reports">Inspection Reports</a></li>
+                                                {%endif%}
+                                                {%if menuItem12.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Material  Master reports</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom/reports">Material Master</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/pcnreports">PCN Reports</a> </li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/pcn_eol_reports">PCN  EOL Reports</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_material_change/mmcrreports">MM  Change Reports</a> </li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/mmarreports">Alternate  Part Reports</a>  </li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/mmaureports">Alternate  Part Updation</a> </li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi/igireports">IGI  Report</a></li>
+                                                                <li class="nav-item dropdown"> <a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lom_alternate/singlescr_list">Signle source</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/fai/reports">FAI  Reports</a></li>
+                                                {%if menuItem16.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/sampleinspection/samplereport">Sample Report List</a></li>
+                                                {%endif%}
+                                                {%if menuItem17.module_name is not None%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/workshop/report_list">workshop reports list</a></li>
+                                                {%endif%}
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/kanban_mat/reports">Kanban Complaint Reports</a></li>
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">ECM V2  Report</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/ecmreportentry">ECM  Report</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/ecmreportall">ECM Dept Report</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/ecmreportalldept">ECM Common Report</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/prm">ECM  PRM/KPI</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/ecmreportreview">ECM Review</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/iar">ECM IAR</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ecmreport/ecm_tentatv_date">ECM IVOI Target date</a></li>
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MBOM Reports</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/mbom_creation/mbom_creation_prjreports">Project Index</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/mbom_creation/mbom_creation_bomreports">BOM Document</a> </li>
+                                                        </ul>
+                                                </li>
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">MPLM Report</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/bomreportall">Documents Report</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/cftreportreview">CFT  Report</a></li>
+                                                        </ul>
+                                                </li>
+
+
+
+                                                {%if menuItem24.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="#" class="dropdown-item">Testing PDFs</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/testingreport"  >Testing PDF Report</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/testingnewreport"  >Testing PDF Report  New</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tps_mvs_815m/testingsensorsreport"  >Testing PDF  Sensors</a></li>
+                                                        </ul>
+                                                </li>
+                                                {%endif%}
+                                                <!-- $dmos_baseURL='http://192.168.132.12:8000/ -->
+                                                {%if user_role != 'TM' %}
+                                                <li class="nav-item dropdown"><a href="{%url 'search_certificate' %}" class="dropdown-item">Certificate Reports</a></li>
+                                                {%endif%}
+                                                
+                                                {%if menuItem103.module_name is not None%}
+                                                <li class="nav-item dropdown"><a href="{%url 'getfreight_reports' %}" class="dropdown-item">Goods Movement Reports</a></li>
+                                                {%endif%}
+
+
+                                                <!--<li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/drawing_tot/designersList">Designers List</a></li>-->
+                                        </ul>
+                                </li>
+<!-- End Reports menus ######################################### End Reports menus   ####################################  End Reports menus ######################################### End Reports menus   ####################################  End Reports menus  -->
+
+
+<!-- Start SAMAYAM menus ######################################### SAMAYAM Reports menus   ####################################  Start SAMAYAM menus  ######################################### SAMAYAM Reports menus   ####################################  Start SAMAYAM menus -->
+                                <!--SAMAYAM start-->
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle bolder_navigation_menu" href="#" role="button" data-bs-toggle="dropdown"> SAMAYAM</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                <li class="nav-item dropdown">
+                                                        <a href="#" title="Associate Self Service" class="dropdown-item">ASS</a>
+                                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                <li class="nav-item dropdown"><a  class="dropdown-item" href="{{CI_BASE_URL}}index.php/leave/getPunches/ass">TimeCard</a> </li>
+                                                                <li class="nav-item dropdown"><a accesskey="z" href="{{CI_BASE_URL}}index.php/leave/reports" class="dropdown-item">Leave Card</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/leave/index">Apply Leave</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/leave/get_od_permission_form">Apply OD</a></li>
+                                                                <li class="nav-item dropdown"><a class="dropdown-item"   accesskey="z" href="{{CI_BASE_URL}}index.php/leave/permission">Apply Permission</a></li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/leave/getODReports">OD Reports</a> </li>
+                                                                <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/leave/getPerReports">Permission  Reports</a></li>
+                                                        </ul>
+                                                </li>
+                                </li>
+                                <!-- if($ass_role!=''&&$ass_role!='TM'){    another function to get ass role bove tl -->
+
+
+                                {% if user_role != "TM" %}
+                                <li class="nav-item dropdown ">
+                                        <a href="#" title="HoD Self Service" class="dropdown-item">HSS</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/getPunches_hod/hss">Time  Card</a> </li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/reports_hod/hss">Leave Card</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/getApprovalList">Leave Approval</a> </li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/getApprovalOD_PermissionList">OD Approval</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/getApprovalHODOTList">OT Approval</a> </li>
+                                        </ul>
+                                </li>
+                                {%endif%}
+
+
+                                {%if menuItem86.module_name is not None%}
+                                <li class="nav-item dropdown">
+                                        <a href="#" title="Administrator" class="dropdown-item">Admin</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/adminleave">Apply Leave</a></li>
+
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/adminod">Apply OD</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/permission">Apply  Permission</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/getPunches_admin">Time Card</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/reports_admin">Leave Card</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/leavebaladmin">Leave Balance</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/report_od_admin">OD Reports</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/getOtonODReports">OT  Reports</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/getPerReports">Permission Reports</a> </li>
+                                        </ul>
+                                </li>
+                                {%endif%}
+                                <li class="nav-item dropdown">
+                                        <a href="#" title="Journey  Home" class="dropdown-item">Over Stay</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/get_transport">Register</a> </li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/getRegisOTonOD">OT on OD</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/getTransportList">Reports</a></li>
+                                        </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                        <a href="#" title="Shift Registration" class="dropdown-item">Shift Registration</a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                                <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/shiftreg1">Register</a></li>
+                                                <li class="nav-item dropdown"><a   class="dropdown-item" accesskey="z"  href="{{CI_BASE_URL}}index.php/leave/shiftrep">Reports</a> </li>
+                                        </ul>
+                                </li>
+                                <li class="nav-item dropdown"><a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/lunch/workflowdele">Work Flow Delegation</a></li>
+                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}public/help/SAMAYAM_User_doc.pdf" target="_blank">Help</a></li>                                
+                        </ul>
+                        </li>
+                        <!--SAMAYAM END-->
+<!-- Ende SAMAYAM menus ######################################### Ende SAMAYAM Reports menus   ####################################  Ende SAMAYAM menus  ######################################### Ende SAMAYAM Reports menus   ####################################  Ende SAMAYAM menus -->
+
+<!-- Start Dept modules menus ######################################### Start Dept modules menus   ####################################  Start Dept modules menus  ######################################### Start Dept modules menus   ####################################  Start Dept modules menus -->
+                        <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle bolder_navigation_menu" href="#" role="button"
+                                        data-bs-toggle="dropdown"> Dept modules</a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">EDP</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/edptracker/reports">Reports</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/edptracker/unasslist">Unconverted List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/edptracker/supp_ass_update">Supp Assign  List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/edptracker/po2">PO2</a> </li>
+                                                        {%if user_id == 903196 or user_id == 904917 %}
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/dbchecking">Table Count</a></li>
+                                                        {%endif%}
+                                                        {%if deptcode  == '1307' %}
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="http://192.168.132.19:3000/public/dashboard/b0b5e97a-808b-4898-9f95-87c06c332c2a" target="_blank">Graphical View</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/edptracker/index">New Request</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/edptracker/requestlist">Request List</a></li>                                                        
+                                                        {%endif%}
+                                                </ul>
+                                        </li>
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">N&amp;S</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        {%if menuItem30.module_name is not None%}
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.27/msdpl.com/' %} http://192.168.132.27{%endif%}/msdpl.com_old/sap/reports/nns_reports_new.php?user_id={{user_id}}" target="_blank">N&amp;S Reports</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.27/msdpl.com/' %} http://192.168.132.27{%endif%}/msdpl.com_old/sap/quality_mgmt/nns_ntry.php?user_id={{user_id}}"   target="_blank">N&amp;S Entry</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.27/msdpl.com/' %} http://192.168.132.27{%endif%}/msdpl.com_old/sap/quality_mgmt/nns_admin.php?user_id={{user_id}}"  target="_blank">Administrator</a></li>
+                                                        {%else%}
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.27/msdpl.com/' %} http://192.168.132.27{%endif%}/msdpl.com_old/sap/reports/nns_reports_new.php?user_id={{user_id}}" target="_blank">N&amp;S Reports</a> </li>
+                                                        {%endif%}
+                                                </ul>
+                                        </li>
+                                        <!-- $single31=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='31' and
+`dept`='".$deptcode ."'");
+// if($deptcode ==1306){
+// echo "select save from `user_privil` where `delete1`='0' and `form_name`='31' and
+`dept`='".$deptcode ."'";
+// }
+if($single31!=0||$CI->session->userdata('user_id')==903916||$CI->session->userdata('user_id')==908098||$CI->session->userdata('user_id')==901109){
+-->
+                                        {%if menuItem31.module_name is not None%}
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">HR</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/welfare/welfaremasterpage">Master Creation</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/welfare/transation_table">Employee Regular actions</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/emploginformbyhr/empList">Employee List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/emploginformbyhr">Employee Login  Form</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/emploginformbyhr/employee_edit_delete">Employee  De-Active</a></li>
+                                                        <!--  <li class="nav-item dropdown"><a href="{{CI_BASE_URL}}/msdpl.com_old/sap/quality_mgmt/pna/pahrUpdationList.php?user_id={{user_id}}" target="_blank">HR Updation</a></li>
+                                                        <li class="nav-item dropdown"><a href="{{CI_BASE_URL}}/msdpl.com_old/sap/quality_mgmt/pna/pahrReport.php?user_id={{user_id}}" target="_blank">HR Reports</a></li>  -->
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lunch">Canteen Entry</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lunch/lunchreports">Canteen  Report</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lunch/form16">Form16</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/leave/outing">Ass. Tracking Info.</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/hr_tracker/reports">HR Reports</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/hcm/reports2">HCM Reports</a>  </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/emploginformbyhr/uploadEmpPhoto">Employee Photos Upload</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/mediclaim/reports">Mediclaim</a></li>
+                                                        {%if user_id == 901294 or user_id == 901109 or  user_id == 903916 or user_id == 900292 %}
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item"   href="{{CI_BASE_URL}}index.php/leave/autoapprovebyhr">Pending Leaves Approval</a> </li>
+                                                        {%endif%}
+                                                        <!-- '.$admin_link.' -->
+
+                                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Welfare</a>
+                                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs">Raise PRS</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/welfare/index">Uniform   Issue</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/welfare/stockEntry">Stock  Entry</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/welfare/issue_reports">Issue   Reports</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/welfare/transation_table">Welfare calender Update</a></li>
+                                                                </ul>
+                                                        </li>
+                                                </ul>
+                                        </li>
+                                        {%else%}
+                                        <!-- }else{ -->
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">HR</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/hr_tracker/reports">HR  Reports</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/lunch/lunchreports">Canteen    Report</a>                                                        </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/hcm/reports2">HCM    Reports</a>                                                        </li>
+                                                </ul>
+                                        </li>
+                                        {%endif%}
+
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/nns/reports">N & S New Reports</a>
+                                                <!-- $single32=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='32' and
+`dept`='".$deptcode ."'"); -->
+                                        {%if menuItem32.module_name is not None%}
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Maintenance</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/maintenence/update_list"    target="_blank">Maintenance</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.27/msdpl.com/' %} http://192.168.132.27{%endif%}/msdpl.com_old/sap/quality_mgmt/maintenance/maintenanceAssignedList.php?user_id={{user_id}}"  target="_blank">Update</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{%if CI_BASE_URL == 'http://192.168.132.12/rewamp/' %} http://192.168.132.12{%elif CI_BASE_URL == 'http://192.168.132.27/msdpl.com/' %} http://192.168.132.27{%endif%}/msdpl.com_old/sap/quality_mgmt/maintenance/maintenanceHodList.php?user_id={{user_id}}"   target="_blank">HoD List</a></li>
+                                                        <!-- <li class="nav-item dropdown"><a href="{{CI_BASE_URL}}/msdpl.com_old/sap/quality_mgmt/maintenance/maintenanceReports.php?user_id={{user_id}}" target="_blank">Reports</a></li>-->
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/maintenence/reports"    target="_blank">Reports</a></li>
+                                                </ul>
+                                                <!-- http://192.168.132.27/msdpl.com/index.php/msdpl.com_old/sap/quality_mgmt/maintenance/maintenanceAssignedList.php?user_id= -->
+                                                
+                                        </li>
+                                        {%else%}
+                                        <!-- }else{ -->
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Maintenance</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/maintenence/reports" target="_blank">Reports</a></li>
+                                                </ul>
+                                        </li>
+                                        {%endif%}
+                                        <!-- }
+// $single11=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='11' and
+`dept`='".$deptcode ."'"); -->
+                                        {%if menuItem11.module_name is not None%}
+                                        <li class="nav-item dropdown"><a class="dropdown-item" href="#" title="Admin">Training</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/barcode">Attendance</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training">Create  Event</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/course_create">Create Course/Hall</a></li>
+                                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">On Job Training</a>
+                                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/on_job_training"> OJT Entry</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/ojt_reports"> OJT Reports</a></li>
+                                                                </ul>
+                                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Induction Program</a>
+                                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/induction"> Induction program Entry</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/ind_hodapplst">HOD Entry</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/training_itr_gl_app">GL   Entry</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/ind_reports">Reports</a> </li>
+
+                                                                </ul>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/nomination_ntry">Nomination Entry</a></li>
+                                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Reports</a>
+                                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/reports">Event                                                                                        Wise</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/associate_reports">Associate                                                                                        Wise</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/reports_nominees">Summary                                                                                </a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/repeat_training">Repeat                                                                                        Session</a> </li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/pending_eva">Pending                                                                                        Evalution</a></li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/nomination_reports">Nomination                                                                                        Status</a> </li>
+                                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/training/associate">Employee                                                                                        List</a></li>
+                                                                </ul>
+                                                        </li>
+                                                </ul>
+                                        </li>
+                                        {%endif%}
+                                        <!-- $single58=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='58' and
+`dept`='".$deptcode ."'"); -->
+                                        {%if menuItem58.module_name is not None%}
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Factory Planning</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/planning/index/{{empcode_md5}}">New Request</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/planning/planning_hodapproval_list/{{empcode_md5}}">HoD  Approval</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/planning/planning_admin_list/{{empcode_md5}}">Admin</a>  </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/planning/planning_user_list/{{empcode_md5}}">Users</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/planning/reports/{{empcode_md5}}">Reports</a> </li>
+                                                </ul>
+                                        </li>
+
+                        </li>
+                        {%else%}
+                        <!-- }else{ -->
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Factory Planning</a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/planning/reports/{{empcode_md5}}">Reports</a> </li>
+                                </ul>
+                        </li>
+                        </li>
+                        {%endif%}
+                        {%if user_id == 904366 or user_id == 970292 or user_id == 902367 or user_id == 700374 %}
+        <!-- if($CI->session->userdata('user_id')=="904366" || $CI->session->userdata('user_id')=="970292"||$CI->session->userdata('user_id')=="902367" ||$CI->session->userdata('user_id')=="700374"){
+            $audit=' -->
+            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/inbox/dashboard">IMS NC Database </a>
+                <ul class="dropdown-menu p-0 m-0 g-0">
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/directnc">Direct NC</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/new_plan_entry">Audit Plan</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/edp_approval_list">MR Approval List</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditee_list">Delegation Assign</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_list">Auditor Action</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/delg_list">Auditee Action</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/eff_reports">NC Grading</a></li>
+
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditOFIList">OFI Data</a></li>
+
+                    <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditOFIList">Audit Reports </a>
+                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/reports">NC Log File</a></li>
+                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/nc_eff_dept">Final NC Summary Report</a></li>
+                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/nc_eff">NC Dept  Efficiency</a></li>
+                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_eff_reports">Auditor  Efficiency </a></li>
+                                <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_creation/test">List of Qualified Auditors</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+                </li>
+                {%else%}
+                <!-- ';   }else{      $audit=' -->
+            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/inbox/dashboard">IMS NC Database </a> 
+                <ul class="dropdown-menu p-0 m-0 g-0">
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/directnc">Direct NC</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_list">Auditor Action</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/delg_list">Auditee Action</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditOFIList">OFI Data</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/eff_reports">NC Grading</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditOFIList">Audit Reports</a>
+                        <ul class="dropdown-menu p-0 m-0 g-0">
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/reports">NC Log File</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/nc_eff_dept">Final NC Summary Report</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/nc_eff">NC Dept  Efficiency</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_eff_reports">Auditor  Efficiency </a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/audit/auditor_creation/test">List of Qualified Auditors</a></li>
+                        </ul>
+                    </li>
+
+                        </ul>
+                    </li>
+                    {%endif%}
+
+                    
+                        <!-- }
+"'.$audit.'"
+$single21=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='21' and
+`dept`='".$deptcode ."'"); -->
+
+
+                        {%if menuItem21.module_name is not None%}
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">NCA </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/nc_generation_list">NC
+                                                        Updation</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/nc_reports">NC
+                                                        Knowledge Sharing</a> </li>
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">NC Generation &  Approval </a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule">NC
+                                                                        Request</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/nc_request_list">NC
+                                                                        Registration</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/hodprocesslist">HOD
+                                                                        Approval</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/edp_process_list">ED-P
+                                                                        Approval</a></li>
+                                                </ul>
+                                        </li>
+
+
+
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/nc_review">NC Review</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/nc_statistics">NC Performance  Data</a>  </li>
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Meeting Reference Data </a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/meetingupdate">Upload  Files</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ncmodule/meetinglist">Data List</a> </li>
+                                                </ul>
+                                        </li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        <!-- }
+$single87=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='87' and
+`dept`='".$deptcode ."'"); -->
+
+                        {%if menuItem87.module_name is not None%}
+                        <li class="nav-item dropdown"><a class="dropdown-item"
+                                        href="{{CI_BASE_URL}}index.php/inbox/dashboard">Fracas </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/index">Fracas Bar Generation</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/pcb_comp_dashboard">PCB  Assembly  Dashboard</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/to_be_assigned_components">Assigning  Components Screen</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/fracas_tree">Fracas  tree</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/time_track">Time   track</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/planng_report">Planning   Data</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/fnal_sccnn_report">Final Scanning  report</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/failure_det">Failure   details</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/commissioned">Field  Population  Entry</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracastrace/commissioned_reports">Fracas    Commissioned Reports</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracas/index">Fracas  Papulation entry_data</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracas/reports">Reports_Data</a>    </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/fracas/fracas_cal/0">Fracas   calculations</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ffasr_report">FFASR   Report</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/ffasr_report/productincharge">FFASR Product engineer list</a></li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        <!--             
+}
+
+$single76=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='76' and
+`dept`='".$deptcode ."'"); -->
+                        {%if menuItem76.module_name is not None%}
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/inbox/dashboard">ME tracker </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/index">Request  Entry</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/me_mech_hod_approve">Hod  Approval</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/meadmin">ME-Request  Assign</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/metags">Assigned  List</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/meUser">User  List</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/me_mech_reports_new">Reports</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/metracker/reassign">Reassign</a> </li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        <!--             
+}
+$single82=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='82' and
+`dept`='".$deptcode ."'"); -->
+                        {%if menuItem82.module_name is not None%}
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/inbox/dashboard">ME Automation Tracker</a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/index">Request Entry</a> </li>
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Approval lists&nbsp;&raquo;</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/hod_list">HOD   Approval</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/me_auto_hoddashbord">ME-A HOD Approval</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/hodlist_instrment">Hod  Approval(instr)</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/mehodlist_instrment">ME-HOD(instr)</a>  </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/me_auto_rejection_apprvl">TargetDate  change/Reject List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/reassign">Reassign</a> </li>
+                                                </ul>
+                                        </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/me_list_assgned">ME-Assigned</a> </li>
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Lists</a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/me_auto_planning_list">Planning  List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/additionl_ipts">Additional  inputs List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/me_auto_instruser">Requestioner(instr)</a>  </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/meassnlist_instrment">Assigned  List(instr)</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/reqst_statusupdate">Request  Status update</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/enduserfeedback">End  user feedback</a></li>
+                                                </ul>
+                                        </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/reports">Reports</a>   </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/me_automation_tracker/testjig_list">Test  jig  List</a></li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        <li class="nav-item dropdown"><a class="dropdown-item"
+                                        href="{{CI_BASE_URL}}index.php/inbox/dashboard">Calibration </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/calibration/index">New  TCode Registration</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/calibration/repair_ntry">Repair Request</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/calibration/userlst">User  List</a></li>
+                                   <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/calibration/reports">Reports</a> </li>
+                                </ul>
+                        </li>
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">CIP </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/cip/index">CIP  Registration</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/cip/cipleadreport">CIP Lead List</a>  </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/cip/ciplponewreport">CIP LPO List</a>  </li>
+                                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/cip/cipreport">CIP  Report</a></li>
+                                </ul>
+                        </li>
+                        {%if user_location == 'MSDC' %} 
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">S/W Release MODULE </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                             <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule">V&V and Non V&V Entry</a></li>
+                             <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule/Hod_list">V&V Hod</a></li>
+                             <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule/secondlevel_list"> Second/Prd-INC</a></li>
+                             <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule/main_hod_list"> Main Hod</a></li>
+                              <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule/vnv_melist"> ME List</a></li>
+                              <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule/vnv_reports">V&V and Non V&V Reports</a></li>
+                                </ul>
+                            </li>
+                            {%else%}
+                            
+                            <!-- '; }else{  $vnv.=' -->
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">S/W Release MODULE </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">                                                     
+                              <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/vnvmodule/vnv_reports">V&V and Non V&V Reports</a></li>
+                                </ul>
+                            </li>
+                            {%endif%}
+
+                        <!-- "'.$vnv.'"
+$single71=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='71' and
+`dept`='".$deptcode ."'"); -->
+                        {%if menuItem71.module_name is not None%}
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">IGI</a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">IGI Rejection Report </a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_elec/index">IGI Request</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_elec/failureAnalysislist">Updation List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_elec/Reports">Reports</a>  </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_elec/nonWarreny">Non Warrenty  Enty</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_elec/nonwarrentyList">Non Warrenty List</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_elec/igiaddvalues">IGI Entry</a> </li>
+                                                </ul>
+                                        </li>
+
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Red Tag Material </a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_excess_material/index">Entry</a>  </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_excess_material/hodprocess">HOD Approval</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_excess_material/igi_process">IGI Team</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_excess_material/tobe_updated">To be updated</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/igi_excess_material/igi_excess_reports">Reports</a> </li>
+                                                </ul>
+                                        </li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        <!-- $single88=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='88' and
+`dept`='".$deptcode ."'"); -->
+                        {%if menuItem88.module_name is not None%}
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">SCAR </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/scar/index">Entry</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/scar/suppdatalst">Supp  Data</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/scar/hodappIni">HOD Process</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/scar/reports">Reports</a> </li>
+                                </ul>
+                        </li>
+                        {%endif%}
+
+                        
+                        {%if menuItem25.module_name is not None%}
+                        <li class="nav-item dropdown"><a class="dropdown-item"
+                                        href="{{CI_BASE_URL}}index.php/inbox/dashboard">Inspection </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspecMat">Inspection Entry</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspecMat/igiins">Inspection  IGI</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/inspecMat/reports">Reports</a></li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Tour Advance</a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tourbill/adminList">Admin Process</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tourbill/hodList">HOD Process</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tourbill/accList">ACC Process</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/tourbill/reports">Reports</a> </li>
+                                </ul>
+                        </li>
+
+                        <!-- if($CI->session->userdata('user_id')=="907405" || $CI->session->userdata('user_id')=="900130"){
+                                $tour=' -->
+                                {%if user_id == 907405 or user_id == 900130 %}
+                                <li class="nav-item dropdown"><a class="dropdown-item"  href="#">Tour Bill External </a>
+                                        <ul class="dropdown-menu p-0 m-0 g-0">
+                                            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/Tourbill_ext/index">Tour bill entry</a></li>
+                                            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/Tourbill_ext/bill_list">Bill List</a></li>
+                                            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/Tourbill_ext/Reports">Reports</a></li> 
+                                            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/Tourbill_ext/uploadmos_sap">Tour Bill File upload</a></li>
+                                            <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/Tourbill_ext/download_sapfile">Tour Bill File Download</a></li>      
+                                        </ul>
+                                </li>
+                                {%endif%}
+                        <!-- '.$tour.' -->
+                        <li class="nav-item dropdown"><a class="dropdown-item" href="#"> Modification details entry </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a class="dropdown-item" href="#" >Entry </a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a class="dropdown-item" href="{{CI_BASE_URL}}index.php/cardEntry/index">Card       Level </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/unitEntry/index1">Unit Level    Entry</a> </li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/cardEntry/sub_assebly_entry">sub_assebly_entry</a></li>
+                                                </ul>
+                                        </li>
+                                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">Reports </a>
+                                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/cardEntry/cardReport">Card Level Report</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/unitEntry/unitReport">Unit Level Report</a></li>
+                                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/cardEntry/sub_assebly_reports">sub_assebly_reports</a>
+                                                        </li>
+                                                </ul>
+                                        </li>
+                                </ul>
+                        </li>
+                        <!-- }
+$single79=$CI->associatemodel->getSingleData('save','user_privil'," and `form_name`='79' and
+`dept`='".$deptcode ."'"); -->
+                        {%if menuItem79.module_name is not None%}
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">R&D Material Request </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/index">Entry</a>  </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/materialslist">Planning      Review(R&D/E-Mobility)</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/materialslistreview">Planning    Re-Review(R&D/E-Mobility)</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/nostack">Not Avalible   List</a>
+                                        </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/materialsplnglist">Planning  list</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/userlist">User   list</a>  </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/reports">Reports</a>  </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prsnew/planning">PRS Capital</a></li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prsnew/reports">PRS Reports</a></li>
+                                </ul>
+                        </li>
+                        {%else%}
+
+                        <li class="nav-item dropdown"><a href="#" class="dropdown-item">R&D Material Request </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/index">Entry</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/userlist">User list</a> </li>
+                                        <li class="nav-item dropdown"><a   class="dropdown-item" href="{{CI_BASE_URL}}index.php/prs_materail/reports">Reports</a></li>
+                                </ul>
+                        </li>
+                        {%endif%}
+                        {%if user_id == 903916 or user_id == 901295 %}
+                        <li class="nav-item dropdown"> <a class="dropdown-item" href="#">External Calibration </a>
+                                <ul class="dropdown-menu p-0 m-0 g-0">
+                                        <li class="nav-item dropdown"> <a class="dropdown-item" href="{{CI_BASE_URL}}index.php/calib_ext/extfileupload">Upload Text File</a></li>
+                                        <li class="nav-item dropdown"> <a class="dropdown-item"  href="{{CI_BASE_URL}}index.php/calib_ext/in2extprocess">Download  files</a></li>
+                                </ul>
+                        </li>
+                        {%endif%}
+
+
+                        </li>
+                        </ul>
+                        </li>
+
+
+
+
+
+
+
+
+
+                        </ul>
+                </div>
+        </div>
+</nav>

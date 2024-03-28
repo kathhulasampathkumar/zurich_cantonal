@@ -1,0 +1,242 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> -->
+</script>
+{%comment%}<h1> Hello welcome to {%for emp in emp_names%}{%if emp.empcode == user_id%}{{emp.empname}}{%endif%}{%endfor%}</h1> {%endcomment%}
+<div class="row col-12 p-0 m-0 g-0">
+  <form method="POST" id="form1" action="getfreight_reports">{% csrf_token %}
+     
+    <fieldset class="border p-2">
+      <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Forword Search</legend>         
+        <table id="myTable">                      
+          <tbody>
+            <tr>
+              <td class="px-1 mx-1">From Date :                 
+                <input type="text" name="fromdate" id="fromdate" class="dateselect" placeholder=" dd-mm-yyyy" ></td>
+              <td class="px-1 mx-1">To Date : 
+                <input type="text" name="todate" id="todate" class="dateselect" placeholder=" dd-mm-yyyy" ></td>
+              <td class="px-1 mx-1">DC No : 
+                <input type="text" name="dc_no" id="dc_no"></td>               
+              <td class="px-1 mx-1">VendorName :   </td>             
+              <td class="px-1 mx-1 ">
+                <input type="text" name="venderid" id="venderid_1" class="" onchange="getVendor_id(1)">              
+                <select name="vendorname" id="vendorname_1" class="w-80"><option value="">--select vendor--</option>
+                {%for vendor in vendor_list%}<option value="{{vendor.ven_id}}">{{vendor.vendor}}</option>{%endfor%}</select></td>            
+              <td>Goods By :<select name="goods_by" id="goods_by_1" class="width10 px-2 my-2"><option value="">-select-</option><option value="By Hand">By Hand</option><option value="By Courier">By Courier</option><option value="By Vehicle">By Vehicle</option><option value="Dispatch">Dispatch</option></select></td>            
+                                       
+              <td>Freight Name : <select name="freight_name" id="freight_name" class="w-80"><option value="">--select Freight Forwarder--</option>
+                {%for courier in courier_list%}<option value="{{courier.cid}}">{{courier.courier_name}}</option>{%endfor%}</select></td>              
+            <tr>
+              <td><input type="submit" value="submit" class="m-2 p-2 btn btn-primary fs-5 bolder"></td>              
+              <td><a href="{%url 'getfreight_reports_final'%}">Final Reports</a></td>              
+            </tr>
+          </tbody>          
+        </table> 
+        
+    </fieldset>
+  </form>
+
+
+  <fieldset class="border p-2">
+    <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Forword Reports</legend>
+    <!-- <form action="{%url 'update_freight'%}" method="post"> {% csrf_token %} -->
+      <!-- <input type="submit" value="Update" class="p-1 btn btn-primary m-0"> -->
+      {%if getreport %}
+      <span style="font-size: 15px;padding-left: 10px;">By Hand : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{byhand}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">By Courier : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{bycourier}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">By Vehicle : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{byvehicle}}</span></span>
+      <span style="font-size: 15px;padding-left: 10px;">By Dispatch : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{bydispatch}}</span></span>
+      <!-- 'byhand':byhand,'bycourier':bycourier,'byvehicle':byvehicle,'bydispatch':bydispatch -->
+      
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Freight ID</th>
+            <th>Datetime</th>
+            <th>Vehicle NO</th>
+            <th>DC NO</th>
+            <th>DC Date</th>
+            <th>Vendor Name</th>
+            <th>NO Of Items</th>
+            <th>Freight Name</th>
+            <th>Docket NO</th>
+            <th>Docket Date</th>
+            <th>No.Of Packs</th>
+            <th>Duration </th>
+            <th>No.of Persons Unloaded </th>
+            <th>Security Empcode</th>
+            <th>Remarks</th>
+            <th>Created By</th>            
+            <th>Action</th>            
+          </tr>
+        </thead>
+        <tbody>
+          <input type="hidden" name="" id="" value="{{repcount}}">           
+          {%for rep in getreport%}
+          {% if rep.delay == 1 %}                                     
+          <tr style="background-color: rgb(243, 194, 194);">
+            {%else%}  
+          <tr style="background-color: none;">
+              {%endif%}
+            <td>{{forloop.counter}} - {{rep.fid}} <a href="{%url 'freight_edit' rep.fid %} ">Edit</a></td>
+            <td>{{rep.datetime |date:" d - m - Y"}}</td>
+            <td>{{rep.vehicleno}}<br><span class="text-primary p-0 m-0"> NO OF Feets : {{rep.noof_feet}} </span></td>
+            <td>{{rep.dc_no}}</td>
+            <td>{{rep.dc_date |date:" d - m - Y"}}</td>
+            <td>{%for vendor in vendor_list%}{%if rep.vendorname == vendor.ven_id%}{{vendor.vendor}}{%endif%}{%endfor%}</td>
+            <td>{{rep.noof_items}}</td>
+            <td>{%for courier in courier_list%}{%if rep.freight_name == courier.cid%}{{courier.courier_name}}{%endif%}{%endfor%}</td>
+            <td>{{rep.docket_no}}</td>
+            <td>{{rep.docket_date |date:" d - m - Y"}}</td>
+            <td>{{rep.noof_pack}}</td>
+            <td>{{rep.duration}}</td>
+            <form  method="post" id="form1" action="{%url 'update_freight'%}" > {% csrf_token %}
+              <!-- action="{%url 'update_freight'%}" -->
+              <td>{%if rep.unload_noofpers == 0 %}
+                <span style="color: red;font-weight: 900;float: right;">*</span>
+                <input type="number" name="unload_noofpers" id="unload_noofpers" required>
+                {%else%}
+                {{rep.unload_noofpers}}                
+                {%endif%} 
+                <input type="hidden" name="fid" id="fid" value="{{rep.fid}}"> <br></td>
+              <td>{{rep.security_empcode}}</td>
+              <td>{{rep.remarks}}</td>
+              <td>{%for emp in emp_names %}{%if rep.createdby == emp.empcode %}{{emp.empname}} {%endif%}{%endfor%} <br>
+                {%if rep.delay == 1 %}
+                <span style="color: red;font-weight: 900;float: right;">*</span>                                
+                  <textarea name="delay_reason" id="delay_reason" cols="20" rows="2" required placeholder="Delay Reason..."></textarea> 
+                  {%else%}                
+                  {{rep.delay_reason}}                 
+                {%endif%}
+              </td>
+              <td><input type="submit" value="Update" class="p-1 btn btn-primary m-0"  id="updatebtn"></td>
+              <!-- onclick="validUpdate('{{forloop.counter}}')" -->
+            </form>
+          </tr>          
+          {%endfor%}        
+        </tbody>
+      </table>
+      {%endif%}
+    <!-- </form> -->
+    
+    </fieldset>
+  
+  
+
+
+  
+</div>
+
+
+<script>
+  $(document).ready(function (){
+  $(".dateselect").datetimepicker({
+      format: "d-m-Y",
+      timepicker: false
+  });
+  $("#updatebtn").click(function(){
+    $("#form1").action()
+    var fid=$("#fid").val();
+    var unload_noofpers=$("#unload_noofpers").val();
+    var delay_reason=$("#delay_reason").val();
+    $.ajax({
+        url:'freight_forward/update_freight',
+        data:{fid:fid,unload_noofpers:unload_noofpers,delay_reason:delay_reason},
+        type:'post',
+        success:function result(data){
+            alert(data);
+        }
+        });
+    // var id=$(this).val();
+    // alert(id);
+  });
+  
+
+});
+
+function validUpdate(i){
+    // alert(i); return false;
+    var unload_noofpers=$("#unload_noofpers"+i).val();
+    var delay_reason=$("#delay_reason"+i).val();
+    var fid=$("#fid").val();
+    console.log(unload_noofpers);
+    console.log(delay_reason);
+    console.log(fid);
+    $('#form'+i).action("{%url 'update_freight'%}");
+
+    $.ajax({
+      url: "freight_forward/update_freight", 
+      //url: "http://"+hostname+"/certificate/employee_json_responce",
+      type: "POST",      
+      data: { unload_noofpers: unload_noofpers,delay_reason:delay_reason,fid:fid},
+      success: function (data) {
+        alert(data)
+      }
+    });
+    
+    $unload_noofpers=$("#unload_noofpers"+i).val();
+    $delay_reason=$("#delay_reason"+i).val();
+    
+    confirm("Are you the boss?");
+    
+
+  }
+  function getVendor_id(val){
+    var vendorid= document.getElementById("venderid_"+val).value;
+    //alert(vendorid);
+      $.ajax({
+        url: "/freight_forward/getVendor_id",
+        //url: "http://"+hostname+"/certificate/employee_json_responce",
+        type: "GET",
+        dataType: "JSON",
+        data: { vendorid : vendorid},
+        success: function (data) {
+            //alert(data);
+            //console.log(data);
+            $('#vendorname_'+val).val(data);                   
+        },
+        error: (error) => {
+            alert("Please enter correct vendor ID . . . !    ");
+            // console.log(error);
+        }
+      }); 
+  }
+</script>
+
+
+<style>
+  .medha_headings{
+    color: #800080 !important;
+    font-weight: 700;
+  }
+  .widthselect{
+  width: 29%;
+  margin-right:0.5%;
+  }
+
+  #myTable td {
+    margin:1%;
+    width: 200px !important;
+    white-space: nowrap;
+    padding-left: 10px;
+  }
+  textarea{border-radius: 5px;}
+  input,textarea,select{
+      border-radius: 5px 5px 5px 5px;
+      border: 1px solid gray;
+      padding: 2px;
+      
+  }
+  select{width: 150px;}
+  
+
+
+</style>
+
+ 
+
+{%endblock%}
+

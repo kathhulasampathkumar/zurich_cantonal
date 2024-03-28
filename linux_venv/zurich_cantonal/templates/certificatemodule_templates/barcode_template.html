@@ -1,0 +1,245 @@
+{%extends "base.html"%}
+{% load static %}
+
+{%block content%}
+{% load custom_filters %}
+
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+
+
+<script>
+  $(document).ready(function(){
+    $(".custom_datePicker").datetimepicker({
+            format: "d-m-Y",
+            timepicker: false
+    });
+    
+            var table=$('#searchtable1').DataTable({
+                "paging":true,fixedHeader:{header: true,footer: true},responsive: false,autoWidth: false,  aaSorting: [[2, 'asc']], cache: true,
+                initComplete: function () {
+                }
+            });
+            $(".filterhead").each(function (i) {
+                if (i >= 0 && i <=12 ) {
+                    var select = $('<select style="width:50px;border-radius:4px;"><option value=""></option></select>')
+                        .appendTo($(this).empty())
+                        .on('change', function () {
+                            var term = $(this).val();
+                            table.column(i).search(term, false, false).draw();
+                        });
+                    table.column(i).data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                } else {
+                    $(this).empty();
+                }
+            });
+  });
+
+  function isNumerickey(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode!=46 && charCode>31 && (charCode<48 || charCode>57) || charCode== 13){
+          return false;
+      }
+      return true;
+  }
+  function isNumerickey0_9(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode>47 && charCode<58 ){
+          return true;
+      }
+      return false;
+  }
+  </script>
+  <style>
+    #searchtable1 tr{ background-color:#EAF7ED;}
+    /* #searchtable1 td{ width: max-content;} */
+    /* .with_10 p-0 m-0 w-20{width: 50px !important;}
+    .with_20{width:  100px !important;} */
+  </style>
+
+<!-- <h3>Search Certificate by Employee Code or Certificate Or Both </h3> -->
+<fieldset class="border border-2 px-2">
+  <legend  class="float-none w-auto mb-2 p-2 medha_headings fs-5 " style="color: #800080 !important;
+  font-weight: 700;font-family: 'Andy MT';">Special Process Certificate Search :</legend>
+<form action="{%url 'generate_barcodes'%}" method="POST"> {% csrf_token %} 
+  <div class="row p-1 m-1 col-lg-12 col-md-12 col-sm-12">
+
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <input type="text" class="form-control custom_datePicker" id="fromdate" name="fromdate" maxlength="10" onkeypress="return isNumerickey(event)"  placeholder="DD-MM-YYYY">
+      <label for="fromdate">From Date:</label>
+    </div>
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <input type="text" class="form-control custom_datePicker" id="todate" name="todate" maxlength="10" onkeypress="return isNumerickey(event)"  placeholder="DD-MM-YYYY">
+      <label for="todate">To Date:</label>
+    </div>
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <input type="number" class="form-control" name="empcode" id="empcode"  onkeypress="return isNumerickey0_9(event)" maxlength="6">
+      <label for="empcode">Employe Code:</label>
+    </div>
+    
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <select name="cid" id="cid" class="form-select px-4 p-0" aria-label="Default select example"  autofocus>
+        <option value="">- - Select Certificate Name- - </option>
+        {%for certificate in certificate_list%}
+        <option value="{{certificate.cid}}" >{{certificate.cert_name}}  </option>
+        {%endfor%}
+      </select>
+    </div>
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <select name="deptcode" id="deptcode" class="form-select px-4 p-0" aria-label="Default select example"  autofocus>
+        <option value="">- - Select Dept - - </option>
+        {%for deptcode , deptname in dept_dropdownslist%}
+        <option value="{{deptcode}}" >{{deptname}}  </option>
+        {%endfor%}
+      </select>
+    </div>
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <select name="loccode" id="loccode" class="form-select px-4 p-0" aria-label="Default select example"  autofocus>
+        <option value="">- - Select Location - - </option>
+        {%for loccode , locname in location_dropdowns_list%}
+        <option value="{{loccode}}" >{{locname}}  </option>
+        {%endfor%}
+      </select>
+    </div>
+    
+    <div class="form-floating mb-3 col-lg-1 col-md-1  col-sm-12 px-1 p-0">
+      <input type="submit" class="form-control btn btn-success fs-5 py-0" value="Search">
+    </div>
+  </div>
+<p class="text-danger"> {{mess}}</p>
+</form>
+</fieldset>
+
+{% for barcode in barcodes %}
+        <div class="barcode">{{ barcode }}</div>
+    {% endfor %}
+
+
+
+
+
+{%if get_cert%}
+<table class="table table-striped table-bordered table-hover mt-4" id="searchtable1">
+  <thead>
+    <!-- <th class="filterhead">S.NO.</th> -->
+    <tr>
+      
+      <th class="filterhead">Cert ID</th>
+      <th class="filterhead">CertificateName</th>
+      <th class="filterhead">EmployeCode</th>
+      <th class="filterhead">EmployeeName</th>
+      <th class="filterhead">ExperienceOnProcess</th>
+      <th class="filterhead"> Qualified (Skill & QWork )</th>
+      <th class="filterhead">Qty</th>
+      <th class="filterhead">Product</th>
+      <th class="filterhead">Period</th>
+      <th class="filterhead">FromDate</th>
+      <th class="filterhead">ToDate</th>
+      <th class="filterhead">EffectFrom</th>
+      <th class="filterhead">Applied_or_ApprovedBy</th>
+      
+      <th class="filterhead">View </th>
+      <th class="filterhead">PDF</th>
+    </tr>
+  
+    <tr>
+      <!-- <th class="with_10 p-0 m-0 w-20" >S.NO.</th> -->
+      <th class="with_10 p-0 m-0 w-10">Cert ID</th>
+      <th class="with_20">CertificateName</th>
+      <th class="with_10 p-0 m-0 w-20">EmployeCode</th>
+      <th class="with_20">EmployeeName</th>
+      <th class="with_20">Experience <br> OnProcess</th>
+      <th class="with_10 p-0 m-0 w-10">Qualified (Skill & QWork )</th>
+      <th class="with_10 p-0 m-0 w-10">Qty</th>
+      <th class="with_20">Product</th>
+      <th class="with_10 p-0 m-0 w-20">Period</th>
+      <th class="with_20">FromDate</th>
+      <th class="with_20">ToDate</th>
+      <th class="with_20">EffectFrom</th>
+      <th class="with_20">Applied <br> ApprovedBy</th>      
+      <th class="with_10 p-0 m-0 w-20">View </th>
+      <th class="with_10 p-0 m-0 w-20">PDF</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    {%for apr in get_cert%}
+    
+    <tr class="" >
+      <!-- <th scope="row" id="#">{{forloop.counter}}</th>  |get_usernameByFilter     -->
+      <td>{{apr.main_id}}</td>
+      <td>{{ apr.cert_id |certificateNameByFilter}}  </td>
+      <td>{{apr.empcode}}</td>      
+      <td>{{apr.empcode|get_usernameByFilter}}</td>      
+      <td>{{apr.eop_years}} Years ,{{apr.eop_months}} Months</td>
+      <td>{{apr.skill}} : {{apr.qua_work}}</td>
+      <td>{{apr.qty_eval}}</td>
+      <td>{{apr.prod_eval}}</td>
+      <td>{{apr.period}}</td>
+      <td>{{apr.period_from |date:" d - m - Y"}}</td>
+      <td>{{apr.period_to |date:" d - m - Y"}}</td>
+      <td>{{apr.entry_dt |date:" d - m - Y"}}</td>
+      <td>{{apr.createdby |get_usernameByFilter }} </td>
+      
+      <td>  
+         
+         <form action="{%url 'convert_pdf'  %}" method="get">          
+          {% csrf_token %}
+          <input type="number" class="form-control" id="main_id" placeholder="" value="{{apr.main_id}}"  name='main_id' hidden>
+          <input type="number" class="form-control" id="cid" placeholder="" value="{{apr.cert_id}}"  name='cid' hidden>
+          <input type="number" class="form-control" id="empcode" placeholder="" value="{{apr.empcode}}"  name='empcode' hidden>
+          <input type="number" class="form-control" id="expert_id" placeholder="" value="{{apr.expert_id}}"  name='expert_id' hidden>
+          <input type="number" class="form-control" id="hod_id" placeholder="" value="{{apr.hod_id}}"  name='hod_id' hidden>
+
+          <input type="submit" value="view" class="btn btn-success  m-0" >
+       </form> 
+      </td>
+      
+      <td>
+         <form action="{%url 'download_pdf'%}" method="get">          
+          {% csrf_token %}
+          <input type="number" class="form-control" id="main_id" placeholder="" value="{{apr.main_id}}"  name='main_id' hidden>
+          <input type="number" class="form-control" id="cid" placeholder="" value="{{apr.cert_id}}"  name='cid' hidden>
+          <input type="number" class="form-control" id="empcode" placeholder="" value="{{apr.empcode}}"  name='empcode' hidden>
+          <input type="number" class="form-control" id="expert_id" placeholder="" value="{{apr.expert_id}}"  name='expert_id' hidden>
+          <input type="number" class="form-control" id="hod_id" placeholder="" value="{{apr.hod_id}}"  name='hod_id' hidden>
+          
+          <input type="text" class="form-control" id="empname" placeholder="" value="{%for name in emp_names%}{%if apr.empcode == name.empcode %}{{name.empname}} {%endif%}{%endfor%}"  name='empname' hidden>
+          <input type="text" class="form-control" id="cert_name" placeholder="" value="{%for name in cert_names%}{%if apr.cert_id == name.cid %}{{name.cert_name}} {%endif%}{%endfor%}"  name='cert_name' hidden>          
+          <input type="submit" value="pdf" class="btn btn-success  m-0" >
+       </form>   
+      </td>
+      {%comment%}
+      {%endcomment%}
+    </tr>
+    
+    {%endfor%}
+    {%else%}
+    <p class=" text-danger fs-5 px-4"> * * * No Results found * * * </p>
+    {%endif%}
+  </tbody>
+</table>
+
+
+
+
+
+
+
+{%comment%}
+{%url 'convert_pdf' apr.main_id %}
+{%endcomment%}
+
+
+{%endblock%}

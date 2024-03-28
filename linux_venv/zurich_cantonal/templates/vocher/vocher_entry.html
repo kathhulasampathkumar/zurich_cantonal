@@ -1,0 +1,643 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+            <!-- <link href="http://192.168.132.27/msdpl.com/public/Date/styles/kendo.common.min.css" rel="stylesheet" /> -->
+        <!-- <link href="http://192.168.132.27/msdpl.com/public/Date/styles/kendo.default.min.css" rel="stylesheet" /> -->
+          <!-- <script src="http://192.168.132.27/msdpl.com/public/Date/js/kendo.all.min.js"></script> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+    <script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" href="D:/env_site/geeks_site/projectApp/static/css/jquery.datetimepicker.css"> -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <title>Document</title>
+    <style>
+
+        #elblncecnt{
+            color:blue;
+            font-size:20px;
+        }
+        legend{
+            font-size: 14px;
+            color: #800080;
+            font-weight: bold;
+        }
+        .specialfont{
+            color: blue;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        td{
+            font-size: 12px;
+        }
+        .amount{
+            border-radius: 5px;
+            width:80px;
+        }
+        th{
+            font-size: 14px;
+            font-weight: bold;
+
+        }
+        #voucher_table > tr,td{
+           border:2px black;
+
+        }
+
+        textarea{
+            height:26px;
+        }
+     
+  .form-submit {
+              background: none repeat scroll 0 0 #016ABC;
+              border: 1px solid #EEEEEE;
+              border-radius: 20px 20px 20px 20px;
+              box-shadow: 3px 3px 3px #000000;
+              color: #FFFFFF;
+              height: 25px;
+              font-weight: bold;
+              text-align: center;
+              width: 120px;
+              width: auto;
+        }
+       
+    </style>
+    <script>
+       $(document).ready(function(){
+        $(".category_main").val('');
+        $(".category_sub").val('');
+        $(".remarks").val('');
+        $(".startdate").val('');
+         $(".enddate").val('');
+        $("#totalamount").val('');
+        $(".amount").val('');
+        $(".startdate,.enddate").datetimepicker({
+            format: "d-m-Y",
+            timepicker: false
+        });
+    });
+
+    function add_row(){
+        totalDisplay()
+    var subass=$("#subass1").val();
+    var addsub=parseFloat(subass)+1;
+     var tr='';
+     var cat='';var sub_cat='';var projectss='';
+
+    {% for cat_list in cat_option%}
+      cat+='<option value="{{cat_list.cid}}">{{cat_list.cat_name}}</option>';
+    {%endfor%}
+    {%for cat_list in cat_sub_option%}
+      sub_cat+=' <option value="{{cat_list.sid}}" data-tag="{{cat_list.cid}}">{{cat_list.sname}}</option>';
+    {%endfor%}
+    {%for p , q  in pro %}
+    projectss+='<option data-tag="" value="{{p}}" >{{q}}</option>';
+   {%endfor%}
+     tr+='<tr><td><select required name="category" class="form-control category_main" onchange="change_subcat('+addsub+')" id="vocher_category_master'+addsub+'"><option value="" data-tag="">-select-</option>'+cat+'</td><td><select required class="form-control category_sub"  name="subcat" id="vocher_sub_category'+addsub+'" required onchange="add_sub_norms('+addsub+')"><option  value="" data-tag="">-select-</option>'+sub_cat+'</select></td><td><select  name="vocher_project" class="form-control category_main" id="vocher_project'+addsub+'"><option value="" data-tag="">-select-</option>'+projectss+'</td>';
+
+     tr+='<td><input type="text" name="billno"  maxlength="18" id="billno'+addsub+'" ></td><td><input type="text" name="billdate" id="billdate'+addsub+'" class="form-control ms-2 startdate" value="dd-mm-yyyy" onblur="restrict_futuredate('+addsub+') placeholder="dd-mm-yyyy"   pattern="[0-9]{2}[-]{1}[0-9]{2}[-]{1}[0-9]{4}" title="Please enter  in dd-mm-yyyy format" ></td>';
+        
+     tr+='<td><input type="text" required name="startdate"onblur="change_enddate('+addsub+')" id="startdate'+addsub+'" style="display:none" class="form-control ms-2 startdate" value="dd-mm-yyyy" placeholder="dd-mm-yyyy"  pattern="[0-9]{2}[-]{1}[0-9]{2}[-]{1}[0-9]{4}" title="Please enter  in dd-mm-yyyy format" required></td><td class="end_date_td"><input type="text" name="enddate" style="display:none" id="enddate'+addsub+'" class="form-control ms-2 enddate" value="dd-mm-yyyy" placeholder="dd-mm-yyyy" onblur="restrict_dates('+addsub+')"></td><td><div class="petrol" id="petrol'+addsub+'" style="display:none;"><input type="text" name="kms" id="kms'+addsub+'" maxlength="4" style="width:50px;text-align:right" onkeypress="return onlyNumberKey(event)" class="kms form-control" value=""  onblur="get_petrolrate('+addsub+')"></div></td>';
+     tr+='<td><textarea cols="30" name="remarks" id="remarks" class="remarks" required></textarea></td> ';
+     tr+='<td><input type="text"  id="amount'+addsub+'" name="amount" onblur="restrict_total(this)" required minlength="0" maxlength="5" oninput="restrict_num(this)"onkeypress="return onlyNumberKey(event)" class="amount"  autocomplete="off"></td>';
+     tr+='<td><svg onclick="delete_vocher(this)" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" onclick="delete_nominee(this)" width="24" height="24" viewBox="0 0 24 24" style=" fill:#000000;"><path d="M 10.806641 2 C 10.289641 2 9.7956875 2.2043125 9.42968752.5703125 L 9 3 L 4 3 A 1.0001 1.0001 0 1 0 4 5 L 20 5 A 1.0001 1.0001 0 1 0 20 3 L 15 3 L 14.570312 2.5703125 C 14.205312 2.2043125 13.710359 2 13.193359 2 L 10.806641 2 z M 4.3652344 7 L 5.8925781 20.263672 C 6.0245781 21.253672 6.877 22 7.875 22 L 16.123047 22 C 17.121047 22 17.974422 21.254859 18.107422 20.255859 L 19.634766 7 L 4.3652344 7 z"></path></svg></td></tr>';
+            $("#voucher_table").append(tr);
+              $("#subass1").val(addsub);
+              $("#startdate"+addsub+",#enddate"+addsub+",#billdate"+addsub+"").datetimepicker({
+                format: "d-m-Y",
+                timepicker: false
+            });
+
+          
+    }
+       function delete_vocher(e) {
+            $(e).closest("tr").remove();
+            totalDisplay();
+        }
+    function change_subcat(id){
+        var selected = $("#vocher_category_master"+id).val();
+                if (selected != '') {
+                    $("#vocher_sub_category"+id+"").val('');
+                    $("#vocher_sub_category"+id+" >option").each(function(item) {
+                        var element = $(this);
+                        if ($(this).data("tag") != selected) {
+                            element.hide();
+                        } else {
+                            element.show();
+                        }
+                    });
+                } else {
+                    $("#vocher_sub_category"+id+" option").each(function(item) {
+                        var element = $(this);
+                        element.show();
+
+                    });
+                }
+                $("#vocher_sub_category"+id+"").val($("#vocher_sub_category"+id+" option:visible:first").val());
+                $("#amount"+id).val('')
+                 $("#enddate"+id).hide().attr("required",false)
+                 $("#petrol"+id).hide()
+                 $("#kms"+id).attr("required",false);
+    }
+    function restrict_num(e) {
+        var value = parseFloat($(e).val());
+        {% comment %} if (isNaN(value)) {
+            alert("Only numbers are allowed")
+            $(e).val('0').focus()
+        } {% endcomment %}
+        if (value > 10000) {
+            alert("Please enter value between 0 to 10000")
+            $(e).val('0').focus()
+        }
+
+    }
+        function onlyNumberKey(evt) {
+
+            // Only ASCII character in that range allowed
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                return false;
+            return true;
+        }
+        function restrict_total(e){
+           var val=$(e).val();
+           if (isNaN(val)) {
+            alert("Only numbers are allowed")
+            $(e).val('0').focus()
+            return false;
+           }
+           if(val>10000){
+            alert("Vocher amount should be less than 10000")
+           }
+            totalDisplay();
+        }
+        function totalDisplay(){
+
+           var count=0;
+            $('.amount' ).each(function(i, obj) {
+                var p_val = parseFloat($(obj).val());
+            
+                if (isNaN(p_val)) {
+                    $(obj).val('0')
+                    return;
+                }
+                count = count + p_val;
+                if (count > 10000) {
+                    alert("Total vocher amount should not be greater than 10000")
+                    $(obj).val('0').focus()
+                    $("#totalamount").val((count - p_val));
+                    return false;
+                } else {
+                   
+                    $("#totalamount").val(count)
+                }
+            });  
+        }
+        function add_sub_norms(id){
+            $("#enddate"+id).val();
+            var norm_no=$("#vocher_sub_category"+id).val();
+            if(norm_no==8 || norm_no==9 ){
+                $("#startdate"+id).show().attr("required",true)
+                $("#enddate"+id).show().attr("required",true)
+                 $("#amount"+id).val('').attr("readonly",true).css("background-color","#FAFAD2")
+                 $("#petrol"+id).show()
+                 $("#kms"+id).val('').attr("required",true)
+            }else if(norm_no==1){
+                $("#startdate"+id).show().attr("required",true)
+                 $("#enddate"+id).show().attr("required",true)
+                  $("#amount"+id).val('').attr("readonly",true).css("background-color","#FAFAD2")
+                  $("#petrol"+id).hide()
+                  $("#kms"+id).attr("required",false)
+            }else{
+               $("#enddate"+id).hide()
+               $("#startdate"+id).hide().attr("required",false)
+               $("#enddate"+id).val('').attr("required",false)
+               $("#amount"+id).val('').attr("readonly",false).css("background-color","")
+               $("#petrol"+id).hide()
+               $("#kms"+id).attr("required",false)
+            }
+            const sub_cat_norm = [1,8,9,10,11,12,14,18,19,23,24];
+            const check_norm=sub_cat_norm.indexOf(norm_no); 
+            // alert(norm_no)
+            // alert(check_norm)
+            if(check_norm=='-1'){
+                $("#billno"+id).attr("required",false)
+                $("#billdate"+id).attr("required",false)
+            }else{
+                $("#billno"+id).attr("required",true)
+                $("#billdate"+id).attr("required",true) 
+            }
+            totalDisplay();
+        }
+        function restrict_dates(id){
+            var startdate = $("#startdate"+id).val();
+            var completeddate = $("#enddate"+id).val();
+             var endformat=ValidateDate(completeddate);
+            if(endformat==false){
+                alert("Please select end date  in dd-mm-yyyy format")
+                $("#enddate"+id).val('');
+                totalDisplay();
+                return false;
+            }
+             var startformat=ValidateDate(startdate);
+            if(startformat==false){
+                alert("Please select start date in dd-mm-yyyy format")
+                 $("#startdate"+id).val('');
+                  totalDisplay();
+                 return false;
+            }
+            var start_dd1 = startdate.slice(0, 2);
+            var start_mm1 = startdate.slice(3, 5);
+            var start_yy1 = startdate.slice(6, 10);
+            var compldate_dd1 = completeddate.slice(0, 2);
+            var compldate_mm1 = completeddate.slice(3, 5);
+            var compldate_yy1 = completeddate.slice(6, 10);
+            if (start_yy1 < compldate_yy1) {} else if (start_yy1 > compldate_yy1) {
+                if (completeddate != '')
+                    alert("Please select  start date should be less than end date");
+                $("#enddate"+id).val('')
+                     $("#amount"+id).val('')
+                  totalDisplay();
+                return false;
+            } else if (start_yy1 == compldate_yy1) {
+                if (start_mm1 > compldate_mm1) {
+                    alert("Please select  start date should be less than end date");
+                    $("#enddate"+id).val('')
+                         $("#amount"+id).val('')
+                  totalDisplay();
+                    return false;
+                } else if (start_mm1 < compldate_mm1) {} else if (start_mm1 == compldate_mm1) {
+                    if (start_dd1 < compldate_dd1) {} else if (start_dd1 == compldate_dd1) {} else if (start_dd1 > compldate_dd1) {
+                        alert("Please select  start date should be less than end date");
+                        $("#enddate"+id).val('')
+                             $("#amount"+id).val('')
+                  totalDisplay();
+                        return false;
+                    }
+                }
+            }
+                 var cid= $("#vocher_sub_category"+id).val()
+
+            if(start_mm1+""+start_yy1!=compldate_mm1+""+compldate_yy1){
+                alert("Vocher should be applied for same month ")
+                 $("#enddate"+id).val('');
+                  $("#amount"+id).val('').focus();
+                  totalDisplay();  
+                  return false;
+
+            }
+
+            //check days between
+            if(cid==1 || cid==9|| cid==8){
+               $.ajax(
+                    {
+                        type:"GET",
+                        dataType : 'json',
+                        url: "vocher_days_restrict",
+                        async:false,
+                        data:{fromdate:startdate,todate:completeddate,cid:cid},
+                        success: function (data) {
+                          if(data==1){
+                            $("#enddate"+id).val('');
+                            $("#amount"+id).val('');
+                           totalDisplay();
+                            alert("Vocher already applied for this dates");
+                           
+                            return false;
+                          }else{
+            const date1 = new Date(convertday(startdate));
+            const date2 = new Date(convertday(completeddate));
+            const diffTime = Math.abs(date2 - date1);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                if(startdate!='' && cid!='' && cid==1){
+                $.ajax(
+                    {
+                        type:"GET",
+                        dataType : 'json',
+                        url: "get_pertrol_rates",
+                        async:false,
+                        data:{fromdate:startdate,todate:completeddate,cid:cid},
+                        success: function (data) {
+                            if(data){
+                               var total=data*(diffDays+1);
+                               if(total>10000){
+                                $("#enddate"+id).val('')
+                                $("#amount"+id).val('0')
+                                alert("Total amount should not exceed 10000")
+                               }else{
+                                $("#amount"+id).val(total)
+                              
+                               }
+                            }
+                        }
+                     });
+            }
+                          }
+                        }
+                     }); 
+             
+            }
+           
+             totalDisplay();      
+           }
+           function ValidateDate(data) {
+              var dtValue = data;
+              var dtRegex = new RegExp("^([0]?[1-9]|[1-2]\\d|3[0-1])-(01|02|03|04|05|06|07|08|09|10|11|12)-[1-2]\\d{3}$", 'i');
+              return dtRegex.test(dtValue);
+          }
+           function convertday(day_to){
+            const date = day_to;
+
+            const [year, month, day] = date.split('-');
+
+            const result = [month, year, day].join('/');
+
+            return result;
+           }
+           function get_petrolrate(id){
+            var startdate = $("#startdate"+id).val();
+            var completeddate = $("#enddate"+id).val();
+            var sub_cat=$("#vocher_sub_category"+id).val();
+            var kms=parseFloat($("#kms"+id).val());
+            if(kms<0){
+                alert("please enter valid kms")
+            }
+            if(startdate !='' && completeddate!='' && sub_cat!=''){
+                $.ajax(
+                    {
+                        type:"GET",
+                        dataType : 'json',
+                        url: "get_pertrol_rates",
+                        data:{fromdate:startdate,todate:completeddate,cid:sub_cat},
+                        success: function (data) {
+                            if(data){
+                               var total=data*kms;
+                               if(total>10000){
+                                $("#kms"+id).val('')
+                                $("#amount"+id).val('0')
+                                 totalDisplay()
+                                alert("Total amount should not exceed 10000")
+                               }else{
+                                $("#amount"+id).val(parseFloat(total).toFixed(2))
+                                totalDisplay()
+                               }
+                            }
+                        }
+                     });
+                  }else{
+                    $("#kms"+id).val('')
+                    alert("Please enter start date end date and sub category")
+                  }
+                }
+                function validate(){
+                    totalDisplay();
+                    var total_amount=parseInt($("#totalamount").val());
+                    if(total_amount<1){
+                        alert("Vocher amount should be greater than zero")
+                         return false;
+                    }
+                   return true;
+                }
+                function change_enddate(id){
+                    $("#enddate"+id).val('')
+                    totalDisplay();
+                    var startdate=   $("#startdate"+id).val();
+                    var startformat=ValidateDate(startdate);
+                    if(startformat==false){
+                        alert("Please select start date  in dd-mm-yyyy format")
+                        $("#startdate"+id).val('');
+                        return false;
+                    }
+               
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1;
+                    var yyyy = today.getFullYear();
+                    if(dd<10)
+                    {
+                    dd='0'+dd;
+                    }
+
+                    if(mm<10)
+                    {
+                    mm='0'+mm;
+                    }
+
+                    today = dd+'-'+mm+'-'+yyyy;
+                    var selected= $("#startdate"+id).val();
+                    var res1 = selected.slice(0, 2);
+                    var res2 = selected.slice(3, 5);
+                    var res3 = selected.slice(6, 10);
+
+                    if(res3<yyyy){
+                    }
+                    else{
+                          if(res3==yyyy){
+                            if(res2<mm){
+
+                            }
+                            if(res2>mm){
+                                alert("please select before today dates only");
+                                $('#startdate'+id).val('');
+                            }
+                            if(res2==mm){
+                                if(res1<dd||res1==dd){
+
+                                }
+
+                                else{
+                                alert("please select before today dates only");
+                                $('#startdate'+id).val('');
+                                }
+                            }
+                        }
+
+                    }
+                      
+                
+                }
+                function restrict_futuredate(id)
+                {
+              var billdate=   $("#billdate"+id).val();
+                    var billdateformat=ValidateDate(billdate);
+                    if(billdateformat==false){
+                        alert("Please select  date  in dd-mm-yyyy format")
+                        $("#billdate"+id).val('');
+                        return false;
+                    }
+               
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1;
+                    var yyyy = today.getFullYear();
+                    if(dd<10)
+                    {
+                    dd='0'+dd;
+                    }
+
+                    if(mm<10)
+                    {
+                    mm='0'+mm;
+                    }
+
+                    today = dd+'-'+mm+'-'+yyyy;
+                    var selected= $("#billdate"+id).val();
+                    var res1 = selected.slice(0, 2);
+                    var res2 = selected.slice(3, 5);
+                    var res3 = selected.slice(6, 10);
+
+                    if(res3<yyyy){
+                    }
+                    else{
+                          if(res3==yyyy){
+                            if(res2<mm){
+
+                            }
+                            if(res2>mm){
+                                alert("please select before today dates only");
+                                $('#billdate'+id).val('');
+                            }
+                            if(res2==mm){
+                                if(res1<dd||res1==dd){
+
+                                }
+
+                                else{
+                                alert("please select before today dates only");
+                                $('#billdate'+id).val('');
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+    </script>
+</head>
+<body>
+    <div class="card-block" style="overflow-x: auto;height: 600px;">
+         {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}  ms-0 me-4 w-90 mt-1" role="alert" style="margin-left: -10px;">
+        <span{% if message.tags %} class="alert-{{message.tags}}   fs-4 p-2" {% endif %}>{{ message }}</span>
+    </div>
+    {% endfor %}
+    {% endif %}
+        <form action="save_vocher" method="POST" onsubmit="return validate()" enctype="multipart/form-data">
+            {% csrf_token %}
+       <fieldset class="border">
+                <legend  class="float-none w-auto p-2" style="color: #800080;font-size: 16px;">Voucher Entry</legend>
+                <table class="table" style="width:90%;">
+                 <tr>
+                     <td>Employee Code: </td>
+                     <td><span class="specialfont">{{empCode}}</span></td>
+                     <td>Employee Name: </td>
+                     <td><span class="specialfont">{{user}}</span></td>
+                     <td>Designation: </td>
+                     <td><span class="specialfont">{{designation}}</span></td>
+                     <td>Department: </td>
+                     <td><span class="specialfont">{{department}}</span></td>
+                     <td>Level</td>
+                     <td><span class="specialfont">{{level}}</span></td>
+                 </tr>
+                 <tr>
+                    <td>
+                         <p> <b>Upload Attachments</b></p>
+                         <input type="file" name="attachments" id="attachment" accept="application/pdf" multiple required>
+                    </td>
+                    <td>
+                        <input type="submit"  value="Save" class="form-submit" data-toggle="tooltip"
+                           data-placement="top" title="click to save all data" style="font-size: small;" value='save'>
+                    </td>
+                 </tr>
+                </table>
+                  <div class="table-responsive"> 
+                  <table  border="1"class="table table-bordered"id="voucher_table" style="width:90%;border:2px black;">
+                    <tr>
+                        <th>Vocher category</th>
+                        <th>Vocher Sub category</th>
+                        <th>Project</th>
+                        <th>Bill no</th>
+                        <th>Bill Date</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>No. of kms</th>
+                        <th>Remarks </th>
+                        <th colspan="2">Amount <span id="fueladdRow" onclick="add_row()"
+                            style="background: transparent; color: blue;cursor:pointer;" data-toggle="tooltip"
+                            data-placement="top" title="Add a new row in table">
+                            <img id="tr_parent_add_button" class="tr_parent_add_button" title="Add" alt="Add" src="http://192.168.132.12/rewamp//public/images/onebit_31.png" style="cursor:pointer;float: right;" width="15" height="15">
+                            <svg style ="display:none"xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg></span>
+                            <!-- <span id="fueladdRow"
+                            style="background: transparent; color: blue;cursor:pointer" data-toggle="tooltip"
+                            data-placement="top" title="add a new row in table"><i class="fa fa-plus-circle"
+                                aria-hidden="true"></i></span> -->
+                                <input type="hidden" id="subass1" name="subass1" value='1'></th>
+                    </tr>
+                     <tr>
+                        <td>
+                            <select class="form-control category_main" name="category" required id="vocher_category_master1" onchange="change_subcat(1)">
+                            <option data-tag="" value="" >-select-</option>
+                            {%for cat_list in cat_option%}<option value="{{cat_list.cid}}">{{cat_list.cat_name}}</option>{%endfor%}
+                            </select></td>
+                          <td class="" style="width: 20%;"> 
+                          <select  class="form-control category_sub w-70"  name="subcat" id="vocher_sub_category1" required onchange="add_sub_norms(1)">
+                            <option data-tag=""  value="">-select-</option>
+                            {%for cat_list in cat_sub_option%}<option value="{{cat_list.sid}}" data-tag="{{cat_list.cid}}">{{cat_list.sname}}</option>{%endfor%}
+                            </select></td>
+                        <td>
+                            <select class="form-control category_main" name="vocher_project" required id="vocher_project1" >
+                            <option data-tag="" value="" >-select-</option>
+                            {%for p , q  in pro %}
+                            <option data-tag="" value="{{p}}" >{{q}}</option>
+                            {%endfor%}
+                            </select>   
+                        </td>
+                        <td>
+                            <input type='text' name="billno" maxlength="18"  id="billno1" >
+                        </td>
+                         <td>
+                            <input type="text" name="billdate" id="billdate1" class="form-control ms-2 startdate"
+                            value="dd-mm-yyyy" placeholder="dd-mm-yyyy" required onblur="restrict_futuredate(1)" pattern="[0-9]{2}[-]{1}[0-9]{2}[-]{1}[0-9]{4}" title="Please enter  in dd-mm-yyyy format" >
+                        </td>
+                        <td>
+                            <input type="text" name="startdate"  style="display:none" id="startdate1" class="form-control ms-2 startdate"
+                            value="dd-mm-yyyy" placeholder="dd-mm-yyyy" required  pattern="[0-9]{2}[-]{1}[0-9]{2}[-]{1}[0-9]{4}" onblur="change_enddate(1)"title="Please enter  in dd-mm-yyyy format" required>
+                        </td>
+                        <td class="end_date_td">
+                            <input type="text"  style="display:none" name="enddate" id="enddate1" class="form-control ms-2 enddate"
+                            value="dd-mm-yyyy" placeholder="dd-mm-yyyy" onblur="restrict_dates(1)">
+                        </td>
+                        <td>
+                               <div class="petrol" id="petrol1" style="display:none;" >
+                               <input  style='width:50px;text-align:right'type="text" name="kms" maxlength="4"onkeypress="return onlyNumberKey(event)" id="kms1" class="kms form-control"
+                                value=""  onblur="get_petrolrate(1)">
+                            </div>
+                        </td>
+                        <td>
+                            <textarea rows="1" cols="30" required minlength="3" name='remarks' id="remarks" class='remarks'></textarea>
+                           </td>
+                        <td>
+                        <input type="text" id="amount1" name="amount" required minlength="0" maxlength="5" oninput="restrict_num(this)"  onblur="restrict_total(this)" onkeypress="return onlyNumberKey(event)"class="amount" autocomplete="off">
+                    </td> 
+                    <td></td>
+                    </tr>
+                    <tbody id="fuelnewRow"></tbody>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="float: right;"><b>Total:</b></td><td><input type="text" maxlength="5" name="totalamount" style="width:90px;border-radius: 5px;" class="totalamount" id="totalamount" value= "0" readonly></td></tr>
+                </table>
+                </div>
+            </fieldset>
+        </form>
+    </div> 
+</body>
+</html>
+
+{%endblock%}

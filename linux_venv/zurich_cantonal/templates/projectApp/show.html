@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="card-block">
+        <div class="card-header">
+            <h5>Reimbursement Reports</h5>
+        </div>
+        <!-- <h4 class="sub-title">Reimbursement</h4> -->
+        <form action="mtplassembly" method="post">
+            {% csrf_token %}
+            <div class="container">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Bill No</th>
+                        <th>Bill Dates</th>
+                        <th>Bill Amount</th>
+                        <th>createdby</th>
+                        <th>Time Stamp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for stud in student %}  
+                      <tr>
+                        <td>{{stud.bill_no}}</td>
+                        <td>{{stud.bill_date}}</td>
+                        <td>{{stud.bill_amount}}</td>
+                        <td>{{stud.createdby}}</td>
+                        <td>{{stud.timestamp}}</td>
+                      </tr>
+                      {% endfor %} 
+                    </tbody>
+                </table>	
+            </div>
+        </form>
+    </div> 
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</html>
+{% endblock content %}

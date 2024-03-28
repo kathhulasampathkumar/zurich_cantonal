@@ -1,0 +1,254 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+
+
+
+
+<link rel="stylesheet" href="../../static/datatables/jquery.dataTables.min.css">
+<script src="../../static/datatables/jquery-3.5.1.js"></script>
+<script src="../../static/datatables/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+
+
+
+{%comment%}<h1> Hello welcome to {%for emp in emp_names%}{%if emp.empcode == user_id%}{{emp.empname}}{%endif%}{%endfor%}</h1> {%endcomment%}
+<div class="row col-12 p-0 m-0 g-0">
+  <form method="POST" id="form1" action="getfreight_reports">{% csrf_token %}
+     
+    <fieldset class="border p-2">
+      <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Forword Search</legend>         
+        <table id="myTable">                      
+          <tbody>
+            <tr>
+              <td class="px-2 mx-1">Freight ID :                 
+                <input type="text" name="fid" id="fid" class="text-uppercase" placeholder="frieght id " onkeypress="return isNumerickey(event)"></td>
+              <td class="px-2 mx-1">Vehicle NO :                 
+                <input type="text" name="vehicleno" id="vehicleno" class="text-uppercase" placeholder="APXX TRXXXX " ></td>
+                
+              <td class="px-1 mx-1">From Date :                 
+                <input type="text" name="fromdate" id="fromdate" class="dateselect fa fa-calendar" placeholder="DD-MM-YYYY" onkeypress="return isReadonlyField(event)"></i>
+              </td>
+              <td class="px-1 mx-1">To Date : 
+                <input type="text" name="todate" id="todate" class="dateselect" placeholder=" DD-MM-YYYY" onkeypress="return isReadonlyField(event)"></td>
+              <td class="px-1 mx-1">DC No : 
+                <input type="text" name="dc_no" id="dc_no" class="text-uppercase" placeholder="DC NO"></td>               
+              <td class="px-1 mx-1">VendorName :                        
+                <select name="vendorname" id="vendorname_1" class="w-80 searchandselect"><option value="">--select vendor--</option>
+                {%for vendor in vendor_list%}<option value="{{vendor.ven_id}}">{{vendor.vendor}}</option>{%endfor%}</select></td>            
+              <td>Goods By :<select name="goods_by" id="goods_by_1" class=" px-2 my-2"><option value="">-select-</option><option value="By Hand">By Hand</option><option value="By Courier">By Courier</option><option value="By Vehicle">By Vehicle</option><option value="Dispatch">Dispatch</option></select></td>            
+                                       
+              <td>Freight Name : <select name="freight_name" id="freight_name" class="w-80 searchandselect"><option value="">--select Freight Forwarder--</option>
+                {%for courier in courier_list%}<option value="{{courier.cid}}">{{courier.courier_name}}</option>{%endfor%}</select></td>              
+            <tr>
+              <td><input type="submit" value="submit" class="m-2 p-2 btn btn-primary fs-5 bolder"></td>              
+              <td><a href="{%url 'getfreight_reports_final'%}">Final Reports</a></td>              
+            </tr>
+          </tbody>          
+        </table> 
+        
+    </fieldset>
+  </form>
+
+
+  <fieldset class="border p-0 m-0">
+    <legend  class="float-none w-auto m-0 p-0 medha_headings fs-5 " >Freight Forword Reports</legend>
+    
+
+    <div id="demo_info" class="box"></div>
+    <span style="font-size: 15px;padding-left: 10px;">By Hand : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{byhand}}</span></span>
+    <span style="font-size: 15px;padding-left: 10px;">By Courier : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{bycourier}}</span></span>
+    <span style="font-size: 15px;padding-left: 10px;">By Vehicle : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{byvehicle}}</span></span>
+    <span style="font-size: 15px;padding-left: 10px;">By Dispatch : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{bydispatch}}</span></span>
+    <span style="font-size: 15px;padding-left: 10px;">Total Count : <span style="color: blue;padding-left: 5px;font-size: 15px;font-weight: 700;">{{total_cnt}}</span></span>
+    <form  id="form1" action="{%url 'update_freight'%}"  method="post"> {% csrf_token %}
+      <input type="submit" value="Update" class="p-1 btn btn-primary m-2 fs-5"  id="updatebtn">
+      <input type="text" name="total_cnt" id="total_cnt" value="{{total_cnt}}">
+      <table id="datatable1" class="table table-striped p-0 m-0 " >
+        <thead>
+          <tr>
+            <th class="width10">Freight ID</th>
+            <th class="width20">Datetime</th>
+            <th class="width20">Vehicle NO</th>
+            <th class="width10">DC NO</th>
+            <th class="width20">DC Date</th>
+            <th class="width20">Vendor Name</th>
+            <th class="width10">NO Of Items</th>
+            <th class="width10">No.Of Packs</th>
+            <th class="width20">Freight Name</th>
+            <th class="width10">Docket NO</th>
+            <th class="width20">Docket Date</th>
+            <th class="width10">In-Time</th>
+            <th class="width10">Out-Time</th>            
+            <th class="width10">Duration </th>
+            <th class="width10">No.of Pers </th>
+            <th class="width10">Security</th>
+            <th class="width20">Remarks</th>
+            <th class="width20">Created By</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for rep in getreport%}
+          <tr >
+          <!-- {% if rep.delay == 1 %}                                     
+          <tr style="background-color: rgb(243, 194, 194);">
+            {%else%}  
+          <tr style="background-color: none;">
+
+            {%endif%} -->
+            <!-- {{forloop.counter}} -->
+            <td class="width10"> <br> {{rep.fid}} <br> <a href="{%url 'freight_edit' rep.fid %} ">Edit</a></td>
+            <td class="width20">{{rep.datetime |date:" d - m - Y"}}</td>
+            <td class="width20">{{rep.vehicleno}}<br><span class="text-primary p-0 m-0"> NO OF Feets : {{rep.noof_feet}} </span></td>
+            <td class="width20">{{rep.dc_no}}</td>
+            <td class="width20">{{rep.dc_date |date:" d - m - Y"}}</td>
+            <td class="width20">{%for vendor in vendor_list%}{%if rep.vendorname == vendor.ven_id%}{{vendor.vendor}}{%endif%}{%endfor%}</td>
+            <td class="width10">{{rep.noof_items}}</td>
+            <td class="width20">{%for courier in courier_list%}{%if rep.freight_name == courier.cid%}{{courier.courier_name}}{%endif%}{%endfor%}</td>
+            <td class="widt10">{{rep.docket_no}}</td>
+            <td class="width20">{{rep.docket_date |date:" d - m - Y"}}</td>
+            <td class="width10">{{rep.noof_pack}}</td>
+            <td class="width10">{{rep.intime}}</td>
+            <td class="width10">{{rep.outtime}}</td>
+            <td class="width10">{{rep.duration}} Min              
+            </td>             
+            <td class="width10">{%if rep.unload_noofpers == 0 %}
+              <span style="color: red;font-weight: 900;float: right;">*</span>
+              <input type="text" name="unload_noofpers{{forloop.counter}}" id="unload_noofpers{{forloop.counter}}" class="width5 border border-danger" value="" >
+              {%else%}
+              <input type="hidden" name="unload_noofpers{{forloop.counter}}" id="unload_noofpers{{forloop.counter}}" value="{{rep.unload_noofpers}}" class="width5 border border-danger" >{{rep.unload_noofpers}}                
+              {%endif%} 
+              <input type="hidden" name="fid{{forloop.counter}}" id="fid{{forloop.counter}}" value="{{rep.fid}}"> <br></td>
+            <td class="width10">{{rep.security_empcode}}</td>
+            <td class="width20">{{rep.remarks}} <br>
+               
+              {%if rep.duration >= 61 %} 
+              {%if rep.delay_reason %} {{rep.delay_reason }} {%else%}
+              <textarea name="delay_reason{{forloop.counter}}" id="delay_reason{{forloop.counter}}" cols="10" rows="1"  placeholder="Delay Reason" class="border border-primary" ></textarea> 
+              {%endif%}
+              
+              {% else %} 
+              <input type="hidden" name="delay_reason{{forloop.counter}}" id="delay_reason{{forloop.counter}}" value="0" >
+              {%endif%}
+            </td>
+            <td class="width20">{%for emp in emp_names %}{%if rep.createdby == emp.empcode %}{{emp.empname}} {%endif%}{%endfor%} <br>
+              
+            </td>          
+            
+          </tr>          
+          {%endfor%}            
+        </tbody>        
+      </table>
+    </form>
+
+    
+    
+    </fieldset>
+  
+  
+
+
+  
+</div>
+
+
+<script>  
+  
+  $(document).ready(function (){
+    
+    // $('#example_datatable1').DataTable({
+    //     pagingType: 'full_numbers',
+    // });
+  $('.searchandselect').select2();
+
+  $(".dateselect").datetimepicker({
+      format: "d-m-Y",
+      timepicker: false
+  });
+  var eventFired = function (type) {
+        var n = $('#demo_info')[0];
+        n.innerHTML += '<div>' + type + ' event - ' + new Date().getTime() + '</div>';
+        n.scrollTop = n.scrollHeight;
+    }; 
+    $('#datatable1').DataTable();
+
+  $("#updatebtn").click(function(){ 
+    var fid=$("#fid").val();
+    var unload_noofpers=$("#unload_noofpers").val();
+    var delay_reason=$("#delay_reason").val();
+    // alert('fid : '+fid+' unload : '+unload_noofpers+' delay : '+delay_reason);
+    $.ajax({
+        url:'freight_forward/update_freight',
+        data:{fid:fid,unload_noofpers:unload_noofpers,delay_reason:delay_reason},
+        type:'post',
+        success:function result(data){
+            alert(data);
+        }
+        });
+    // var id=$(this).val();
+    // alert(id);
+  });
+
+  
+  
+
+});
+
+function isReadonlyField(evt)
+{
+    var charCode=(evt.which)?evt.which:event.keyCode;
+    if(charCode==9 ){
+      return true;
+    }
+    return false;
+    
+}
+function isNumerickey(evt)
+{
+    var charCode=(evt.which)?evt.which:event.keyCode;
+    if(charCode!=46 && charCode>31 && (charCode<48 || charCode>57) || charCode== 13){
+        return false;
+    }
+    return true;
+}
+
+
+
+
+
+</script>
+
+
+<style>
+  .medha_headings{
+    color: #800080 !important;
+    font-weight: 700;
+  }
+
+  
+  textarea{border-radius: 5px;}
+  input,textarea,select{
+      border-radius: 5px 5px 5px 5px;
+      border: 1px solid gray;
+      padding: 2px;      
+  }
+  select{width: 150px;}
+  td,th{padding: 1px; height: 20px;}
+  .width10{width: 40px !important;}
+  .width20{width: 80px !important;}
+  .width5{width: 35px !important;}
+  
+
+
+</style>
+
+ 
+
+{%endblock%}
+

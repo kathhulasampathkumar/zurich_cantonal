@@ -1,0 +1,255 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+
+<link href="http://192.168.132.12/rewamp/public/Date/styles/kendo.common.min.css" rel="stylesheet" />
+<link href="http://192.168.132.12/rewamp/public/Date/styles/kendo.default.min.css" rel="stylesheet" />
+
+
+
+<script type="text/javascript" src="http://192.168.132.12/rewamp/assets/lib/jquery-1.10.1.min.js"></script>
+<script src="http://192.168.132.12/rewamp/public/Date/js/kendo.all.min.js"></script>
+
+<script src="http://192.168.132.12/rewamp/public/scripts/form_fields_validadtion.js"></script>
+
+<!-- <script src="http://192.168.132.12/rewamp/public/scripts/session_validate.js"></script> -->
+
+<!-- <link href="{% static 'css/kendo.common.min.css'%}" rel="stylesheet" />
+<link  href="{% static 'css/kendo.default.min.css'%}" rel="stylesheet" />
+<link  href="{% static 'css/kendo.rtl.min.css'%}" rel="stylesheet">
+<link  href="{% static 'css/kendo.uniform.min.css'%}" rel="stylesheet" />
+
+<script src="{% static 'js/kendo.all.min.js'%}"></script>
+<script src="{% static 'js/jquery-1.10.1.min.js'%}"></script>
+<script src="{% static 'js/kendo.autocomplete.min.js'%}"></script>
+<script src="{% static 'js/kendo.calendar.min.js'%}"></script>
+<script src="{% static 'js/kendo.combobox.min.js'%}"></script>
+<script src="{% static 'js/kendo.datepicker.min.js'%}"></script>
+<script src="{% static 'js/kendo.datetimepicker.min.js'%}"></script>  -->
+
+
+<link rel="stylesheet" href="{% static 'jquery/jquery.datetimepicker.css'%}">
+<script src="{% static 'jquery/jquery.datetimepicker.full.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'js/jquery.datetimepicker.css'%}">
+<script src="{% static 'js/jquery.datetimepicker.full.js' %}"></script>
+
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+
+
+
+<style>
+  .medha_headings{ color: #800080 !important;  font-weight: 700;}
+  td,th{ border: 1px solid gray; }  
+  tr{ width: 100%; }
+  .k-animation-container{ position: static; display: inline; } 
+  .k-icon .k-i-calendar { padding: 3px;}
+  input,textarea,select{ border-radius: 5px 5px 5px 5px;  /* border: 1px solid gray;
+  padding: 2px; */   width: 100px; }
+  .k-picker-wrap .k-icon {cursor: pointer; display: block; }
+  input,select,textarea{ width: 100px;}
+  span.k-datepicker, span.k-timepicker,  span.k-colorpicker, span.k-numerictextbox, span.k-combobox, span.k-dropdown {
+    background-image: none;
+    width: 80px;
+    }
+    span.k-datepicker,  span.k-colorpicker, span.k-numerictextbox, span.k-combobox, span.k-dropdown {
+    background-image: none;
+    width: 107px;
+    }
+</style>
+{%comment%}<h1> Hello welcome to {%for emp in emp_names%}{%if emp.empcode == user_id%}{{emp.empname}}{%endif%}{%endfor%}</h1> {%endcomment%}
+<div class="row col-12 p-0 m-0 g-0">  
+
+
+  <fieldset class="border p-2">
+    <legend  class="float-none w-auto m-0 p-2 medha_headings fs-5 " >Freight Out Time </legend>
+    <!-- <form action="{%url 'update_freight'%}" method="post"> {% csrf_token %} -->
+      <!-- <input type="submit" value="Update" class="p-1 btn btn-primary m-0"> -->
+      {%if freight %}
+      
+      <br>
+      <form action="{%url 'freight_edit_update'%}" method="post"> {% csrf_token %}
+        <input type="submit" value="Update" class="p-1 btn btn-primary m-1 fs-5" > 
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Freight ID & Date</th>            
+            <th>Goods ReceivedBy</th>                           
+            <th>Vehicle No & Width </th> 
+            <th>In -Out Time(Vehicle)</th> 
+            <th>Vendor DC No & Vendor DC Date</th>
+            <th>Vendor Name </th>
+            <th>No. of Items & No.of Packages</th>
+            <th>Freight Forwarder Name</th>
+            <th>Docket No & Docket Date</th>      
+            <th>DriverDetails</th>
+            <th>Security Employee Code</th>
+            <th>Remarks</th>             
+          </tr>
+        </thead>
+        <tbody>
+          {%for rep in freight%}
+          <tr> 
+            <td>{{forloop.counter}} - {{rep.fid}} <br>  
+              <!-- <span style="display: inline-flex;" class="text-primary"> {{rep.datetime |date:" d-m-Y"}} </span>  -->
+              <input type="text" name="datetime" id="datetime_1" class=" " placeholder="DD-MM-YYYY" onkeypress="return isReadonlyField(event)" value="{{rep.datetime|date:'d-m-Y'}}"> 
+              <input type="hidden" name="fid" id="fid" value="{{rep.fid}}"></td>                      
+            <td> 
+              <select name="goods_by" id="goods_by_1" class=" px-2 my-2 fs-5">
+              <option value="">-SELECT-</option>
+              {%for ch,gr in GR_CHOICES%}
+              <option value="{{ch}}" selected="{% if rep.goods_by == ch  %} selected {% endif %}" >{{ch}}</option>
+              {%endfor%}
+              
+
+
+              <!-- <option value="{% if rep.goods_by %}{{rep.goods_by}}{% endif %}">{% if rep.goods_by %}{{rep.goods_by}}{% endif %}</option>   -->
+              <!-- <option value="">-select-</option> -->
+              <!-- <option value="By Hand"  >By Hand</option>
+              <option value="By Courier">By Courier</option>
+              <option value="By Vehicle">By Vehicle</option>
+              <option value="Dispatch">Dispatch</option>  -->
+              </select>        
+
+
+            </td>
+            <td><input type="text" name="vehicleno" id="vehicleno_1" class=" my-2 px-2 text-uppercase" placeholder="Vehicle No." value="{{rep.vehicleno}}">
+              <input type="text" name="noof_feet" id="noof_feet_1" class=" p-1 my-2" placeholder="NO OF Feets" onkeypress="return isNumerickey(event)" value="{{rep.noof_feet}}"></td>              
+            <td> In-Time : <span class="text-primary">{{rep.intime}} </span>  <br>
+              Out-Time : <span class="text-primary">{{rep.outtime}}</span><input type="text" name="outtime" id="outtime1" class=" " placeholder="HH:MM" onkeypress="return isNumerickey0_9(event)" value="{{rep.outtime}}" onchange="return numerictoTimeEvaluate(1)" maxlength="4"></td>              
+            <td><input type="text" name="dc_no" id="dc_no_1" class=" p-1 my-2 text-uppercase" placeholder="DC No." value="{{rep.dc_no}}" ><br>              
+              <input type="text" name="dc_date" id="dc_date_1" class="dc_date_1" placeholder="DD-MM-YYYY"  onkeypress="return isReadonlyField(event)" value="{{rep.dc_date|date:'d-m-Y'}}"></td>
+            <td> <span class="text-primary">{%for vendor in vendor_list%}{%if rep.vendorname == vendor.ven_id%}{{vendor.vendor}}{%endif%}{%endfor%}</span>  <br>
+              <select name="vendorname" id="vendorname_1" class="widthselect p-1 my-2 js-example-basic-single" >
+                
+                <option value="">-select vendor-</option>
+              {%for vendor in vendor_list%}<option value="{{vendor.ven_id}}">{{vendor.vendor}}</option>{%endfor%}</select>
+              <textarea type="text" name="disp_vend" id="disp_vend" class="mt-2 p-1 text-uppercase" cols="15" rows="2" placeholder="for new venors"></textarea>
+            </td>
+            <td><input type="text" name="noof_items" id="noof_items_1" class=" p-1 my-2 text-uppercase" placeholder="No.of Items" value="{{rep.noof_items}}"> <br>
+              <input type="text" name="noof_pack" id="noof_pack_1" class=" p-1 my-2 text-uppercase" placeholder="No.of Packages" value="{{rep.noof_pack}}"></td>
+            <td> <span class="text-primary"> {%for courier in courier_list%}{%if rep.freight_name == courier.cid%}{{courier.courier_name}}{%endif%}{%endfor%} </span><br>
+              <select name="freight_name" id="freight_name_1" class=" p-1 my-2"><option>-select courier-</option>
+              {%for courier in courier_list%}<option value="{{courier.cid}}">{{courier.courier_name}}</option>{%endfor%}</select></td>
+            <td><input type="text" name="docket_no" id="docket_no_1" class=" p-1 my-2 text-uppercase" placeholder="Docket No." value="{{rep.docket_no}}"	> <br>              
+              <input type="text" name="docket_date" id="docket_date_1" class=" " placeholder="DD-MM-YYYY" onkeypress="return isReadonlyField(event)" value="{{rep.docket_date|date:'d-m-Y'}}"></td>             
+            <td>
+              Name :<input type="text" name="driver_name" id="driver_name_1" class="widthselect p-1 my-2 text-uppercase" value="{{rep.driver_name}}"> <br>
+              Mobile :<input type="text" name="driver_mobile" id="driver_mobile_1" class="widthselect p-1 my-2 text-uppercase" value="{{rep.driver_mobile}}"></td>
+            <td><input type="text" name="security_empcode" id="security_empcode_1" class=" p-1 my-2 text-uppercase" value="{{rep.security_empcode}}"></td>
+            <td><textarea name="remarks" id="remarks_1" class="p-1 my-2 text-uppercase" value="{% if rep.remarks %}{{rep.remarks}}{% endif %}" placeholder="Remarks">{{rep.remarks}}</textarea></td>
+         
+          </tr>  
+                 
+          
+          {%endfor%}        
+        </tbody>
+      </table>
+    </form>
+      {%endif%}
+    <!-- </form> -->
+    
+    </fieldset>
+
+
+  
+  
+
+
+  
+</div>
+<script>
+  
+  $(document).ready(function(){ 
+
+    // $("#dc_date_1,#docket_date_1,#datetime_1").kendoDatePicker({format: "dd-MM-yyyy"});
+    $("#dc_date_1,#docket_date_1,#datetime_1").datetimepicker({
+      format: "d-m-Y",
+      timepicker: false
+    });
+    $("#outtime1").kendoTimePicker({format: "HH:mm ",interval:"5",value:"HH:mm"});
+    $('.js-example-basic-single').select2();
+    $('#freight_name_1').select2();
+    $("#goods_by_1").change(function(){
+       $goodsby=$(this).val();
+       if($goodsby=='By Vehicle' && $goodsby!=''){
+        $("#vehicleno_1").addClass("text-uppercase border border-2  border-danger");
+          // alert($goodsby);
+       }
+       else if($goodsby!='By Vehicle' || $goodsby==''){
+        $("#vehicleno_1").removeClass("text-uppercase border border-2  border-danger");
+        
+       }
+
+       
+    });
+
+  
+  });
+
+  function isReadonlyField(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode==9 ){
+        return true;
+      }
+      return false;
+      
+  }
+  function isNumerickey(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode!=46 && charCode>31 && (charCode<48 || charCode>57) || charCode== 13){
+          return false;
+      }
+      return true;
+  }
+  function isNumerickey0_9(evt)
+  {
+      var charCode=(evt.which)?evt.which:event.keyCode;
+      if(charCode>47 && charCode<58 ){
+          return true;
+      }
+      return false;
+  }
+
+  function numerictoTimeEvaluate(id)
+  {
+    var otval= document.getElementById('outtime'+id).value;
+    var otval2=otval.length;
+    if (otval2 == 3 ){
+      let ot_min=otval.slice(1,3);
+      let ot_h=otval.slice(0,1);
+     if(ot_h <= 23 && ot_min <=59){     document.getElementById('outtime'+id).value=ot_h+':'+ot_min;      }
+     else{  alert('Please enter Hours 0 to 23 and minutes 0 to 59 '); }
+    }
+
+    if (otval2 == 4 ){
+      let ot_min=otval.slice(2,4);
+      let ot_h=otval.slice(0,2);
+     if(ot_h <= 23 && ot_min <=59){     document.getElementById('outtime'+id).value=ot_h+':'+ot_min;      }
+     else{  alert('Please enter Hours 0 to 23 and minutes 0 to 59 '); }
+    }
+
+    // document.getElementById('outtime'+id).innerHTML=otval
+      // alert(otval2)
+  }
+
+  
+  
+</script>
+
+
+
+
+
+
+
+
+
+ 
+
+{%endblock%}
+

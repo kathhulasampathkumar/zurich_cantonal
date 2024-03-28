@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="card-block">
+        <div class="card-header">
+            <h5>Reimbursement Reports</h5>
+        </div>
+        <!-- <h4 class="sub-title">Reimbursement</h4> -->
+        <form action="showdata" method="post">
+            {% csrf_token %}
+            <div class="container">
+                <table class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr><td>No.of Records: <span>{{subdatacount}}</span></td></tr>
+                    <tr>
+                        <th>Ack No</th>
+                        <th>Vechicle No</th>
+                        <th>Bill No</th>
+                        <th>Bill Date</th>
+                        <th>Bill Amount</th>
+                        <th>Requisioner</th>
+                        <th>Time Stamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sel_item in subdata %}  
+                    <tr>
+                        <td>{{sel_item.1}}</td>
+                        <td>{{sel_item.2}}</td>
+                        <td>{{sel_item.3}}</td>
+                        <td>{{sel_item.4|date:"d-m-Y"}}</td>
+                        <td>{{sel_item.5}}</td>
+                        <td>{{sel_item.9}}</td>
+                        <td>{{sel_item.8|date:"d-m-Y H:i:s"}}</td>
+                        <!-- <td>{{sel_item.timestamp}}</td> -->
+                    </tr>
+                    {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div> 
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</html>
+{% endblock content %}

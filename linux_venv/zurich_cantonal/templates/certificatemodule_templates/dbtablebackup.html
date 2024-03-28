@@ -1,0 +1,125 @@
+{%extends "base.html" %}
+
+{% load static %}
+{%block content%}
+
+<script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  />
+<style>
+  .inline_diplay{ display: inline;}
+  select,div,input { margin: 5px;display: inline;}
+  .font_size20{ font-size: 20px; font-family: Arial, Helvetica, sans-serif;}
+  .submitbtn{outline: 2px solid blue;border: 2px white solid;border-radius: 4px;color: blue;margin: 0px 5px;background-color: #eaf7ed;}
+  .otherdb , .existdb{ display:  none;}
+</style>
+
+  <br>
+  <h4>Database Table Backup </h4>
+  <form method="post" class="inline_diplay">
+    {% csrf_token %}
+
+    <select name="selectdb" id="selectdb" class="select2">
+      <option value="">-- Selet Database -- </option>
+      <option value="existdb">Exist Rewamp</option>
+      <option value="otherdb">Other Database</option>      
+    </select>
+
+    
+    <!-- <label for="database_name">Select Database Name:</label>     -->
+    <div class="parentdb otherdb">
+      <select name="database_name" id="database_name" class="select2">
+        <option value="">-- Selet Database Name </option>
+        {%for db in dbnames%}
+        <option value="{{db.Database}}">{{db.Database}}</option>
+        {%endfor%}
+      </select>
+      <input type="text" name="childtable" id="childtable" class="parentdb otherdb">
+
+    </div>
+    
+
+    <!-- <label for="table_name" class="font_size20">Select Table Name:</label>     -->
+    <div class="childdb existdb">
+      <select name="table_name" id="table_name" class="select2">
+        <option value="">-- Selet Database Table --</option>
+        {%for dbtable in tables%}
+        <option value="{{dbtable}}">{{dbtable}}</option>
+        {%endfor%}
+      </select>
+      
+
+    </div>
+    <input type="submit" value="Backup" class="submitbtn" >
+    
+  </form>
+<!--   
+  {%for db in dbnames %}
+    {{db.Database}} <br>
+  {%endfor%}
+
+{{dbnames}} -->
+
+
+
+  <script>
+    $('.select2').select2();
+
+    $(document).ready(function(){    
+      $("#selectdb").change(function(){
+        var dbtype = $("#selectdb").val();
+        if( dbtype == 'existdb'){
+
+          $("."+dbtype).css("display", "inline");
+          $(".otherdb").css("display", "none");
+           $("#database_name").val('');
+           $("#childtable").val('');
+           $('#childtable').removeAttr('required');
+           $('#database_name').removeAttr('required');
+
+        }else if (dbtype == 'otherdb'){
+          $("."+dbtype).css("display", "inline"); 
+          $(".existdb").css("display", "none");
+          $("#table_name").val('');  
+          $("#childtable").prop('required',true);  
+          $("#select2-database_name-container").prop('required',true);  
+          $("#childtable").css('border','1px solid red');  
+          $("#select2-database_name-container").css('border','1px solid red');  
+                
+        }else{ $(".otherdb , .existdb").css("display", "none"); }
+        // .otherdb , .existdb{ display:  none;}
+        // alert($("#selectdb").val());
+      })
+
+        // $("#database_name").change(function () {            
+          //     var database_name = $("#database_name").val();
+          //     console.log(database_name);            
+          //         $.ajax({
+          //             url: "/certificate/database_json",
+          //             //url: "http://"+hostname+"/certificate/employee_json_responce",
+          //             type: "POST",
+                      
+          //             // dataType: "JSON",
+          //             data: { csrfmiddlewaretoken: '{{ csrf_token }}', database_name: database_name},
+          //             success: function (data) {
+          //                 // alert(data);
+          //                 console.log(data);
+          //                 // $("#expert_designation").val(data.expert_designation);
+
+          //                 // $("#database_name").text(data.Expert_Emp.exp_empname);
+          //                 // $("#database_name").val(data.Expert_Emp.exp_empname);
+                                                
+          //             },
+          //             error: (error) => {
+          //                 alert("error getting  designation   \n               "+error) ;
+          //                 console.log(error);
+          //             }
+          //         });            
+        // });
+    });
+
+  </script>
+
+
+  
+
+{% endblock %}

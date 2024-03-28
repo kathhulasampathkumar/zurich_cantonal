@@ -1,0 +1,226 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%if title%}
+    <title>{{title}} -Certificate pdf</title>
+    {%else%}
+    <title>medha-Certificate</title>
+    {%endif%}
+
+    <style>
+        table {  border: 3px solid gray;      }
+        tr {      border: none;        }
+        td, th {       text-align: left;        }
+        .underline_text {            text-decoration: underline;        }
+        .width5 {            width: 2%;        }
+        .width20{            width: 20%;        }
+        .width15{            width: 15%;        }
+        .width60{            width: 60%;        }
+
+        .width19{width: 16%;}
+        .width27{width: 28%;}
+        
+        .bg_color {            background-color: #e6e6ff;      }
+        .border {            border: 1px solid grey;            padding: 5px 3px;        }
+        
+    </style>
+</head>
+<body>
+    {%for  pdf_src in pdf_source%}
+    <div class="custom">
+        <table>
+            <tbody style="border: 3px solid gray;">
+            <table style="border-bottom:none;">
+                <tr style="margin: 2px;">
+                    <td colspan="5"></td>
+                </tr>
+                <tr class="margin" style="margin-left: 20px;">
+                    <td colspan="2" > 
+                        
+                        <img src="{% static '../../../../static/images/medha_logo.png' %}" alt="no image" width="120px" height="50px"/></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;text-align: center;padding-bottom: 10px;padding-top: 10px;">
+                    <td class="width5"></td>
+                    <th colspan="5" style="text-align:center">
+                        <span class="underline_text"
+                            style="text-decoration:underline;font-style: italic;font-weight: 600;font-size: 16px;">Operator
+                            Qualification For 
+                            {% if pdf_src.cert_id != 20 and pdf_src.cert_id != 21 %} Special process {% endif %}
+                            : {{ pdf_src.cert_id |certificateNameByFilter}}</span>
+                    </th>
+                </tr>
+                <tr class="margin" style="margin: 0px;">
+                    <td class="width5"></td>
+                    <td scope="col" class=""><label for="entry_dt">EffectFrom</label></td>
+                    <td scope="col" class="">: {{pdf_src.entry_dt |date:" d - m - Y"}}</td>
+                    <td scope="col" class=""><label for="Empcode">Employee Code</label></td>
+                    <td scope="col" class="">: {{pdf_src.empcode}}</td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 0px;">
+                    <td class="width5"></td>
+                    <td scope="col" class=""><label for="entry_dt">Emp Name</label></td>
+                    <td scope="col" class="">: {{pdf_src.empcode |empcodeNameByFilter}}</td>
+                    <td scope="col" class=""><label for="Empcode">Total Experience</label></td>
+                    <td scope="col" class="">: {{pdf_src.tota_exp | floatformat:1}} Year(s)</td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 0px;">
+                    <td class="width5"></td>
+                    <td scope="col" class=""><label for="entry_dt">Department</label></td>
+                    <td scope="col" class="">: {{ pdf_src.empcode | empcodeDeptNameByFilter}}</td>
+                    <td scope="col" class=""><label for="Empcode">Experience in Medha</label></td>
+                    <td scope="col" class="">: {{pdf_src.medha_exp | floatformat:1}} Year(s)</td>
+                    <td class="width5"></td>
+                </tr style="margin: 2px;">
+                <tr class="margin" style="margin: 0px;">
+                    <td class="width5"></td>
+                    <td scope="col" class=""><label for="entry_dt">Date of Joining</label></td>
+                    <td scope="col" class="">: {{pdf_src.from_dt |date:" d - m - Y"}}</td>
+                    <td scope="col" class=""><label for="Empcode">Experience on Process</label>
+                    </td>
+                    <td scope="col" class="">: {{pdf_src.eop_years}} Years,{{pdf_src.eop_months}} Months</td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin-bottom: 15px;">
+                    <td class="width5"></td>
+                    <td scope="col" class=""><label for="entry_dt">Educational Qualification</label> </td>
+                    <td scope="col" class="">: {{pdf_src.empcode |empcodeQualificationByFilter}}</td>
+                    <td scope="col" class=""><label for="Empcode"></label></td>
+                    <td scope="col" class=""></td>
+                    <td class="width5"></td>
+                </tr>
+                <tr>
+                    <td colspan="6"></td>
+                </tr>
+            </table>
+            <table style="border-top: none;border-bottom:none;" class="vertical_padding">
+                <tr class="margin" style="padding-top: 15px;">
+                    <td class="width5"></td>
+                    <th scope="col" class="border  width20 bg_color">Competency</th>
+                    <th scope="col" class="border  width15 bg_color">Yes / No</th>
+                    <th scope="col" class="border  width60 bg_color" colspan="2">Remarks</th>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td class="width5"></td>
+                    <td class="border  width20 ">Skill</td>
+                    <td class="border  width15">{{pdf_src.skill}}</td>
+                    <td class="border  width60" colspan="2">
+                        <table style=" border:none;">
+                            <tr class="margin">
+                                <td style="border:none;">{%for field in subfields%}
+                                    {{field.field_value}}
+                                    &nbsp;&nbsp;<br> {%endfor%}
+                                    
+                                </td>
+                                <td style="border:none;">
+
+                                    {%for field in sub_values%} : &nbsp; {{field.value}}<br>
+                                    {%endfor%}
+                                    
+                                </td>
+                            </tr>
+                            <tr class="margin" style="padding-top: 0px;">
+                                <td style="border:none;">
+                                    <label for="tool_id">Tool Id </label>
+                                </td>
+                                <td style="border:none;">                                
+                                    : &nbsp;<span style="padding-left: 10px;">{{pdf_src.tool_id}}</span> <br>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td class="width5"></td>
+                    <td class="border  width20">Quality Work</td>
+                    <td class="border  width15">{{pdf_src.qua_work}}</td>
+                    <td class="border  width60" colspan="2">
+                        <label for="val1">Qty Evaluated :</label>
+                        <span>{{pdf_src.qty_eval}}</span><br>
+                        <label for="val1">Product :</label>
+                        <span>{{pdf_src.prod_eval}}</span> <br>
+                        <!-- <label for="val1">Tool ID :</label>
+                        <span>{{pdf_src.tool_id}}</span> <br> -->
+                    </td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td class="width5"></td>
+                    <td class="border  width20">Period</td>
+                    <td class="border  width15">{{pdf_src.period}}</td>
+                    <td class="border  width60" colspan="2"><label for="val1"> Period :</label>
+                        <span>From {{pdf_src.period_from |date:" d - m - Y"}} To
+                            {{pdf_src.period_to |date:" d - m - Y"}}</span>
+                    </td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <th colspan="6" class=""
+                        style="padding: 10px;text-align: center;font-style: italic;">
+                        <h2>This is to Certify that Mr / Mrs.<span class="  underline_text">{{pdf_src.empcode |empcodeNameByFilter}}</span>
+                            has been qualified for 
+                            {% if pdf_src.cert_id != 20 and pdf_src.cert_id != 21 %} operating <br> <br> on Special Process  {% endif %}
+                            <span class="  underline_text">{{ pdf_src.cert_id |certificateNameByFilter}}</span>
+                            with effect from <span class="  underline_text">{{pdf_src.entry_dt |date:" d - m -Y"}}</span>
+                        </h2>
+                    </th>
+                </tr>
+            </table>
+            <table style="border-top: none;">
+                <tr class="margin" style="margin: 2px;">
+                    <td class="width5"></td>
+                    <th scope="col" class="border width19"> </th>
+                    <th scope="col" class="border width27">Operator Sign</th>
+                    <th scope="col" class="border width27">Expert Sign</th>
+                    <th scope="col" class="border width27">HOD Approval</th>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td class="width5"></td>
+                    <th scope="row" class="border width19">Name</th>
+                    <td class="border width27">{{pdf_src.empcode |empcodeNameByFilter}}</td>
+                    <td class="border width27">{{pdf_src.expert_id |empcodeNameByFilter}}</td>
+                    <td class="border width27">{{pdf_src.hod_id |empcodeNameByFilter}}</td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td class="width5"></td>
+                    <th scope="row" class="border width19">Designation</th>
+                    <td class="border width27">{{pdf_src.empcode | empcodeDesignationByFilter}}</td>
+                    <td class="border width27">{{pdf_src.expert_id |empcodeDesignationByFilter}}</td>
+                    <td class="border width27">{{pdf_src.hod_id | empcodeDesignationByFilter}}</td>
+                    <td class="width5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td colspan="5"></td>
+                </tr>
+                <tr class="margin" style="margin: 2px;">
+                    <td colspan="5"></td>
+                </tr>
+            </table>
+            </tbody>
+        </table>
+
+
+        
+    </div>
+    {%endfor%}
+    <p class="" style="text-align: right;padding-top: 5px;">SF-2020(0)(1/1)</p>
+
+</body>
+
+</html>
+
+
+

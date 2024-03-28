@@ -1,0 +1,68 @@
+{%extends "base.html" %}
+{% load static %}
+{%block content%}
+
+<!-- <script src="{% static 'js/select2.min.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.min.css'%}"  /> -->
+
+<!-- <script src="{% static 'js/my_node_script.js'%}"></script> -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jsbarcode/3.3.7/JsBarcode.all.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qz-tray/2.1.0/qz-tray.js"></script> -->
+
+<form action="/fracas_index" method="post">{% csrf_token %}
+  Matcode :<input type="text" name="matcode" id="matcode">
+  From :<input type="text" name="from" id="from">
+  To :<input type="text" name="tosl" id="tosl">
+  <input type="submit" value="print" onclick="printBarcode()" >
+</form>
+
+<script>
+
+    async function printBarcode() {
+
+        // var matcode = $("#matcode").val(); console.log(matcode);
+        // // Replace 'Printer_Name' with the name of your TSC printer
+        // const printerName = 'TSC TTP-244 Pro';
+
+        // // Replace 'BARCODE_DATA' with the data you want to encode as a barcode
+        // const barcodeData = matcode;
+
+        // try {
+        //     // Check if the qz-tray plugin is ready
+        //     await qz.websocket.connect();
+
+        //     // Get a list of available printers
+        //     const printers = await qz.printers.find(); console.log(printers);
+
+        //     // Find the target printer by name
+        //     const targetPrinter = printers.find(printer => printer.name === printerName);
+
+        //     if (targetPrinter) {
+        //         // Create a print data object
+        //         const printData = [
+        //             { type: 'raw', data: `^XA^BY3,3,100^FO100,100^BCN,100,Y,N,N^FD${barcodeData}^FS^XZ` }
+        //         ];
+
+        //         // Print the data to the target printer
+        //         await qz.print(targetPrinter, printData);
+        //     } else {
+        //         console.error(`Printer '${printerName}' not found.`);
+        //     }
+        // } catch (err) {
+        //     console.error('Error:', err);
+        // }
+    }
+
+
+    // nodejs code 
+
+
+</script>
+
+
+
+  
+
+{% endblock %}
