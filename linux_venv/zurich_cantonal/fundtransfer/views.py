@@ -24,6 +24,7 @@ def home(request):
     user_id=request.session.get('user_id')
     context={'title':'HomePage','user_id':user_id}
     return render(request,'index.html',context)
+@csrf_exempt 
 def getUserData(request):
     if request.method=='POST':
         email = request.POST.get('email')
